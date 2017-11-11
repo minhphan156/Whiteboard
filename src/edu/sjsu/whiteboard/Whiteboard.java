@@ -1,4 +1,4 @@
-package edu.sjsu.whiteboard;
+//package edu.sjsu.whiteboard;
 
 import javax.swing.*;
 
