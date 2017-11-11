@@ -1,3 +1,5 @@
+package edu.sjsu.whiteboard.models;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.*;

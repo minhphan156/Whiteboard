@@ -1,6 +1,9 @@
-import javax.swing.*;
+package edu.sjsu.whiteboard.shapes;
+
+import edu.sjsu.whiteboard.models.DShapeModel;
+
 import java.awt.*;
-import java.awt.geom.*;
+
 public abstract class DShape {
 	private DShapeModel shapeModel;
 	
