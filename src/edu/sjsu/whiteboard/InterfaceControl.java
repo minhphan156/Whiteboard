@@ -26,12 +26,24 @@ public class InterfaceControl extends JPanel {
 
         Box setColorHorizontalBox = Box.createHorizontalBox();
         JButton scriptChooser = new JButton("Script");
+        JButton setColor = new JButton("Set Color");
+        JTextField textField = new JTextField("");
+        setColorHorizontalBox.add(textField);
         setColorHorizontalBox.add(scriptChooser);
+        setColorHorizontalBox.add(setColor);
+
+        Box toolsHBox = Box.createHorizontalBox();
+        JButton moveToFront = new JButton("Move to Front");
+        JButton moveToBack = new JButton("Move to Back");
+        JButton removeShape = new JButton("Remove Shape");
+        toolsHBox.add(moveToFront);
+        toolsHBox.add(moveToBack);
+        toolsHBox.add(removeShape);
 
         verticalBoxMain.add(shapesHorizontalBox);
         verticalBoxMain.add(setColorHorizontalBox);
+        verticalBoxMain.add(toolsHBox);
         this.add(verticalBoxMain);
-        //this.setVisible(true);
 
     }
 

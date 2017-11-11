@@ -6,7 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Whiteboard extends JFrame {
-    private String name = "Whiteboard";
     public Whiteboard(String name){
         super("Whiteboard");
         this.setLayout(new BorderLayout());

@@ -12,6 +12,5 @@ public class Canvas extends JPanel {
     public Canvas() {
         this.setBackground(Color.white);
         this.setPreferredSize(size);
-       // this.setVisible(true);
     }
 }
