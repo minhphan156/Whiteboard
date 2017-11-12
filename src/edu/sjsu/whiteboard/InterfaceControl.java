@@ -1,17 +1,24 @@
-package edu.sjsu.whiteboard;
+import models.DRectModel;
+import models.DShapeModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 
 /**
  * Created by danil on 11/11/17.
  */
 public class InterfaceControl extends JPanel {
+    private String name = "interfacecontrol";
+    private Controller controller;
     private Dimension size = new Dimension(400,400);
 
-    public InterfaceControl(){
+    public InterfaceControl(Controller controller){
+        this.controller = controller;
         this.setPreferredSize(size);
 
         Box verticalBoxMain = Box.createVerticalBox();
@@ -92,6 +99,26 @@ public class InterfaceControl extends JPanel {
         }
         this.add(verticalBoxMain);
 
+        //listener for Rect JButton
+        rect.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+
+                controller.getdShapeModels().add(new DRectModel()); //create new DRectModel in arraylist of DShapeModel in Controller
+
+                int indexOfNewShape = controller.getdShapeModels().size()- 1; //index of new DShapeModel in arraylist of DShapeModel in Controller
+
+                Canvas canvasReference = (Canvas)controller.getWhiteboard().getComponentAt("canvas"); // get canvas object's reference
+
+                (canvasReference).addShape(controller.getdShapeModels().get(indexOfNewShape),"rect"); // add the shape to shapeList before calling paintComponent()
+
+                (canvasReference).paintComponent(); // call to paint the shape
+            }
+        }) ;
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
 }
