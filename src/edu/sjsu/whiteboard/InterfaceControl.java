@@ -27,15 +27,7 @@ public class InterfaceControl extends JPanel {
         shapesHorizontalBox.add(text);
 
         Box setColorHorizontalBox = Box.createHorizontalBox();
-        String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-        JComboBox scriptChooser = new JComboBox(fonts);
-        scriptChooser.addActionListener (new ActionListener () {
-            public void actionPerformed(ActionEvent e) {
-                String selectedValue = scriptChooser.getSelectedItem().toString();
-                System.out.print("\nUser selected: "+selectedValue);
 
-            }
-        });
         JButton setColor = new JButton("Set Color");
         JButton colorButton = new JButton("");
         colorButton.setBackground(Color.GRAY);
@@ -53,11 +45,23 @@ public class InterfaceControl extends JPanel {
             }
         };
         setColor.addActionListener(actionListener);
-        JTextField textField = new JTextField("");
-        setColorHorizontalBox.add(textField);
-        setColorHorizontalBox.add(scriptChooser);
         setColorHorizontalBox.add(setColor);
         setColorHorizontalBox.add(colorButton);
+
+        Box textHBox = Box.createHorizontalBox();
+        JTextField textField = new JTextField("");
+        String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+        JComboBox scriptChooser = new JComboBox(fonts);
+        scriptChooser.addActionListener (new ActionListener () {
+            public void actionPerformed(ActionEvent e) {
+                String selectedValue = scriptChooser.getSelectedItem().toString();
+                System.out.print("\nUser selected: "+selectedValue);
+
+            }
+        });
+        textHBox.add(textField);
+        textHBox.add(scriptChooser);
+
 
         Box toolsHBox = Box.createHorizontalBox();
         JButton moveToFront = new JButton("Move to Front");
@@ -66,7 +70,6 @@ public class InterfaceControl extends JPanel {
         toolsHBox.add(moveToFront);
         toolsHBox.add(moveToBack);
         toolsHBox.add(removeShape);
-
         String[] columns = new String[] {
                 "X", "Y", "Width", "Height"
         };
@@ -76,19 +79,18 @@ public class InterfaceControl extends JPanel {
                 {56, 52, 221, 56 },
                 {18, 148, 361, 120 },
         };
-        Box tableHBox = Box.createHorizontalBox();
         JTable table = new JTable(data, columns);
-        tableHBox.add(table);
-        JScrollPane sp = new JScrollPane(table);
 
         verticalBoxMain.add(shapesHorizontalBox);
         verticalBoxMain.add(setColorHorizontalBox);
         verticalBoxMain.add(toolsHBox);
-        verticalBoxMain.add(tableHBox);
-        for (Component comp : verticalBoxMain.getComponents()) { ((JComponent)comp).setAlignmentX(Box.CENTER_ALIGNMENT);
+        verticalBoxMain.add(textHBox);
+        verticalBoxMain.add(table.getTableHeader());
+        verticalBoxMain.add(table);
+
+        for (Component comp : verticalBoxMain.getComponents()) { ((JComponent)comp).setAlignmentX(Box.LEFT_ALIGNMENT);
         }
         this.add(verticalBoxMain);
-        this.add(sp);
 
     }
 
