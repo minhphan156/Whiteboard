@@ -1,22 +1,29 @@
-package edu.sjsu.whiteboard;
-
-import oracle.jvm.hotspot.jfr.JFR;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class Whiteboard extends JFrame {
-    public Whiteboard(String name){
+    private Controller controller;
+
+
+    public Whiteboard(Controller controller){
         super("Whiteboard");
+        this.controller = controller;
         this.setLayout(new BorderLayout());
-        this.add(new Canvas(), BorderLayout.CENTER);
-        this.add(new InterfaceControl(), BorderLayout.WEST);
+        this.add(new Canvas(controller), BorderLayout.CENTER);
+        this.add(new InterfaceControl(controller), BorderLayout.WEST);
         this.pack();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
     }
-    public static void main(String[] args) {
-        Whiteboard board = new Whiteboard("Whiteboard");
-	// write your code here
+
+    // return either Canvas or InterfaceControl inside whiteboard
+    public JPanel getComponentAt( String name) {
+        Component comp = null;
+        for (Component child : this.getContentPane().getComponents()) {
+            if (child.getName().equals(name)) {
+                comp = child;
+            }
+        }
+        return (JPanel)comp;
     }
 }

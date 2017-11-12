@@ -1,11 +1,12 @@
-package edu.sjsu.whiteboard.shapes;
+package shapes;
 
-import edu.sjsu.whiteboard.models.DShapeModel;
+
+import models.DShapeModel;
 
 import java.awt.*;
 
 public abstract class DShape {
-	private DShapeModel shapeModel;
-	
+
 	public abstract void draw(Graphics g);
+
 }

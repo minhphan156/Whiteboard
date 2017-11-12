@@ -1,4 +1,4 @@
-package edu.sjsu.whiteboard.models;
+package models;
 
 /**
  * Created by danil on 11/11/17.

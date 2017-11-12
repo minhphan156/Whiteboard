@@ -1,8 +1,5 @@
-package edu.sjsu.whiteboard.models;
+package models;
 
 public class DRectModel extends DShapeModel {
-	public DRectModel()
-	{
-		
-	}
+	public DRectModel(){ }
 }
