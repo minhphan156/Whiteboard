@@ -1,4 +1,4 @@
-package models;
+package edu.sjsu.whiteboard.models;
 
 
 import javax.swing.*;

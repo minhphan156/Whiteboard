@@ -1,5 +1,6 @@
-import models.DRectModel;
-import models.DShapeModel;
+package edu.sjsu.whiteboard;
+
+import edu.sjsu.whiteboard.models.DRectModel;
 
 import javax.swing.*;
 import java.awt.*;

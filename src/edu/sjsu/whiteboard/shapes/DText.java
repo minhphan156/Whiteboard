@@ -1,4 +1,4 @@
-package shapes;
+package edu.sjsu.whiteboard.shapes;
 
 /**
  * Created by danil on 11/11/17.

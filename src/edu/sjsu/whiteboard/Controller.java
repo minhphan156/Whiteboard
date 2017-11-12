@@ -1,5 +1,7 @@
-import models.DShapeModel;
-import shapes.DShape;
+package edu.sjsu.whiteboard;
+
+
+import edu.sjsu.whiteboard.models.DShapeModel;
 
 import java.util.ArrayList;
 

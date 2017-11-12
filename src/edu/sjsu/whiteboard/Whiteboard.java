@@ -1,3 +1,5 @@
+package edu.sjsu.whiteboard;
+
 import javax.swing.*;
 import java.awt.*;
 

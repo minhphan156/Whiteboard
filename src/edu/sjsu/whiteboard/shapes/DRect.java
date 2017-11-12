@@ -1,8 +1,6 @@
-package shapes;
+package edu.sjsu.whiteboard.shapes;
 
-
-import models.DRectModel;
-import models.DShapeModel;
+import edu.sjsu.whiteboard.models.DShapeModel;
 
 import java.awt.*;
 

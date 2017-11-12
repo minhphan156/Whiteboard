@@ -1,6 +1,11 @@
-import models.DShapeModel;
-import shapes.DRect;
-import shapes.DShape;
+package edu.sjsu.whiteboard;
+
+
+
+
+import edu.sjsu.whiteboard.models.DShapeModel;
+import edu.sjsu.whiteboard.shapes.DRect;
+import edu.sjsu.whiteboard.shapes.DShape;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +39,7 @@ public class Canvas extends JPanel {
     }
 
     // add the shape to shapeList before calling paintComponent()
-    public void addShape(DShapeModel dShapeModel,String typeOfShape){
+    public void addShape(DShapeModel dShapeModel, String typeOfShape){
         if(typeOfShape.equals("rect")){
             shapeList.add(new DRect(dShapeModel));
         }
