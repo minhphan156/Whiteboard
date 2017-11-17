@@ -9,23 +9,30 @@ import java.awt.*;
  * Created by danil on 11/11/17.
  */
 public class DOval extends DShape {
-    private DShapeModel pointerToDShapeModel; // hold the reference to DRectModel to get data for painting
+   // private DShapeModel pointerToDShapeModel; // hold the reference to DRectModel to get data for painting
     public DOval(){
     }
 
     public void setPointerToDShapeModel(DShapeModel pointerToDShapeModel) {
-        this.pointerToDShapeModel = pointerToDShapeModel;
+        super.setPointerToDShapeModel(pointerToDShapeModel);
     }
 
     public DShapeModel getPointerToDShapeModel() {
-        return pointerToDShapeModel;
+        return super.getDShapeModel();
     }
+
+
+    @Override
+    public void modelChanged(DShapeModel pointerToDShapeModel) {
+        System.out.println("redraw oval");
+    }
+
 
     // called to draw an Oval
     public void draw(Graphics g)
     {
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(pointerToDShapeModel.getColor()); // setColor method must be before fillOval()
-        g2.fillOval(pointerToDShapeModel.getX(),pointerToDShapeModel.getY(),pointerToDShapeModel.getWidth()+70,pointerToDShapeModel.getHeight());
+        g2.setColor(super.getDShapeModel().getColor()); // setColor method must be before fillOval()
+        g2.fillOval(super.getDShapeModel().getX(),super.getDShapeModel().getY(),super.getDShapeModel().getWidth()+70,super.getDShapeModel().getHeight());
     }
 }

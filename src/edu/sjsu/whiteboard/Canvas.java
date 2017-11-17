@@ -10,6 +10,8 @@ import edu.sjsu.whiteboard.shapes.DShape;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -21,12 +23,37 @@ public class Canvas extends JPanel {
     private Controller controller;
     private ArrayList<DShape> shapeList; // store current shapes
     private Dimension size = new Dimension(400,400);
+    private DShape selectedShape;
+
 
     public Canvas(Controller controller) {
         this.controller = controller;
         shapeList = new ArrayList<>();
         this.setBackground(Color.WHITE);
         this.setPreferredSize(size);
+        addMouseListener(new MouseListener() {
+            public void mouseClicked(MouseEvent event) {
+                Object source = event.getSource();
+                int x = event.getX();
+                int y = event.getY();
+                System.out.printf("\n(%d, %d)", x, y);
+                setSelectedShape(x, y);
+            }
+
+            public void mouseEntered(MouseEvent arg0) {
+            }
+
+            public void mouseExited(MouseEvent arg0) {
+            }
+
+            public void mousePressed(MouseEvent arg0) {
+
+            }
+
+            public void mouseReleased(MouseEvent arg0) {
+
+            }
+        });
     }
 
     // called will paint the shape on the canvas
@@ -43,13 +70,18 @@ public class Canvas extends JPanel {
     public void addShape(DShapeModel dShapeModel, String typeOfShape){
         if(typeOfShape.equals("rect")){
             DRect temp = new DRect();
-            temp.setPointerToDShapeModel(dShapeModel);
+            temp.setCanvasReferencel(this); // put canvas reference inside DRect object
+            dShapeModel.setListOfListeners(temp); // put DRect reference in listOfListener in DShapeModel
+            temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DRect object
             shapeList.add(temp);
+
 
         }
         else if(typeOfShape.equals("oval")){
             DOval temp = new DOval();
-            temp.setPointerToDShapeModel(dShapeModel);
+            temp.setCanvasReferencel(this); // put canvas reference inside DOval object
+            dShapeModel.setListOfListeners(temp); // put DOval reference in listOfListener in DShapeModel
+            temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DOval object
             shapeList.add(temp);
         }
     }
@@ -58,4 +90,42 @@ public class Canvas extends JPanel {
     public String getName() {
         return name;
     }
+
+
+    public void setSelectedShape(int x, int y)
+    {
+        int currIndex = shapeList.size() - 1;
+        boolean foundSelected = false;
+        int indexOfSelected = -1;
+        while(currIndex >= 0 && !foundSelected)
+        {
+            //back to front, the first found(which is on top) is the selected shape
+            System.out.println("List size"+shapeList.size());
+            DShape currShape = shapeList.get(currIndex);
+
+            //a bound Class may be needed
+            if(currShape.getDShapeModel().containsInBound(x, y))
+            {
+                System.out.println("inside last shape");
+                selectedShape = currShape;
+                foundSelected = true;
+                indexOfSelected = currIndex;
+            }
+            currIndex--;
+        }
+
+        if(foundSelected)
+        {
+            shapeList.remove(indexOfSelected);
+            shapeList.add(selectedShape);;
+            paintComponent();
+        }
+    }
+
+    public DShape getSelectedShape()
+    {
+        return selectedShape;
+    }
+
+
 }

@@ -2,9 +2,12 @@ package edu.sjsu.whiteboard.models;
 
 
 import edu.sjsu.whiteboard.InterfaceControl;
+import edu.sjsu.whiteboard.ModelListener;
 
 import java.awt.*;
 import java.awt.geom.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public abstract class DShapeModel {
 	private int x;
@@ -13,17 +16,18 @@ public abstract class DShapeModel {
 	private int height;
 	private Rectangle2D bounds;
 	private Color color;
+    private ArrayList<ModelListener> listOfListeners = new ArrayList<>();
 
-	
-	public DShapeModel()
+    public DShapeModel()
 	{
-		x = 111; // set initial size for the shape
-		y = 111;// set initial size for the shape
+
+		x = (int)(Math.random() * 400); // set initial size for the shape
+		y = (int)(Math.random() * 400);// set initial size for the shape
 		width = 200;// set initial size for the shape
 		height = 200;// set initial size for the shape
 
 		bounds = new Rectangle2D.Double(x, y, width, height);
-        setColor();
+        color = Color.GRAY;
     }
 	
 	public void setBounds(int x, int y, int width, int height)
@@ -34,7 +38,15 @@ public abstract class DShapeModel {
 		this.height = height;
 		bounds = new Rectangle2D.Double(x,y,width,height);
 	}
-	
+
+    public ArrayList<ModelListener> getListOfListeners() {
+        return listOfListeners;
+    }
+
+    public void setListOfListeners(ModelListener listener) {
+        listOfListeners.add(listener);
+
+    }
 	public Rectangle2D getBounds()
 	{
 		return bounds;
@@ -56,10 +68,14 @@ public abstract class DShapeModel {
 		return width;
 	}
 
-	public void setColor()
-	{
-		this.color = InterfaceControl.getSelectedColor();
-	}
+    public void setColor(Color color)
+    {
+        this.color = color;
+        Iterator<ModelListener> itr = listOfListeners.iterator();
+        while (itr.hasNext()){
+            itr.next().modelChanged(this);
+        }
+    }
 	
 	public Color getColor()
 	{
@@ -69,4 +85,16 @@ public abstract class DShapeModel {
 	public String toString(){
 		return  x + "x--" + y + "y--" + width + "width--" + height + "height";
 	}
+
+    public boolean containsInBound(int x, int y)
+    {
+        if((x >= this.x && x <= (this.x + this.width)) && (y >= this.y && y <= (this.y + this.height)))
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
 }

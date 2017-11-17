@@ -11,8 +11,9 @@ public class Whiteboard extends JFrame {
         super("Whiteboard");
         this.controller = controller;
         this.setLayout(new BorderLayout());
-        this.add(new Canvas(controller), BorderLayout.CENTER);
-        this.add(new InterfaceControl(controller), BorderLayout.WEST);
+       Canvas temp =  new Canvas(controller);
+        this.add(temp, BorderLayout.CENTER);
+        this.add(new InterfaceControl(controller,temp), BorderLayout.WEST);
         this.pack();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
