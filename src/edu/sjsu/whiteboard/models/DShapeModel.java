@@ -1,7 +1,8 @@
 package edu.sjsu.whiteboard.models;
 
 
-import javax.swing.*;
+import edu.sjsu.whiteboard.InterfaceControl;
+
 import java.awt.*;
 import java.awt.geom.*;
 
@@ -12,6 +13,7 @@ public abstract class DShapeModel {
 	private int height;
 	private Rectangle2D bounds;
 	private Color color;
+
 	
 	public DShapeModel()
 	{
@@ -21,8 +23,8 @@ public abstract class DShapeModel {
 		height = 200;// set initial size for the shape
 
 		bounds = new Rectangle2D.Double(x, y, width, height);
-		color = Color.GRAY;
-	}
+        setColor();
+    }
 	
 	public void setBounds(int x, int y, int width, int height)
 	{
@@ -54,9 +56,9 @@ public abstract class DShapeModel {
 		return width;
 	}
 
-	public void setColor(Color color)
+	public void setColor()
 	{
-		this.color = color;
+		this.color = InterfaceControl.getSelectedColor();
 	}
 	
 	public Color getColor()

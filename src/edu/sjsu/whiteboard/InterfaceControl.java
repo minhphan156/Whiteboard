@@ -1,6 +1,8 @@
 package edu.sjsu.whiteboard;
 
+import edu.sjsu.whiteboard.models.DOvalModel;
 import edu.sjsu.whiteboard.models.DRectModel;
+import edu.sjsu.whiteboard.shapes.DOval;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +19,11 @@ public class InterfaceControl extends JPanel {
     private String name = "interfacecontrol";
     private Controller controller;
     private Dimension size = new Dimension(400,400);
+    private static Color selectedColor = Color.GRAY;
+
+    public static Color getSelectedColor(){
+        return selectedColor;
+    }
 
     public InterfaceControl(Controller controller){
         this.controller = controller;
@@ -46,10 +53,10 @@ public class InterfaceControl extends JPanel {
             public void actionPerformed(ActionEvent actionEvent) {
                 Color initialBackground = setColor.getBackground();
                 Color color = JColorChooser.showDialog(null, "JColorChooser", initialBackground);
+                selectedColor = color;
                 colorButton.setBackground(color);
                 colorButton.setOpaque(true);
                 colorButton.setBorderPainted(false);
-
             }
         };
         setColor.addActionListener(actionListener);
@@ -110,12 +117,24 @@ public class InterfaceControl extends JPanel {
                 int indexOfNewShape = controller.getdShapeModels().size()- 1; //index of new DShapeModel in arraylist of DShapeModel in Controller
 
                 Canvas canvasReference = (Canvas)controller.getWhiteboard().getComponentAt("canvas"); // get canvas object's reference
-
                 (canvasReference).addShape(controller.getdShapeModels().get(indexOfNewShape),"rect"); // add the shape to shapeList before calling paintComponent()
-
                 (canvasReference).paintComponent(); // call to paint the shape
             }
         }) ;
+
+        // Liste
+        oval.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.getdShapeModels().add(new DOvalModel()); // Creates new DOvalModel in the ArrayList of DShapeModel in Controller class
+                int indexOfNewShape = controller.getdShapeModels().size()- 1; //index of new DShapeModel in arraylist of DShapeModel in Controller
+
+                Canvas canvasReference = (Canvas)controller.getWhiteboard().getComponentAt("canvas");
+                (canvasReference).addShape(controller.getdShapeModels().get(indexOfNewShape), "oval");
+                (canvasReference).paintComponent();
+
+            }
+        });
     }
 
     @Override

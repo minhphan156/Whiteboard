@@ -4,6 +4,7 @@ package edu.sjsu.whiteboard;
 
 
 import edu.sjsu.whiteboard.models.DShapeModel;
+import edu.sjsu.whiteboard.shapes.DOval;
 import edu.sjsu.whiteboard.shapes.DRect;
 import edu.sjsu.whiteboard.shapes.DShape;
 
@@ -24,7 +25,7 @@ public class Canvas extends JPanel {
     public Canvas(Controller controller) {
         this.controller = controller;
         shapeList = new ArrayList<>();
-        this.setBackground(Color.white);
+        this.setBackground(Color.WHITE);
         this.setPreferredSize(size);
     }
 
@@ -41,7 +42,15 @@ public class Canvas extends JPanel {
     // add the shape to shapeList before calling paintComponent()
     public void addShape(DShapeModel dShapeModel, String typeOfShape){
         if(typeOfShape.equals("rect")){
-            shapeList.add(new DRect(dShapeModel));
+            DRect temp = new DRect();
+            temp.setPointerToDShapeModel(dShapeModel);
+            shapeList.add(temp);
+
+        }
+        else if(typeOfShape.equals("oval")){
+            DOval temp = new DOval();
+            temp.setPointerToDShapeModel(dShapeModel);
+            shapeList.add(temp);
         }
     }
 
