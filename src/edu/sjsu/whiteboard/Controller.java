@@ -19,6 +19,10 @@ public class Controller {
 
     }
 
+    public void deleteModel(int index){
+        dShapeModels.remove(index);
+    }
+
 
     public Whiteboard getWhiteboard() {
         return whiteboard;

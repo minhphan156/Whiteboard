@@ -22,8 +22,9 @@ public class Canvas extends JPanel {
     private String name = "canvas";
     private Controller controller;
     private ArrayList<DShape> shapeList; // store current shapes
-    private Dimension size = new Dimension(400,400);
+    private Dimension size = new Dimension(700,600);
     private DShape selectedShape;
+    private int indexOfSelected;
 
 
     public Canvas(Controller controller) {
@@ -38,6 +39,7 @@ public class Canvas extends JPanel {
                 int y = event.getY();
                 System.out.printf("\n(%d, %d)", x, y);
                 setSelectedShape(x, y);
+                System.out.print("new Selected shape at index: "+indexOfSelected);
             }
 
             public void mouseEntered(MouseEvent arg0) {
@@ -74,8 +76,6 @@ public class Canvas extends JPanel {
             dShapeModel.setListOfListeners(temp); // put DRect reference in listOfListener in DShapeModel
             temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DRect object
             shapeList.add(temp);
-
-
         }
         else if(typeOfShape.equals("oval")){
             DOval temp = new DOval();
@@ -96,17 +96,17 @@ public class Canvas extends JPanel {
     {
         int currIndex = shapeList.size() - 1;
         boolean foundSelected = false;
-        int indexOfSelected = -1;
+        indexOfSelected = -1;
         while(currIndex >= 0 && !foundSelected)
         {
             //back to front, the first found(which is on top) is the selected shape
-            System.out.println("List size"+shapeList.size());
+            System.out.println("List size: "+shapeList.size());
             DShape currShape = shapeList.get(currIndex);
 
             //a bound Class may be needed
             if(currShape.getDShapeModel().containsInBound(x, y))
             {
-                System.out.println("inside last shape");
+                System.out.println("Selected a shape;");
                 selectedShape = currShape;
                 foundSelected = true;
                 indexOfSelected = currIndex;
@@ -114,18 +114,45 @@ public class Canvas extends JPanel {
             currIndex--;
         }
 
-        if(foundSelected)
-        {
-            shapeList.remove(indexOfSelected);
-            shapeList.add(selectedShape);;
-            paintComponent();
-        }
+//        if(foundSelected)
+//        {
+//            shapeList.remove(indexOfSelected);
+//            shapeList.add(selectedShape);;
+//            paintComponent();
+//        }
     }
 
     public DShape getSelectedShape()
     {
         return selectedShape;
     }
+
+    public void moveToFront(){
+        System.out.printf("Moving a shape at index %d in front", indexOfSelected);
+        shapeList.remove(indexOfSelected);
+        shapeList.add(getSelectedShape());
+        paintComponent();
+    }
+
+    public void moveToBack(){
+        System.out.printf("Moving a shape at index %d in the back",indexOfSelected);
+        shapeList.remove(indexOfSelected);
+        shapeList.add(0,getSelectedShape());
+        paintComponent();
+    }
+
+    public void deleteShape(){
+        shapeList.remove(indexOfSelected);
+        System.out.printf("Delete a shape at index: %d. Array size: %d",indexOfSelected,shapeList.size());
+        resetCanvas();
+        paintComponent();
+    }
+
+    public void resetCanvas(){
+        this.setBackground(Color.WHITE);
+    }
+
+
 
 
 }

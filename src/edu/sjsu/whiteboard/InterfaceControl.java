@@ -60,9 +60,7 @@ public class InterfaceControl extends JPanel {
                 Color color = JColorChooser.showDialog(null, "JColorChooser", initialBackground);
                 selectedColor = color; // Set selectedColor object to selected color that the user chose
 
-               canvas.getSelectedShape().getDShapeModel().setColor(selectedColor); // shape that need to change color
-               /*CHANGE COLOR OF EXISTING SHAPES  !!!!!!!!! */
-
+                canvas.getSelectedShape().getDShapeModel().setColor(selectedColor); // shape that need to change color
                 colorButton.setBackground(color);
                 colorButton.setOpaque(true);
                 colorButton.setBorderPainted(false);
@@ -93,6 +91,28 @@ public class InterfaceControl extends JPanel {
         toolsHBox.add(moveToFront); // Adds move to front button in the horizontal box toolsHBox
         toolsHBox.add(moveToBack); // Adds move to back button in the horizontal box toolsHBox
         toolsHBox.add(removeShape); // Adds remove shape button to horizontal box toolsHBox
+
+        moveToFront.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                canvas.moveToFront(); // Works but needs more testing
+            }
+        });
+
+        moveToBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                canvas.moveToBack();
+            }
+        });
+
+        removeShape.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                canvas.deleteShape();
+            }
+        });
+
 
         // Columns and Data String arrays for table
         String[] columns = new String[] {
@@ -145,14 +165,6 @@ public class InterfaceControl extends JPanel {
             }
         });
 
-
-
-        removeShape.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Delete selected shape
-            }
-        });
     }
 
     public void draw(String type){
