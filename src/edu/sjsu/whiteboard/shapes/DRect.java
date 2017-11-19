@@ -21,7 +21,7 @@ public class DRect extends DShape {
 	@Override
 	public void modelChanged(DShapeModel pointerToDShapeModel) {
 		System.out.println(" redraw rectangle");
-		getCanvasReferencel().paintComponent();
+		getCanvasReferencel().repaint();
 		// Paint
 	}
 

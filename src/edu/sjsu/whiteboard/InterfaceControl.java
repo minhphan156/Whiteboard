@@ -58,9 +58,12 @@ public class InterfaceControl extends JPanel {
             public void actionPerformed(ActionEvent actionEvent) {
                 Color initialBackground = setColor.getBackground();
                 Color color = JColorChooser.showDialog(null, "JColorChooser", initialBackground);
-                selectedColor = color; // Set selectedColor object to selected color that the user chose
-
-                canvas.getSelectedShape().getDShapeModel().setColor(selectedColor); // shape that need to change color
+                if(color != null){
+                    selectedColor = color; // Set selectedColor object to selected color that the user chose
+                    canvas.getSelectedShape().getDShapeModel().setColor(selectedColor); // shape that need to change color
+                    canvas.revalidate();
+                    canvas.repaint();
+                }
                 colorButton.setBackground(color);
                 colorButton.setOpaque(true);
                 colorButton.setBorderPainted(false);
@@ -170,19 +173,17 @@ public class InterfaceControl extends JPanel {
     public void draw(String type){
         if(type.equals("oval")){
             DShapeModel temp = new DOvalModel();
-            temp.setColor(selectedColor);
             controller.getdShapeModels().add(temp); // Creates new DOvalModel in the ArrayList of DShapeModel in Controller class
         }
         else if(type.equals("rect")){
             DShapeModel temp = new DRectModel();
-            temp.setColor(selectedColor);
             controller.getdShapeModels().add(temp); // Creates new DOvalModel in the ArrayList of DShapeModel in Controller class
         }
         int indexOfNewShape = controller.getdShapeModels().size()- 1; //index of new DShapeModel in arraylist of DShapeModel in Controller
 
         Canvas canvasReference = (Canvas)controller.getWhiteboard().getComponentAt("canvas");
         (canvasReference).addShape(controller.getdShapeModels().get(indexOfNewShape), type);
-        (canvasReference).paintComponent();
+        (canvasReference).repaint();
     }
 
     @Override

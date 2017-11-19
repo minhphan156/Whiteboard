@@ -59,12 +59,13 @@ public class Canvas extends JPanel {
     }
 
     // called will paint the shape on the canvas
-    public void paintComponent(){
-        Graphics g = this.getGraphics();
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D)g;
         Iterator<DShape> itr = shapeList.iterator();
         while (itr.hasNext()){
             DShape shapeToPaint = itr.next();
-            shapeToPaint.draw(g);
+            shapeToPaint.draw(g2d);
         }
     }
 
@@ -76,6 +77,7 @@ public class Canvas extends JPanel {
             dShapeModel.setListOfListeners(temp); // put DRect reference in listOfListener in DShapeModel
             temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DRect object
             shapeList.add(temp);
+            //repaint();
         }
         else if(typeOfShape.equals("oval")){
             DOval temp = new DOval();
@@ -83,6 +85,7 @@ public class Canvas extends JPanel {
             dShapeModel.setListOfListeners(temp); // put DOval reference in listOfListener in DShapeModel
             temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DOval object
             shapeList.add(temp);
+            repaint();
         }
     }
 
@@ -131,25 +134,20 @@ public class Canvas extends JPanel {
         System.out.printf("Moving a shape at index %d in front", indexOfSelected);
         shapeList.remove(indexOfSelected);
         shapeList.add(getSelectedShape());
-        paintComponent();
+        repaint();
     }
 
     public void moveToBack(){
         System.out.printf("Moving a shape at index %d in the back",indexOfSelected);
         shapeList.remove(indexOfSelected);
         shapeList.add(0,getSelectedShape());
-        paintComponent();
+        repaint();
     }
 
     public void deleteShape(){
         shapeList.remove(indexOfSelected);
         System.out.printf("Delete a shape at index: %d. Array size: %d",indexOfSelected,shapeList.size());
-        resetCanvas();
-        paintComponent();
-    }
-
-    public void resetCanvas(){
-        this.setBackground(Color.WHITE);
+        repaint();
     }
 
 
