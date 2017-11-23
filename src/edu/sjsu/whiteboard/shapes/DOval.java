@@ -24,6 +24,8 @@ public class DOval extends DShape {
 
     @Override
     public void modelChanged(DShapeModel pointerToDShapeModel) {
+		getCanvasReferencel().repaint();
+
         System.out.println("redraw oval");
     }
 
@@ -33,6 +35,8 @@ public class DOval extends DShape {
     {
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(super.getDShapeModel().getColor()); // setColor method must be before fillOval()
-        g2.fillOval(super.getDShapeModel().getX(),super.getDShapeModel().getY(),super.getDShapeModel().getWidth()+70,super.getDShapeModel().getHeight());
+        g2.fillOval(super.getDShapeModel().getX(),super.getDShapeModel().getY(),super.getDShapeModel().getWidth(),super.getDShapeModel().getHeight());
+		super.drawKnobs(g);
+
     }
 }

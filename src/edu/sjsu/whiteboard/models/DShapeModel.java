@@ -23,7 +23,7 @@ public abstract class DShapeModel {
 
 		x = (int)(Math.random() * 400); // set initial size for the shape
 		y = (int)(Math.random() * 400);// set initial size for the shape
-		width = 200;// set initial size for the shape
+		width = 270;// set initial size for the shape
 		height = 200;// set initial size for the shape
 
 		bounds = new Rectangle2D.Double(x, y, width, height);
@@ -36,7 +36,13 @@ public abstract class DShapeModel {
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		
 		bounds = new Rectangle2D.Double(x,y,width,height);
+		
+		Iterator<ModelListener> itr = listOfListeners.iterator();
+        while (itr.hasNext()){
+            itr.next().modelChanged(this);
+            }
 	}
 
     public ArrayList<ModelListener> getListOfListeners() {
@@ -56,10 +62,29 @@ public abstract class DShapeModel {
 		return x;
 	}
 
+	public void setX(int x)
+	{
+		this.x = x;
+		Iterator<ModelListener> itr = listOfListeners.iterator();
+        while (itr.hasNext()){
+            itr.next().modelChanged(this);
+        }
+	}
+	
 	public int getY() {
 		return y;
 	}
 
+	public void setY(int y)
+	{
+		this.y = y;
+		Iterator<ModelListener> itr = listOfListeners.iterator();
+        while (itr.hasNext()){
+            itr.next().modelChanged(this);
+        }
+
+	}
+	
 	public int getHeight() {
 		return height;
 	}
