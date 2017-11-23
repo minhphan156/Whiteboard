@@ -30,6 +30,10 @@ public class DRect extends DShape {
 	{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(super.getDShapeModel().getColor()); // setColor method must be before fillRect()
-		g2.fillRect(super.getDShapeModel().getX(),super.getDShapeModel().getY(),super.getDShapeModel().getWidth(),super.getDShapeModel().getHeight());
+		g2.fillRect(super.getDShapeModel().getX(),super.getDShapeModel().getY(),super.getDShapeModel().getWidth(),
+				super.getDShapeModel().getHeight());
+		super.drawKnobs(g);
+
 	}
+
 }
