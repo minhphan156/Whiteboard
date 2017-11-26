@@ -117,7 +117,9 @@ public abstract class DShapeModel {
 
     public boolean containsInBound(int x, int y)
     {
-        if((x >= this.x && x <= (this.x + this.width)) && (y >= this.y && y <= (this.y + this.height)))
+    	//Because we update bounds whenever we update x, y, point1, point2, 
+    	//just check parameters of the bounds, which is a Rectangle2D object.    	
+        if((x >= bounds.getX() && x <= (bounds.getX() + bounds.getWidth())) && (y >= bounds.getY() && y <= (bounds.getY() + bounds.getHeight())))
         {
             return true;
         }

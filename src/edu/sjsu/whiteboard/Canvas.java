@@ -2,6 +2,7 @@ package edu.sjsu.whiteboard;
 
 import edu.sjsu.whiteboard.models.DShapeModel;
 import edu.sjsu.whiteboard.models.DTextModel;
+import edu.sjsu.whiteboard.models.DLineModel;
 import edu.sjsu.whiteboard.shapes.*;
 
 import javax.swing.*;
@@ -56,7 +57,7 @@ public class Canvas extends JPanel  {
 				System.out.printf("\n(%d, %d)", mousePt.x, mousePt.y);
 				if (selectedShape.isInKnobs(mousePt)) {
 					// in knobs... so resize;
-
+					
 					isResizing = true;
 				}
 			}
@@ -81,17 +82,43 @@ public class Canvas extends JPanel  {
 				if (!isResizing) {
 					System.out.println("dragging now ");
 					// not resizing, so moving the shape
-					selectedShape.getDShapeModel().setX(selectedShape.getDShapeModel().getX() + dx);
-					selectedShape.getDShapeModel().setY(selectedShape.getDShapeModel().getY() + dy);
-					mousePt = event.getPoint();
-
+					if(!(selectedShape instanceof DLine))
+					{
+						selectedShape.getDShapeModel().setX(selectedShape.getDShapeModel().getX() + dx);
+						selectedShape.getDShapeModel().setY(selectedShape.getDShapeModel().getY() + dy);
+						mousePt = event.getPoint();
+					}	
+					else
+					{
+						//for DLine
+						//((DLineModel)(selectedShape.getDShapeModel()))
+						Point point1 = ((DLineModel)(selectedShape.getDShapeModel())).getP1();
+						Point point2 = ((DLineModel)(selectedShape.getDShapeModel())).getP2();
+						point1 = new Point(point1.x + dx, point1.y + dy);
+						point2 = new Point(point2.x + dx, point2.y + dy);
+						((DLineModel)(selectedShape.getDShapeModel())).setP1(point1);
+						((DLineModel)(selectedShape.getDShapeModel())).setP2(point2);
+						mousePt = event.getPoint();
+					}
 				} else {
 					System.out.println("resizing now ");
-					int[] newShapeInfo = selectedShape.resize(dx, dy);
-					// resizing
-					selectedShape.getDShapeModel().setBounds(newShapeInfo[0], newShapeInfo[1], newShapeInfo[2],
-							newShapeInfo[3]);
-					mousePt = event.getPoint(); //always need to update
+					if(!(selectedShape instanceof DLine))
+					{
+						int[] newShapeInfo = selectedShape.resize(dx, dy);
+						// resizing
+						selectedShape.getDShapeModel().setBounds(newShapeInfo[0], newShapeInfo[1], newShapeInfo[2],
+								newShapeInfo[3]);
+						mousePt = event.getPoint(); //always need to update
+					}
+					else
+					{
+						//after calculating infor about resizing, 
+						//1stPoint.x 1stPoint.y 2ndPoint.x 2ndPoint.y in newShapeInfo[]
+						int[] newShapeInfo = selectedShape.resize(dx, dy);
+						((DLineModel)(selectedShape.getDShapeModel())).setP1(new Point(newShapeInfo[0],newShapeInfo[1]));
+						((DLineModel)(selectedShape.getDShapeModel())).setP2(new Point(newShapeInfo[2],newShapeInfo[3]));
+						mousePt = event.getPoint(); //always need to update
+					}
 				}
 			}
 		});
