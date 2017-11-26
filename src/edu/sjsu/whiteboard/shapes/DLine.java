@@ -14,20 +14,15 @@ public class DLine extends DShape{
 
     public DLine(){}
 
-    DLineModel myModel = new DLineModel();
-
-    double x1 = myModel.getP1().getX();
-    double y1 = myModel.getP1().getY();
-    double x2 = myModel.getP2().getX();
-    double y2 = myModel.getP2().getY();
-
-
-
+    @Override
     public void setPointerToDShapeModel(DShapeModel pointerToDShapeModel) {
-        super.setPointerToDShapeModel(pointerToDShapeModel); // call to set dShapeModel in parent class
+    	if(pointerToDShapeModel instanceof DLineModel)
+    	{
+    		super.setPointerToDShapeModel((DLineModel)pointerToDShapeModel); // call to set dShapeModel in parent class
+    	}
     }
 
-    public DShapeModel getPointerToDShapeModel() {
+    public DShapeModel getDShapeModel() {
         return super.getDShapeModel();// call to get dShapeModel in parent class
     }
 
@@ -44,32 +39,23 @@ public class DLine extends DShape{
         //otherwise, it will keep adding points...
         knobPoints = new ArrayList<>();
         knobs =  new ArrayList<>();
-        //System.out.println("the size of knobPoints is " + knobPoints.size());
-        int dModelX = getDShapeModel().getX();
-        int dModelY = getDShapeModel().getY();
-        int dModelWidth = getDShapeModel().getWidth();
-        int dModelHeight = getDShapeModel().getHeight();
-        Point upLeft = new Point(dModelX, dModelY);
-        knobPoints.add(upLeft);
-        knobs.add(new Knob(upLeft));
-//        Point upRight = new Point(dModelX + dModelWidth, dModelY);
-//        knobPoints.add(upRight);
-//        knobs.add(new Knob(upRight));
-        Point downRight = new Point(dModelX + dModelWidth, dModelY + dModelHeight);
-        knobPoints.add(downRight);
-        knobs.add(new Knob(downRight));
-//        Point downLeft = new Point(dModelX, dModelY + dModelHeight);
-//        knobPoints.add(downLeft);
-//        knobs.add(new Knob(downLeft));
+        Point knobPoint1 = ((DLineModel)(super.getDShapeModel())).getP1();
+        Point knobPoint2 = ((DLineModel)(super.getDShapeModel())).getP2();
+        knobPoints.add(knobPoint1);
+        knobPoints.add(knobPoint2);
+        knobs.add(new Knob(knobPoint1));
+        knobs.add(new Knob(knobPoint2));
     }
 
 
     @Override
     public void draw(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        //Line2D line = new Line2D.Double(x1,y1,x2,y2);
-        g2.drawLine(super.getDShapeModel().getX(),super.getDShapeModel().getY(),super.getDShapeModel().getWidth(),
-                super.getDShapeModel().getHeight());
+        //get two points from model
+        Point point1 = ((DLineModel)(super.getDShapeModel())).getP1();
+        Point point2 = ((DLineModel)(super.getDShapeModel())).getP2();
+        g2.setColor(super.getDShapeModel().getColor()); 
+        g2.drawLine(point1.x, point1.y, point2.x, point2.y);      
         super.drawKnobs(g2);
     }
 

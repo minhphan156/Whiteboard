@@ -138,36 +138,60 @@ public abstract class DShape implements ModelListener {
 		
 		//newClickedPoint is the new position of the clicked knob
 		Point newClickedPoint = new Point (clickedKnob.getCentralPoint().x+dx,clickedKnob.getCentralPoint().y + dy);
-		clickedKnob = new Knob	(newClickedPoint);
-		int newWidth = Math.abs( newClickedPoint.x - anchorKnob.getCentralPoint().x);
-		int newHeight = Math.abs( newClickedPoint.y - anchorKnob.getCentralPoint().y);
-		int newX;
-		int newY;
+		clickedKnob = new Knob(newClickedPoint);
 		
-		//compare newClickedPoint and the position of central point of the anchorKnob(which doesn't change)
-		//the up left corner of new bound has the smallerX of these two points and the smallerY of these two points.
-		if(newClickedPoint.x < anchorKnob.getCentralPoint().x) {
-			newX = newClickedPoint.x;
+		if(!(this instanceof DLine))
+		{
+			int newWidth = Math.abs( newClickedPoint.x - anchorKnob.getCentralPoint().x);
+			int newHeight = Math.abs( newClickedPoint.y - anchorKnob.getCentralPoint().y);
+			int newX;
+			int newY;
+			
+			//compare newClickedPoint and the position of central point of the anchorKnob(which doesn't change)
+			//the up left corner of new bound has the smallerX of these two points and the smallerY of these two points.
+			if(newClickedPoint.x < anchorKnob.getCentralPoint().x) {
+				newX = newClickedPoint.x;
+			}
+			else {
+				newX = anchorKnob.getCentralPoint().x;
+			}
+			
+			if(newClickedPoint.y < anchorKnob.getCentralPoint().y) {
+				newY = newClickedPoint.y;
+			}
+			else {
+				newY = anchorKnob.getCentralPoint().y;
+			}
+			newResizedShapeInfo[2] = newWidth;
+			newResizedShapeInfo[3] = newHeight;
+			newResizedShapeInfo[0] = newX;
+			newResizedShapeInfo[1] = newY;
+	
+			return newResizedShapeInfo;
 		}
-		else {
-			newX = anchorKnob.getCentralPoint().x;
+		else
+		{
+			//Different content in the returning array for DLine
+			//1st point: anchorKnob.centralPoint
+			//2nd point: clickedKnob.centralPoint
+			//the order of points doesn't matter
+			newResizedShapeInfo[0] = anchorKnob.getCentralPoint().x;
+			newResizedShapeInfo[1] = anchorKnob.getCentralPoint().y;;
+			newResizedShapeInfo[2] = clickedKnob.getCentralPoint().x;
+			newResizedShapeInfo[3] = clickedKnob.getCentralPoint().y;
+			return newResizedShapeInfo;
 		}
-		
-		if(newClickedPoint.y < anchorKnob.getCentralPoint().y) {
-			newY = newClickedPoint.y;
-		}
-		else {
-			newY = anchorKnob.getCentralPoint().y;
-		}
-		newResizedShapeInfo[2] = newWidth;
-		newResizedShapeInfo[3] = newHeight;
-		newResizedShapeInfo[0] = newX;
-		newResizedShapeInfo[1] = newY;
-
-		return newResizedShapeInfo;
-
 	}
 	
+//	public Knob getClickedKnob()
+//	{
+//		return clickedKnob;
+//	}
+//	
+//	public Knob getAnchorKnob()
+//	{
+//		return anchorKnob;
+//	}
 //	public Rectangle2D.Double getBounds()
 //	{
 //		return pointerToDShapeModel.getBounds();
