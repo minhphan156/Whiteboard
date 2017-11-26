@@ -66,6 +66,7 @@ public abstract class DShapeModel {
 
 	public void setX(int x)
 	{
+		setBounds(x,y, width,height);
 		this.x = x;
 		Iterator<ModelListener> itr = listOfListeners.iterator();
         while (itr.hasNext()){
@@ -79,6 +80,7 @@ public abstract class DShapeModel {
 
 	public void setY(int y)
 	{
+		setBounds(x,y, width,height);
 		this.y = y;
 		Iterator<ModelListener> itr = listOfListeners.iterator();
         while (itr.hasNext()){

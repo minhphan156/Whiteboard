@@ -1,6 +1,7 @@
 package edu.sjsu.whiteboard;
 
 import edu.sjsu.whiteboard.models.DShapeModel;
+import edu.sjsu.whiteboard.models.DTextModel;
 import edu.sjsu.whiteboard.shapes.*;
 
 import javax.swing.*;
@@ -53,6 +54,8 @@ public class Canvas extends JPanel {
 					isResizing = true;
 				}
 
+
+
 //				System.out.println("resizing is " + isResizing);
 			}
 
@@ -72,6 +75,7 @@ public class Canvas extends JPanel {
 			public void mouseDragged(MouseEvent event) {
 				int dx = event.getX() - mousePt.x;
 				int dy = event.getY() - mousePt.y;
+
 				if (!isResizing) {
 					System.out.println("dragging now ");
 					// not resizing, so moving the shape
@@ -148,9 +152,18 @@ public class Canvas extends JPanel {
 			// a bound Class may be needed
 			if (currShape.getDShapeModel().containsInBound(x, y)) {
 				System.out.println("Selected a shape;");
-				selectedShape = currShape;
-				foundSelected = true;
-				indexOfSelected = currIndex;
+				if(currShape.getClass().getSimpleName().equals("DText")){
+					System.out.print("DTEXT SELECTED");
+					selectedShape = currShape;
+					foundSelected = true;
+					indexOfSelected = currIndex;
+				}
+				else{
+					selectedShape = currShape;
+					foundSelected = true;
+					indexOfSelected = currIndex;
+				}
+
 			}
 			currIndex--;
 		}
@@ -191,6 +204,25 @@ public class Canvas extends JPanel {
 		shapeList.remove(indexOfSelected);
 		System.out.printf("Delete a shape at index: %d. Array size: %d", indexOfSelected, shapeList.size());
 		repaint();
+	}
+
+	public void updateText(String str){
+		if(selectedShape.getClass().getSimpleName().equals("DText")){
+			System.out.print("Changing the text of the DText");
+			DShape temp = selectedShape;
+			DText textTemp = (DText)temp;
+			textTemp.setText(str);
+		}
+	}
+
+	public void updateFont(String fontName){
+		if(selectedShape.getClass().getSimpleName().equals("DText")){
+
+			System.out.print("\nChanging the font of the DText");
+			DShape temp = selectedShape;
+			DText textTemp = (DText)temp;
+			textTemp.setFontName(fontName);
+		}
 	}
 
 }

@@ -91,7 +91,12 @@ public class InterfaceControl extends JPanel {
         textField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.print("textField: "+textField.getText());
                 // TODO: Change the font the selected text shape
+                // Hit Enter to active
+                canvas.updateText(textField.getText()); //
+                canvas.revalidate();
+                canvas.repaint();
             }
         });
 
@@ -102,7 +107,10 @@ public class InterfaceControl extends JPanel {
                 String selectedValue = scriptChooser.getSelectedItem().toString(); // Contains selected font
                 selectedFont = scriptChooser.getFont();
                 System.out.print("\nUser selected: "+selectedValue);
-
+                String fontName = scriptChooser.getFont().getFontName();
+                canvas.updateFont(scriptChooser.getSelectedItem().toString()); // Sets font of the selected shape to new font
+                canvas.revalidate();
+                canvas.repaint();
             }
         });
         textHBox.add(textField); // Adds textField object to horizontal box textHBox

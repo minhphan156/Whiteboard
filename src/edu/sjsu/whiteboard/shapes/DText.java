@@ -5,16 +5,27 @@ import edu.sjsu.whiteboard.models.DShapeModel;
 import edu.sjsu.whiteboard.models.DTextModel;
 
 import java.awt.*;
-
+import java.awt.geom.Rectangle2D;
 
 
 public class DText extends DShape {
 
-    DTextModel myModel = new DTextModel();
+    DTextModel textModel = new DTextModel();
 
     public DText(){
 
     }
+
+    public void setText(String str){
+        textModel.setText(str);
+    }
+
+    public void setFontName(String fontName){
+        textModel.setFontNameModel(fontName);
+    }
+
+
+
     public void setPointerToDShapeModel(DShapeModel pointerToDShapeModel) {
         super.setPointerToDShapeModel(pointerToDShapeModel); // call to set dShapeModel in parent class
     }
@@ -25,9 +36,8 @@ public class DText extends DShape {
 
     @Override
     public void modelChanged(DShapeModel pointerToDShapeModel) {
-        System.out.println("redraw text");
+        System.out.println("\nRedraw text component");
         getCanvasReferencel().repaint();
-        // Paint
     }
 
     // called to draw Rectangle
@@ -35,15 +45,14 @@ public class DText extends DShape {
     {
 
         Graphics2D g2 = (Graphics2D) g;
-        System.out.print("Redraw text");
         /* Clip is to not allow the text be drawn outside the bounds */
         Shape clip = g2.getClip(); // Get the current clip
 
         g2.setFont(computeFont());
+        g2.setColor(Color.GRAY);
         g2.setClip(clip.getBounds().createIntersection(super.getDShapeModel().getBounds())); // Intersect the clip with the text shape bounds i.e. we won't lay down any pixels that fall outside our bounds
-        g2.drawString(myModel.getText(),super.getDShapeModel().getX(),super.getDShapeModel().getY()+super.getDShapeModel().getHeight()-10);
+        g2.drawString(textModel.getText(),super.getDShapeModel().getX(),super.getDShapeModel().getY()+super.getDShapeModel().getHeight()-10);
         g2.setClip(clip); // Restore the old clip
-
         super.drawKnobs(g2);
 
     }
@@ -51,8 +60,7 @@ public class DText extends DShape {
     public Font computeFont(){
         int height = (super.getDShapeModel().getHeight());
 
-        Font tempFont = myModel.getFont();
-        FontMetrics fm = new FontMetrics(tempFont) {
+        FontMetrics fm = new FontMetrics(textModel.getFont()) {
             @Override
             public int getHeight() {
                 return super.getHeight();
@@ -68,8 +76,11 @@ public class DText extends DShape {
 
 
         int finalSize = (int)size; // Convert double to float
-        Font finalFont = new Font("Dialog",Font.PLAIN,finalSize);
-        System.out.print("Font computed: "+finalFont.getSize());
+        Font finalFont = new Font(textModel.getFontNameModel(),Font.PLAIN,finalSize);
+
+
+        System.out.print("\nFont size computed: "+finalFont.getSize());
+        System.out.print("\nFont name of finalFont: "+finalFont.getName());
 
         return finalFont;
     }

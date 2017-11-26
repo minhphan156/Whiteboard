@@ -7,10 +7,23 @@ import java.awt.*;
  */
 public class DTextModel extends DShapeModel {
 
-    private String text = "Hello";
-    private Font font = new Font(Font.DIALOG, Font.PLAIN, 12); // First time
+    private String text = "Hello"; // Initially
+    private String fontNameModel = "Calibri";
+    private Font font = new Font(fontNameModel,Font.PLAIN,12);
+
+
+
+    public String getFontNameModel() {
+        return fontNameModel;
+    }
+
+    public void setFontNameModel(String fontName) {
+        this.fontNameModel = fontName;
+    }
+
 
     public DTextModel(){
+
     }
 
     public String getText() {
@@ -28,4 +41,5 @@ public class DTextModel extends DShapeModel {
     public void setFont(Font font) {
         this.font = font;
     }
+
 }
