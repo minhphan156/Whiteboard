@@ -1,19 +1,12 @@
 package edu.sjsu.whiteboard;
 
-import edu.sjsu.whiteboard.models.DOvalModel;
-import edu.sjsu.whiteboard.models.DRectModel;
-import edu.sjsu.whiteboard.models.DShapeModel;
-import edu.sjsu.whiteboard.models.DTextModel;
-import edu.sjsu.whiteboard.shapes.DOval;
-import edu.sjsu.whiteboard.shapes.DShape;
-import edu.sjsu.whiteboard.shapes.DText;
+import edu.sjsu.whiteboard.models.*;
 
+import javax.crypto.spec.DHGenParameterSpec;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 
 /**
@@ -23,24 +16,11 @@ public class InterfaceControl extends JPanel {
     private String name = "interfacecontrol";
     private Controller controller;
     private Dimension size = new Dimension(400,400);
-    private static Color selectedColor = Color.GRAY;
-    private static Font selectedFont;
+    private static JComboBox scriptChooser; // STATIC Combo Box filled with String array of system fonts
+    private static JTextField textField; // STATIC Text field to get user input for text
+    private Canvas canvas; // pointer
 
-    public static String getSelectedText() {
-        return selectedText;
-    }
-
-    private static String selectedText;
-    private Canvas canvas;
-
-    public static Color getSelectedColor(){
-        return selectedColor;
-    }
-    public static Font getSelectedFont() {
-        return selectedFont;
-    }
-
-    public InterfaceControl(Controller controller,Canvas canvas){
+    public InterfaceControl(Controller controller, Canvas canvas){
         this.canvas = canvas;
         this.controller = controller;
         this.setPreferredSize(size);
@@ -71,8 +51,7 @@ public class InterfaceControl extends JPanel {
                 Color initialBackground = setColor.getBackground();
                 Color color = JColorChooser.showDialog(null, "JColorChooser", initialBackground);
                 if(color != null){
-                    selectedColor = color; // Set selectedColor object to selected color that the user chose
-                    canvas.getSelectedShape().getDShapeModel().setColor(selectedColor); // shape that need to change color
+                    canvas.getSelectedShape().getDShapeModel().setColor(color); // Set selectedColor object to selected color that the user chose
                     canvas.revalidate();
                     canvas.repaint();
                 }
@@ -86,35 +65,33 @@ public class InterfaceControl extends JPanel {
         setColorHorizontalBox.add(colorButton); // Add setColor button to horizontal box setColorHorizontalBox
 
         Box textHBox = Box.createHorizontalBox(); // Horizontal box that contains Text Field and Font chooser
-        JTextField textField = new JTextField(""); // Text field to get user input for text
-
+        textField = new JTextField("");
         textField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.print("textField: "+textField.getText());
-                // TODO: Change the font the selected text shape
-                // Hit Enter to active
-                canvas.updateText(textField.getText()); //
+                // Hit Enter to activate
+                canvas.updateText(textField.getText());
                 canvas.revalidate();
                 canvas.repaint();
             }
         });
-
         String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames(); // Gets all system fonts
-        JComboBox scriptChooser = new JComboBox(fonts); // Combo Box filled with String array of system fonts
+        scriptChooser = new JComboBox(fonts);
         scriptChooser.addActionListener (new ActionListener () { // Listener for change in font selection
             public void actionPerformed(ActionEvent e) {
                 String selectedValue = scriptChooser.getSelectedItem().toString(); // Contains selected font
-                selectedFont = scriptChooser.getFont();
                 System.out.print("\nUser selected: "+selectedValue);
-                String fontName = scriptChooser.getFont().getFontName();
-                canvas.updateFont(scriptChooser.getSelectedItem().toString()); // Sets font of the selected shape to new font
+                canvas.updateFont(selectedValue); // Sets font of the selected shape to new font
                 canvas.revalidate();
                 canvas.repaint();
             }
         });
         textHBox.add(textField); // Adds textField object to horizontal box textHBox
         textHBox.add(scriptChooser); // Adds Font chooser object to horizontal box textHBox
+        scriptChooser.setEnabled(false); // Initially we
+        textField.setEnabled(false);
+
 
         Box toolsHBox = Box.createHorizontalBox(); // Horizontal box contains following buttons: Move to Front, Move to Back, Remove shape
         JButton moveToFront = new JButton("Move to Front");
@@ -170,8 +147,6 @@ public class InterfaceControl extends JPanel {
         }
         this.add(verticalBoxMain);
 
-
-
         //listener for Rect JButton
         rect.addActionListener(new ActionListener(){
             @Override
@@ -192,8 +167,13 @@ public class InterfaceControl extends JPanel {
         text.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.print(selectedText);
                 draw("text");
+            }
+        });
+        line.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                draw("line");
             }
         });
 
@@ -212,6 +192,11 @@ public class InterfaceControl extends JPanel {
             DShapeModel temp = new DTextModel();
             controller.getdShapeModels().add(temp);
         }
+        else if(type.equals("line")){
+            DShapeModel temp = new DLineModel();
+            controller.getdShapeModels().add(temp);
+        }
+
         int indexOfNewShape = controller.getdShapeModels().size()- 1; //index of new DShapeModel in arraylist of DShapeModel in Controller
 
         Canvas canvasReference = (Canvas)controller.getWhiteboard().getComponentAt("canvas");
@@ -223,4 +208,10 @@ public class InterfaceControl extends JPanel {
     public String getName() {
         return name;
     }
+
+    public static void updateScriptChooser(Boolean bool) {
+        scriptChooser.setEnabled(bool);
+        textField.setEnabled(bool);
+    }
+
 }

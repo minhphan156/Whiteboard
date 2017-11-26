@@ -15,7 +15,7 @@ import java.util.Iterator;
 /**
  * Created by danil on 11/7/17.
  */
-public class Canvas extends JPanel {
+public class Canvas extends JPanel  {
 	private String name = "canvas";
 	private Controller controller;
 	private ArrayList<DShape> shapeList; // store current shapes
@@ -25,6 +25,12 @@ public class Canvas extends JPanel {
 	private boolean foundSelected;
 	private Point mousePt;
 	private boolean isResizing;
+
+	private boolean isSelectedShapeText;
+	public void setIsSelectedShapeText(boolean isSelectedShapeText) {
+		this.isSelectedShapeText = isSelectedShapeText;
+		InterfaceControl.updateScriptChooser(isSelectedShapeText); // STATIC
+	}
 
 	public Canvas(Controller controller) {
 		this.controller = controller;
@@ -53,10 +59,6 @@ public class Canvas extends JPanel {
 
 					isResizing = true;
 				}
-
-
-
-//				System.out.println("resizing is " + isResizing);
 			}
 
 			public void mouseEntered(MouseEvent arg0) {
@@ -115,7 +117,7 @@ public class Canvas extends JPanel {
 			dShapeModel.setListOfListeners(temp); // put DRect reference in listOfListener in DShapeModel
 			temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DRect object
 			shapeList.add(temp);
-			//repaint();
+			repaint();
 		}
 		else if (typeOfShape.equals("oval")) {
 			DOval temp = new DOval();
@@ -123,7 +125,7 @@ public class Canvas extends JPanel {
 			dShapeModel.setListOfListeners(temp); // put DOval reference in listOfListener in DShapeModel
 			temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DOval object
 			shapeList.add(temp);
-			//repaint();
+			repaint();
 		}
 		else if(typeOfShape.equals("text")){
 			DText temp = new DText();
@@ -131,7 +133,15 @@ public class Canvas extends JPanel {
 			dShapeModel.setListOfListeners(temp); // put DOval reference in listOfListener in DShapeModel
 			temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DOval object
 			shapeList.add(temp);
-			//repaint();
+			repaint();
+		}
+		else if(typeOfShape.equals("line")){
+			DLine temp = new DLine();
+			temp.setCanvasReferencel(this); // put canvas reference inside DOval object
+			dShapeModel.setListOfListeners(temp); // put DOval reference in listOfListener in DShapeModel
+			temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DOval object
+			shapeList.add(temp);
+			repaint();
 		}
 	}
 
@@ -154,12 +164,16 @@ public class Canvas extends JPanel {
 				System.out.println("Selected a shape;");
 				if(currShape.getClass().getSimpleName().equals("DText")){
 					System.out.print("DTEXT SELECTED");
+					setIsSelectedShapeText(true);
 					selectedShape = currShape;
+					//selectedShape.showKnobs();
 					foundSelected = true;
 					indexOfSelected = currIndex;
 				}
 				else{
+					setIsSelectedShapeText(false);
 					selectedShape = currShape;
+					//selectedShape.showKnobs();
 					foundSelected = true;
 					indexOfSelected = currIndex;
 				}
@@ -167,13 +181,7 @@ public class Canvas extends JPanel {
 			}
 			currIndex--;
 		}
-
-		// if(foundSelected)
-		// {
-		// shapeList.remove(indexOfSelected);
-		// shapeList.add(selectedShape);;
-		// paintComponent();
-		// }
+		moveToFront(); // Move selected shape in front
 	}
 
 	public DShape getSelectedShape() {
@@ -212,17 +220,17 @@ public class Canvas extends JPanel {
 			DShape temp = selectedShape;
 			DText textTemp = (DText)temp;
 			textTemp.setText(str);
+			repaint();
 		}
 	}
 
 	public void updateFont(String fontName){
 		if(selectedShape.getClass().getSimpleName().equals("DText")){
-
 			System.out.print("\nChanging the font of the DText");
 			DShape temp = selectedShape;
 			DText textTemp = (DText)temp;
 			textTemp.setFontName(fontName);
+			repaint();
 		}
 	}
-
 }

@@ -15,8 +15,8 @@ public abstract class DShape implements ModelListener {
 	private DShapeModel pointerToDShapeModel;// hold the reference to DRectModel to get data for painting
 	private Canvas canvasReferencel; //hold the canvas reference to call paintComponent() later
 	private final int KNOB_SIDE_LENGTH = 9;
-	private ArrayList<Point> knobPoints;
-	private ArrayList<Knob> knobs;
+	 ArrayList<Point> knobPoints;
+	 ArrayList<Knob> knobs;
 	private Knob clickedKnob;
 	private int clickedKnobIndex;
 	private Knob anchorKnob;
@@ -85,6 +85,14 @@ public abstract class DShape implements ModelListener {
 	{
 		//get central points of knobs
 		return knobPoints;
+	}
+
+	public void showKnobs(){
+		//drawKnobs();
+	}
+
+	public void hideKnobs(){
+		knobPoints.clear();
 	}
 	
 	public int getKnobSideLength()
