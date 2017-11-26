@@ -21,10 +21,12 @@ public abstract class DShapeModel {
     public DShapeModel()
 	{
 
-		x = (int)(Math.random() * 400); // set initial size for the shape
-		y = (int)(Math.random() * 400);// set initial size for the shape
-		width = 270;// set initial size for the shape
-		height = 200;// set initial size for the shape
+		x = 10;
+		y = 10;
+//		x = (int)(Math.random() * 400); // set initial size for the shape
+//		y = (int)(Math.random() * 400);// set initial size for the shape
+		width = 20;// set initial size for the shape
+		height = 20;// set initial size for the shape
 
 		bounds = new Rectangle2D.Double(x, y, width, height);
         color = Color.GRAY;

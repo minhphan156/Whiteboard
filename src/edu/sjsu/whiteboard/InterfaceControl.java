@@ -3,8 +3,10 @@ package edu.sjsu.whiteboard;
 import edu.sjsu.whiteboard.models.DOvalModel;
 import edu.sjsu.whiteboard.models.DRectModel;
 import edu.sjsu.whiteboard.models.DShapeModel;
+import edu.sjsu.whiteboard.models.DTextModel;
 import edu.sjsu.whiteboard.shapes.DOval;
 import edu.sjsu.whiteboard.shapes.DShape;
+import edu.sjsu.whiteboard.shapes.DText;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,10 +24,20 @@ public class InterfaceControl extends JPanel {
     private Controller controller;
     private Dimension size = new Dimension(400,400);
     private static Color selectedColor = Color.GRAY;
+    private static Font selectedFont;
+
+    public static String getSelectedText() {
+        return selectedText;
+    }
+
+    private static String selectedText;
     private Canvas canvas;
 
     public static Color getSelectedColor(){
         return selectedColor;
+    }
+    public static Font getSelectedFont() {
+        return selectedFont;
     }
 
     public InterfaceControl(Controller controller,Canvas canvas){
@@ -75,11 +87,20 @@ public class InterfaceControl extends JPanel {
 
         Box textHBox = Box.createHorizontalBox(); // Horizontal box that contains Text Field and Font chooser
         JTextField textField = new JTextField(""); // Text field to get user input for text
+
+        textField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: Change the font the selected text shape
+            }
+        });
+
         String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames(); // Gets all system fonts
         JComboBox scriptChooser = new JComboBox(fonts); // Combo Box filled with String array of system fonts
         scriptChooser.addActionListener (new ActionListener () { // Listener for change in font selection
             public void actionPerformed(ActionEvent e) {
                 String selectedValue = scriptChooser.getSelectedItem().toString(); // Contains selected font
+                selectedFont = scriptChooser.getFont();
                 System.out.print("\nUser selected: "+selectedValue);
 
             }
@@ -163,8 +184,8 @@ public class InterfaceControl extends JPanel {
         text.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String text = "text";
-                draw(text);
+                System.out.print(selectedText);
+                draw("text");
             }
         });
 
@@ -178,6 +199,10 @@ public class InterfaceControl extends JPanel {
         else if(type.equals("rect")){
             DShapeModel temp = new DRectModel();
             controller.getdShapeModels().add(temp); // Creates new DOvalModel in the ArrayList of DShapeModel in Controller class
+        }
+        else if(type.equals("text")){
+            DShapeModel temp = new DTextModel();
+            controller.getdShapeModels().add(temp);
         }
         int indexOfNewShape = controller.getdShapeModels().size()- 1; //index of new DShapeModel in arraylist of DShapeModel in Controller
 

@@ -1,10 +1,7 @@
 package edu.sjsu.whiteboard;
 
 import edu.sjsu.whiteboard.models.DShapeModel;
-import edu.sjsu.whiteboard.shapes.DOval;
-import edu.sjsu.whiteboard.shapes.DRect;
-import edu.sjsu.whiteboard.shapes.DShape;
-import edu.sjsu.whiteboard.shapes.Knob;
+import edu.sjsu.whiteboard.shapes.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -81,6 +78,7 @@ public class Canvas extends JPanel {
 					selectedShape.getDShapeModel().setX(selectedShape.getDShapeModel().getX() + dx);
 					selectedShape.getDShapeModel().setY(selectedShape.getDShapeModel().getY() + dy);
 					mousePt = event.getPoint();
+
 				} else {
 					System.out.println("resizing now ");
 					int[] newShapeInfo = selectedShape.resize(dx, dy);
@@ -97,6 +95,7 @@ public class Canvas extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
+
 		Iterator<DShape> itr = shapeList.iterator();
 		while (itr.hasNext()) {
 			DShape shapeToPaint = itr.next();
@@ -112,14 +111,23 @@ public class Canvas extends JPanel {
 			dShapeModel.setListOfListeners(temp); // put DRect reference in listOfListener in DShapeModel
 			temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DRect object
 			shapeList.add(temp);
-			// repaint();
-		} else if (typeOfShape.equals("oval")) {
+			//repaint();
+		}
+		else if (typeOfShape.equals("oval")) {
 			DOval temp = new DOval();
 			temp.setCanvasReferencel(this); // put canvas reference inside DOval object
 			dShapeModel.setListOfListeners(temp); // put DOval reference in listOfListener in DShapeModel
 			temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DOval object
 			shapeList.add(temp);
-			repaint();
+			//repaint();
+		}
+		else if(typeOfShape.equals("text")){
+			DText temp = new DText();
+			temp.setCanvasReferencel(this); // put canvas reference inside DOval object
+			dShapeModel.setListOfListeners(temp); // put DOval reference in listOfListener in DShapeModel
+			temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DOval object
+			shapeList.add(temp);
+			//repaint();
 		}
 	}
 
