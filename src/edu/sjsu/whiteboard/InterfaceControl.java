@@ -27,6 +27,8 @@ public class InterfaceControl extends JPanel {
     private static JComboBox scriptChooser; // STATIC Combo Box filled with String array of system fonts
     private static JTextField textField; // STATIC Text field to get user input for text
     private Canvas canvas; // pointer
+    public static TableModel tableValues = new TableModel();
+
 
     public InterfaceControl(Controller controller, Canvas canvas){
         this.canvas = canvas;
@@ -82,6 +84,8 @@ public class InterfaceControl extends JPanel {
 
         Box textHBox = Box.createHorizontalBox(); // Horizontal box that contains Text Field and Font chooser
         textField = new JTextField("");
+        Dimension size = new Dimension(1,1);
+        textField.setPreferredSize(size);// this prevents resize issue
         textField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -152,20 +156,8 @@ public class InterfaceControl extends JPanel {
         });
 
 
-        // Columns and Data String arrays for table
-        String[] columns = new String[] {
-                "X", "Y", "Width", "Height"
-        };
+        JTable table = new JTable(tableValues);
 
-        Object[][] data = new Object[][] {
-                {10, 10, 111, 58 },
-                {56, 52, 221, 56 },
-                {18, 148, 361, 120 },
-        };
-        JTable table = new JTable(data, columns);
-
-        // Add horizontal boxes to the main
-        //verticalBoxMain.add(menubar);
         verticalBoxMain.add(shapesHorizontalBox);
         verticalBoxMain.add(setColorHorizontalBox);
         verticalBoxMain.add(textHBox);

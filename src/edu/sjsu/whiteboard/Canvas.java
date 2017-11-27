@@ -3,6 +3,7 @@ package edu.sjsu.whiteboard;
 import edu.sjsu.whiteboard.models.DShapeModel;
 import edu.sjsu.whiteboard.models.DLineModel;
 import edu.sjsu.whiteboard.shapes.*;
+import javafx.scene.control.Tab;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,7 +51,7 @@ public class Canvas extends JPanel  {
 				System.out.printf("\n(%d, %d)", mousePt.x, mousePt.y);
 				if (selectedShape.isInKnobs(mousePt)) {
 					// in knobs... so resize;
-					
+
 					isResizing = true;
 				}
 			}
@@ -136,6 +137,8 @@ public class Canvas extends JPanel  {
 			temp.setCanvasReferencel(this); // put canvas reference inside DRect object
 			dShapeModel.setListOfListeners(temp); // put DRect reference in listOfListener in DShapeModel
 			temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DRect object
+			Object[] value = {temp.getDShapeModel().getX(),temp.getDShapeModel().getY(),temp.getDShapeModel().getWidth(),temp.getDShapeModel().getHeight()};
+			InterfaceControl.tableValues.insertData(value);
 			shapeList.add(temp);
 			repaint();
 		}
@@ -144,6 +147,8 @@ public class Canvas extends JPanel  {
 			temp.setCanvasReferencel(this); // put canvas reference inside DOval object
 			dShapeModel.setListOfListeners(temp); // put DOval reference in listOfListener in DShapeModel
 			temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DOval object
+			Object[] value = {temp.getDShapeModel().getX(),temp.getDShapeModel().getY(),temp.getDShapeModel().getWidth(),temp.getDShapeModel().getHeight()};
+			InterfaceControl.tableValues.insertData(value);
 			shapeList.add(temp);
 			repaint();
 		}
@@ -152,6 +157,8 @@ public class Canvas extends JPanel  {
 			temp.setCanvasReferencel(this); // put canvas reference inside DOval object
 			dShapeModel.setListOfListeners(temp); // put DOval reference in listOfListener in DShapeModel
 			temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DOval object
+			Object[] value = {temp.getDShapeModel().getX(),temp.getDShapeModel().getY(),temp.getDShapeModel().getWidth(),temp.getDShapeModel().getHeight()};
+			InterfaceControl.tableValues.insertData(value);
 			shapeList.add(temp);
 			repaint();
 		}
@@ -160,6 +167,8 @@ public class Canvas extends JPanel  {
 			temp.setCanvasReferencel(this); // put canvas reference inside DOval object
 			dShapeModel.setListOfListeners(temp); // put DOval reference in listOfListener in DShapeModel
 			temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DOval object
+			Object[] value = {temp.getDShapeModel().getX(),temp.getDShapeModel().getY(),temp.getDShapeModel().getWidth(),temp.getDShapeModel().getHeight()};
+			InterfaceControl.tableValues.insertData(value);
 			shapeList.add(temp);
 			repaint();
 		}
@@ -238,7 +247,10 @@ public class Canvas extends JPanel  {
 
 	public void deleteShape() {
 		shapeList.remove(indexOfSelected);
+		System.out.print("\nIndex of the shape to delete: "+indexOfSelected);
+		InterfaceControl.tableValues.removeRow(indexOfSelected);
 		System.out.printf("Delete a shape at index: %d. Array size: %d", indexOfSelected, shapeList.size());
+		//indexOfSelected = -1;
 		repaint();
 	}
 

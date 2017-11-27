@@ -13,6 +13,7 @@ public class Whiteboard extends JFrame {
 
     public Whiteboard(Controller controller){
         super("Whiteboard");
+        Canvas canvas =  new Canvas(controller);
 
         JMenuBar menubar = new JMenuBar();
 
@@ -23,6 +24,42 @@ public class Whiteboard extends JFrame {
 
         JMenu fileMenu = new JMenu("File");
         fileMenu.setMnemonic(KeyEvent.VK_F);
+
+        JMenu editMenu = new JMenu("Edit");
+        fileMenu.setMnemonic(KeyEvent.VK_F);
+
+        JMenuItem moveToFront = new JMenuItem(new MenuItemAction("Move to Front", iconNew,
+                KeyEvent.VK_N));
+
+        moveToFront.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                canvas.moveToFront();
+            }
+        });
+
+        JMenuItem moveToBack = new JMenuItem(new MenuItemAction("Move to Back", iconNew,
+                KeyEvent.VK_N));
+
+        moveToBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                canvas.moveToBack();
+            }
+        });
+        JMenuItem removeShape = new JMenuItem(new MenuItemAction("Remove Shape", iconNew,
+                KeyEvent.VK_N));
+        removeShape.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                canvas.deleteShape();
+            }
+        });
+
+        editMenu.add(moveToFront);
+        editMenu.add(moveToBack);
+        editMenu.addSeparator();
+        editMenu.add(removeShape);
 
         JMenu networkingMenu = new JMenu("Networking");
         fileMenu.setMnemonic(KeyEvent.VK_F);
@@ -36,13 +73,13 @@ public class Whiteboard extends JFrame {
         networkingMenu.add(startServ);
         networkingMenu.add(startClient);
 
-        JMenuItem newMi = new JMenuItem(new MenuItemAction("New canvas", iconNew,
+        JMenuItem newMi = new JMenuItem(new MenuItemAction("Reset canvas", iconNew,
                 KeyEvent.VK_N));
 
         newMi.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //canvas.clearCanvas();
+                canvas.clearCanvas();
             }
         });
 
@@ -74,13 +111,14 @@ public class Whiteboard extends JFrame {
 
 
         menubar.add(fileMenu);
+        menubar.add(editMenu);
         menubar.add(networkingMenu);
 
         this.controller = controller;
         this.setLayout(new BorderLayout());
-        Canvas temp =  new Canvas(controller);
-        this.add(temp, BorderLayout.CENTER);
-        this.add(new InterfaceControl(controller,temp), BorderLayout.WEST);
+        // temp =  new Canvas(controller);
+        this.add(canvas, BorderLayout.CENTER);
+        this.add(new InterfaceControl(controller,canvas), BorderLayout.WEST);
         this.add(menubar,BorderLayout.NORTH);
         this.pack();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

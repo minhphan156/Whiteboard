@@ -3,6 +3,7 @@ package edu.sjsu.whiteboard.models;
 
 import edu.sjsu.whiteboard.InterfaceControl;
 import edu.sjsu.whiteboard.ModelListener;
+import edu.sjsu.whiteboard.TableModel;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -17,6 +18,7 @@ public abstract class DShapeModel {
 	private Rectangle2D bounds;
 	private Color color;
     private ArrayList<ModelListener> listOfListeners = new ArrayList<>();
+	private TableModel myTableModel = new TableModel();
 
     public DShapeModel()
 	{
@@ -38,7 +40,6 @@ public abstract class DShapeModel {
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		
 		bounds = new Rectangle2D.Double(x,y,width,height);
 		
 		Iterator<ModelListener> itr = listOfListeners.iterator();
