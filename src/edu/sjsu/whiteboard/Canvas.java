@@ -41,14 +41,14 @@ public class Canvas extends JPanel  {
 				Object source = event.getSource();
 				int x = event.getX();
 				int y = event.getY();
-				System.out.printf("\n(%d, %d)", x, y);
+				//System.out.printf("\n(%d, %d)", x, y);
 				setSelectedShape(x, y);
 				System.out.print("new Selected shape at index: " + indexOfSelected);
 			}
 
 			public void mousePressed(MouseEvent event) {
 				mousePt = event.getPoint();
-				System.out.printf("\n(%d, %d)", mousePt.x, mousePt.y);
+				//System.out.printf("\n(%d, %d)", mousePt.x, mousePt.y);
 				if (selectedShape.isInKnobs(mousePt)) {
 					// in knobs... so resize;
 
@@ -74,14 +74,16 @@ public class Canvas extends JPanel  {
 				int dy = event.getY() - mousePt.y;
 
 				if (!isResizing) {
-					System.out.println("dragging now ");
+					//System.out.println("dragging now ");
 					// not resizing, so moving the shape
 					if(!(selectedShape instanceof DLine))
 					{
 						selectedShape.getDShapeModel().setX(selectedShape.getDShapeModel().getX() + dx);
 						selectedShape.getDShapeModel().setY(selectedShape.getDShapeModel().getY() + dy);
 						mousePt = event.getPoint();
-					}	
+						InterfaceControl.tableValues.setValueAt(selectedShape.getDShapeModel().getX() + dx,indexOfSelected,0);
+						InterfaceControl.tableValues.setValueAt(selectedShape.getDShapeModel().getY() + dy,indexOfSelected,1);
+					}
 					else
 					{
 						//for DLine
@@ -95,7 +97,7 @@ public class Canvas extends JPanel  {
 						mousePt = event.getPoint();
 					}
 				} else {
-					System.out.println("resizing now ");
+					//System.out.println("resizing now ");
 					if(!(selectedShape instanceof DLine))
 					{
 						int[] newShapeInfo = selectedShape.resize(dx, dy);
@@ -103,6 +105,8 @@ public class Canvas extends JPanel  {
 						selectedShape.getDShapeModel().setBounds(newShapeInfo[0], newShapeInfo[1], newShapeInfo[2],
 								newShapeInfo[3]);
 						mousePt = event.getPoint(); //always need to update
+						InterfaceControl.tableValues.setValueAt(selectedShape.getDShapeModel().getWidth(),indexOfSelected,2); // Width
+						InterfaceControl.tableValues.setValueAt(newShapeInfo[3],indexOfSelected,3); // Height
 					}
 					else
 					{
@@ -190,7 +194,7 @@ public class Canvas extends JPanel  {
 
 			// a bound Class may be needed
 			if (currShape.getDShapeModel().containsInBound(x, y)) {
-				System.out.println("Selected a shape;");
+				System.out.println("Selected a shape at: "+currIndex);
 				if(selectedShape instanceof DText){
 					System.out.print("DTEXT SELECTED");
 					selectedShape = currShape;
@@ -230,7 +234,7 @@ public class Canvas extends JPanel  {
 			System.out.printf("Moving a shape at index %d in front", indexOfSelected);
 			shapeList.remove(indexOfSelected);
 			shapeList.add(getSelectedShape());
-			indexOfSelected = shapeList.size() - 1;
+			//indexOfSelected = shapeList.size() - 1;
 			repaint();
 		}
 	}
@@ -250,7 +254,6 @@ public class Canvas extends JPanel  {
 		System.out.print("\nIndex of the shape to delete: "+indexOfSelected);
 		InterfaceControl.tableValues.removeRow(indexOfSelected);
 		System.out.printf("Delete a shape at index: %d. Array size: %d", indexOfSelected, shapeList.size());
-		//indexOfSelected = -1;
 		repaint();
 	}
 

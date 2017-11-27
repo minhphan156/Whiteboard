@@ -28,7 +28,6 @@ public class DLine extends DShape{
 
     @Override
     public void modelChanged(DShapeModel pointerToDShapeModel) {
-        System.out.println("redraw line");
         getCanvasReferencel().repaint();
     }
 

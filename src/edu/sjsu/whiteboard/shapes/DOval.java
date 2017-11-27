@@ -25,8 +25,6 @@ public class DOval extends DShape {
     @Override
     public void modelChanged(DShapeModel pointerToDShapeModel) {
 		getCanvasReferencel().repaint();
-
-        System.out.println("redraw oval");
     }
 
 

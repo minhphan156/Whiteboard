@@ -42,7 +42,6 @@ public class DText extends DShape {
 
     @Override
     public void modelChanged(DShapeModel pointerToDShapeModel) {
-        System.out.println("\nRedraw text component");
         getCanvasReferencel().repaint();
     }
 
