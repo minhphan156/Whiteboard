@@ -1,7 +1,6 @@
 package edu.sjsu.whiteboard;
 
 import edu.sjsu.whiteboard.models.DShapeModel;
-import edu.sjsu.whiteboard.models.DTextModel;
 import edu.sjsu.whiteboard.models.DLineModel;
 import edu.sjsu.whiteboard.shapes.*;
 
@@ -26,12 +25,6 @@ public class Canvas extends JPanel  {
 	private boolean foundSelected;
 	private Point mousePt;
 	private boolean isResizing;
-
-	private boolean isSelectedShapeText;
-	public void setIsSelectedShapeText(boolean isSelectedShapeText) {
-		this.isSelectedShapeText = isSelectedShapeText;
-		InterfaceControl.updateScriptChooser(isSelectedShapeText); // STATIC
-	}
 
 	public Canvas(Controller controller) {
 		this.controller = controller;
@@ -189,22 +182,30 @@ public class Canvas extends JPanel  {
 			// a bound Class may be needed
 			if (currShape.getDShapeModel().containsInBound(x, y)) {
 				System.out.println("Selected a shape;");
-				if(currShape.getClass().getSimpleName().equals("DText")){
+				if(selectedShape instanceof DText){
 					System.out.print("DTEXT SELECTED");
-					setIsSelectedShapeText(true);
 					selectedShape = currShape;
+					DShape temp = selectedShape;
+					DText textTemp = (DText)temp;
+					String currentText = textTemp.getText();
+					String currentFont = textTemp.getFontName();
+					InterfaceControl.enableScriptChooserTextFields(true);
+					InterfaceControl.updateScriptChooserTextField(currentText, currentFont); // STATIC
 					//selectedShape.showKnobs();
 					foundSelected = true;
 					indexOfSelected = currIndex;
 				}
 				else{
-					setIsSelectedShapeText(false);
+					InterfaceControl.enableScriptChooserTextFields(false);
 					selectedShape = currShape;
 					//selectedShape.showKnobs();
 					foundSelected = true;
 					indexOfSelected = currIndex;
 				}
 
+			}
+			else{
+				// hide all knobs
 			}
 			currIndex--;
 		}
@@ -242,7 +243,7 @@ public class Canvas extends JPanel  {
 	}
 
 	public void updateText(String str){
-		if(selectedShape.getClass().getSimpleName().equals("DText")){
+		if(selectedShape instanceof DText){
 			System.out.print("Changing the text of the DText");
 			DShape temp = selectedShape;
 			DText textTemp = (DText)temp;
@@ -252,12 +253,18 @@ public class Canvas extends JPanel  {
 	}
 
 	public void updateFont(String fontName){
-		if(selectedShape.getClass().getSimpleName().equals("DText")){
+		if(selectedShape instanceof DText){
 			System.out.print("\nChanging the font of the DText");
 			DShape temp = selectedShape;
 			DText textTemp = (DText)temp;
 			textTemp.setFontName(fontName);
 			repaint();
 		}
+	}
+
+	public void clearCanvas(){
+		controller.getdShapeModels().clear();
+		shapeList.clear();
+		repaint();
 	}
 }

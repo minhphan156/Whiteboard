@@ -1,18 +1,26 @@
 package edu.sjsu.whiteboard;
 
 import edu.sjsu.whiteboard.models.*;
+import sun.font.FontAccess;
 
-import javax.crypto.spec.DHGenParameterSpec;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import static javax.swing.Action.MNEMONIC_KEY;
+import static javax.swing.Action.SMALL_ICON;
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
 
 /**
  * Created by danil on 11/11/17.
  */
 public class InterfaceControl extends JPanel {
+
     private String name = "interfacecontrol";
     private Controller controller;
     private Dimension size = new Dimension(400,400);
@@ -28,16 +36,23 @@ public class InterfaceControl extends JPanel {
         Box verticalBoxMain = Box.createVerticalBox(); // Create main box that contains all horizontal boxes
 
         Box shapesHorizontalBox = Box.createHorizontalBox(); // Creates horizontal box that stores Rect, Oval, Line, Text buttons
+        JLabel addShapesText = new JLabel(" Add Shapes: ");
+        Font interfaceControlFont = new Font("Calibri", Font.ITALIC, 18);
+        addShapesText.setFont(interfaceControlFont);
         JButton rect = new JButton("Rect"); // Create Rect button
         JButton oval = new JButton("Oval"); // Create Oval button
         JButton line = new JButton("Line"); // Create Line button
         JButton text = new JButton("Text"); // Create Text button
+        shapesHorizontalBox.add(addShapesText);
         shapesHorizontalBox.add(rect); // Add Rect button to shapesHorizaontalBox
         shapesHorizontalBox.add(oval); // Add Oval button to shapesHorizaontalBox
         shapesHorizontalBox.add(line); // Add Line button to shapesHorizaontalBox
         shapesHorizontalBox.add(text); // Add Text button to shapesHorizaontalBox
 
         Box setColorHorizontalBox = Box.createHorizontalBox(); // Horizontal box that store Set Color button and button that displays selected color
+        JLabel setShapesColor = new JLabel(" Set Shapes Color: ");
+        setShapesColor.setFont(interfaceControlFont);
+
         JButton setColor = new JButton("Set Color"); // Creates set Color Buttonn
         JButton colorButton = new JButton(""); // Create an empty button that serves as selected color display
         Dimension colorButtonSize = new Dimension(1,1);
@@ -61,32 +76,46 @@ public class InterfaceControl extends JPanel {
             }
         };
         setColor.addActionListener(actionListener);
+        setColorHorizontalBox.add(setShapesColor);
         setColorHorizontalBox.add(setColor); // Add setColor button to horizontal box setColorHorizontalBox
         setColorHorizontalBox.add(colorButton); // Add setColor button to horizontal box setColorHorizontalBox
 
         Box textHBox = Box.createHorizontalBox(); // Horizontal box that contains Text Field and Font chooser
         textField = new JTextField("");
-        textField.addActionListener(new ActionListener() {
+        textField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.print("textField: "+textField.getText());
-                // Hit Enter to activate
+            public void insertUpdate(DocumentEvent e) {
                 canvas.updateText(textField.getText());
                 canvas.revalidate();
                 canvas.repaint();
             }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                canvas.updateText(textField.getText());
+                canvas.revalidate();
+                canvas.repaint();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                // Not sure whats that for
+            }
         });
+
+        JLabel editText = new JLabel(" Edit text: ");
+        editText.setFont(interfaceControlFont);
         String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames(); // Gets all system fonts
         scriptChooser = new JComboBox(fonts);
         scriptChooser.addActionListener (new ActionListener () { // Listener for change in font selection
             public void actionPerformed(ActionEvent e) {
                 String selectedValue = scriptChooser.getSelectedItem().toString(); // Contains selected font
-                System.out.print("\nUser selected: "+selectedValue);
                 canvas.updateFont(selectedValue); // Sets font of the selected shape to new font
                 canvas.revalidate();
                 canvas.repaint();
             }
         });
+        textHBox.add(editText);
         textHBox.add(textField); // Adds textField object to horizontal box textHBox
         textHBox.add(scriptChooser); // Adds Font chooser object to horizontal box textHBox
         scriptChooser.setEnabled(false); // Initially we
@@ -136,6 +165,7 @@ public class InterfaceControl extends JPanel {
         JTable table = new JTable(data, columns);
 
         // Add horizontal boxes to the main
+        //verticalBoxMain.add(menubar);
         verticalBoxMain.add(shapesHorizontalBox);
         verticalBoxMain.add(setColorHorizontalBox);
         verticalBoxMain.add(textHBox);
@@ -209,9 +239,15 @@ public class InterfaceControl extends JPanel {
         return name;
     }
 
-    public static void updateScriptChooser(Boolean bool) {
+    public static void enableScriptChooserTextFields(Boolean bool){
         scriptChooser.setEnabled(bool);
         textField.setEnabled(bool);
+    }
+
+    public static void updateScriptChooserTextField(String str, String font) {
+        textField.setText(str);
+        System.out.print("Font name in the function: "+font);
+        scriptChooser.getModel().setSelectedItem(font);
     }
 
 }

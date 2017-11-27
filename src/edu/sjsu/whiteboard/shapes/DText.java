@@ -19,6 +19,12 @@ public class DText extends DShape {
     public void setText(String str){
         textModel.setText(str);
     }
+    public String getText(){
+        return textModel.getText();
+    }
+    public String getFontName(){
+        return textModel.getFontNameModel();
+    }
 
     public void setFontName(String fontName){
         textModel.setFontNameModel(fontName);
@@ -49,16 +55,16 @@ public class DText extends DShape {
         Shape clip = g2.getClip(); // Get the current clip
 
         g2.setFont(computeFont());
-        g2.setColor(Color.GRAY);
+        g2.setColor(super.getDShapeModel().getColor());
         g2.setClip(clip.getBounds().createIntersection(super.getDShapeModel().getBounds())); // Intersect the clip with the text shape bounds i.e. we won't lay down any pixels that fall outside our bounds
-        g2.drawString(textModel.getText(),super.getDShapeModel().getX(),super.getDShapeModel().getY()+super.getDShapeModel().getHeight()-10);
+        g2.drawString(textModel.getText(),super.getDShapeModel().getX(),(super.getDShapeModel().getY()+super.getDShapeModel().getHeight()));
         g2.setClip(clip); // Restore the old clip
         super.drawKnobs(g2);
 
     }
 
     public Font computeFont(){
-        int height = (super.getDShapeModel().getHeight());
+        int height = super.getDShapeModel().getHeight();
 
         FontMetrics fm = new FontMetrics(textModel.getFont()) {
             @Override
@@ -67,12 +73,16 @@ public class DText extends DShape {
             }
         };
 
-        int sizeInt = fm.getHeight();
+        int sizeInt = textModel.getFont().getSize();
         double size = (double) sizeInt;
 
-        do {
+//        do {
+//            size = (size * 1.10)+1; // Formula to computer font size: should be less than height of DModelShape
+//        } while (size < height);
+
+        while (size < height){
             size = (size * 1.10)+1; // Formula to computer font size: should be less than height of DModelShape
-        } while (size < height);
+        }
 
 
         int finalSize = (int)size; // Convert double to float
