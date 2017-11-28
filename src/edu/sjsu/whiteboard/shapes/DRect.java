@@ -26,12 +26,16 @@ public class DRect extends DShape {
 	// called to draw Rectangle
 	public void draw(Graphics g)
 	{
+		
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(super.getDShapeModel().getColor()); // setColor method must be before fillRect()
 		g2.fillRect(super.getDShapeModel().getX(),super.getDShapeModel().getY(),super.getDShapeModel().getWidth(),
 				super.getDShapeModel().getHeight());
-		super.drawKnobs(g);
-
+//		super.drawKnobs(g); //only draw knobs for the only one selected shape
+		if(super.getIsSelected())
+		{
+			super.drawKnobs(g2);
+		}
 	}
 
 }

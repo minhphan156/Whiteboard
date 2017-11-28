@@ -33,10 +33,9 @@ public class Canvas extends JPanel  {
 		this.setPreferredSize(size);
 		addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent event) {
-
 				// if don't set isResizing to false, it will affect all other behaviors, like
 				// dragging and selecting a shape
-
+				
 				Object source = event.getSource();
 				int x = event.getX();
 				int y = event.getY();
@@ -52,9 +51,6 @@ public class Canvas extends JPanel  {
 				//now press a shape can set it to a selected shape, no need to click then move
 				setSelectedShape(mousePt.x,mousePt.y);
 				if (selectedShape != null && selectedShape.isInKnobs(mousePt)) {
-
-					// in knobs... so resize;
-					//check this: indexOfSelected != -1,
 					//otherwise, will have a null pointer exception
 					isResizing = true;
 				}

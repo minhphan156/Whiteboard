@@ -58,7 +58,10 @@ public class DText extends DShape {
         g2.setClip(clip.getBounds().createIntersection(super.getDShapeModel().getBounds())); // Intersect the clip with the text shape bounds i.e. we won't lay down any pixels that fall outside our bounds
         g2.drawString(textModel.getText(),super.getDShapeModel().getX(),(super.getDShapeModel().getY()+super.getDShapeModel().getHeight()));
         g2.setClip(clip); // Restore the old clip
-        super.drawKnobs(g2);
+        if(super.getIsSelected())
+		{
+			super.drawKnobs(g2);
+		}
 
     }
 

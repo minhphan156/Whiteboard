@@ -55,7 +55,10 @@ public class DLine extends DShape{
         Point point2 = ((DLineModel)(super.getDShapeModel())).getP2();
         g2.setColor(super.getDShapeModel().getColor()); 
         g2.drawLine(point1.x, point1.y, point2.x, point2.y);      
-        super.drawKnobs(g2);
+        if(super.getIsSelected())
+		{
+			super.drawKnobs(g2);
+		}
     }
 
 

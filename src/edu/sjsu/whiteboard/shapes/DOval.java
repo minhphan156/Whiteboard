@@ -34,7 +34,9 @@ public class DOval extends DShape {
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(super.getDShapeModel().getColor()); // setColor method must be before fillOval()
         g2.fillOval(super.getDShapeModel().getX(),super.getDShapeModel().getY(),super.getDShapeModel().getWidth(),super.getDShapeModel().getHeight());
-		super.drawKnobs(g);
-
+		if(super.getIsSelected())
+		{
+			super.drawKnobs(g2);
+		}
     }
 }
