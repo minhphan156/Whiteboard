@@ -22,8 +22,7 @@ public class Canvas extends JPanel  {
 	private ArrayList<DShape> shapeList; // store current shapes
 	private Dimension size = new Dimension(700, 600);
 	private DShape selectedShape;
-	private int indexOfSelected;
-	private boolean foundSelected;
+	private int indexOfSelected = -1;
 	private Point mousePt;
 	private boolean isResizing;
 
@@ -34,10 +33,10 @@ public class Canvas extends JPanel  {
 		this.setPreferredSize(size);
 		addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent event) {
-				isResizing = false;
+				
 				// if don't set isResizing to false, it will affect all other behaviors, like
 				// dragging and selecting a shape
-
+				
 				Object source = event.getSource();
 				int x = event.getX();
 				int y = event.getY();
@@ -49,9 +48,14 @@ public class Canvas extends JPanel  {
 			public void mousePressed(MouseEvent event) {
 				mousePt = event.getPoint();
 				//System.out.printf("\n(%d, %d)", mousePt.x, mousePt.y);
-				if (selectedShape.isInKnobs(mousePt)) {
+				//mousePressed, if the pressedPoint is not in any shape, selected shape should not move
+				//now press a shape can set it to a selected shape, no need to click then move
+				setSelectedShape(mousePt.x,mousePt.y);
+				if (selectedShape != null && selectedShape.isInKnobs(mousePt)) {
+					
 					// in knobs... so resize;
-
+					//check this: indexOfSelected != -1, 
+					//otherwise, will have a null pointer exception
 					isResizing = true;
 				}
 			}
@@ -63,7 +67,8 @@ public class Canvas extends JPanel  {
 			}
 
 			public void mouseReleased(MouseEvent arg0) {
-
+				//moved isResizing to here, don't need to click to cancel behavior of resizing
+				isResizing = false;
 			}
 		});
 
@@ -73,7 +78,8 @@ public class Canvas extends JPanel  {
 				int dx = event.getX() - mousePt.x;
 				int dy = event.getY() - mousePt.y;
 
-				if (!isResizing) {
+				//make sure that selectedShape != null to avoid errors...
+				if (selectedShape != null && !isResizing) {
 					//System.out.println("dragging now ");
 					// not resizing, so moving the shape
 					if(!(selectedShape instanceof DLine))
@@ -96,7 +102,7 @@ public class Canvas extends JPanel  {
 						((DLineModel)(selectedShape.getDShapeModel())).setP2(point2);
 						mousePt = event.getPoint();
 					}
-				} else {
+				} else if(selectedShape != null && isResizing){
 					//System.out.println("resizing now ");
 					if(!(selectedShape instanceof DLine))
 					{
@@ -144,6 +150,7 @@ public class Canvas extends JPanel  {
 			Object[] value = {temp.getDShapeModel().getX(),temp.getDShapeModel().getY(),temp.getDShapeModel().getWidth(),temp.getDShapeModel().getHeight()};
 			InterfaceControl.tableValues.insertData(value);
 			shapeList.add(temp);
+			setNewAddedShapeSelected();
 			repaint();
 		}
 		else if (typeOfShape.equals("oval")) {
@@ -154,6 +161,7 @@ public class Canvas extends JPanel  {
 			Object[] value = {temp.getDShapeModel().getX(),temp.getDShapeModel().getY(),temp.getDShapeModel().getWidth(),temp.getDShapeModel().getHeight()};
 			InterfaceControl.tableValues.insertData(value);
 			shapeList.add(temp);
+			setNewAddedShapeSelected();
 			repaint();
 		}
 		else if(typeOfShape.equals("text")){
@@ -164,6 +172,7 @@ public class Canvas extends JPanel  {
 			Object[] value = {temp.getDShapeModel().getX(),temp.getDShapeModel().getY(),temp.getDShapeModel().getWidth(),temp.getDShapeModel().getHeight()};
 			InterfaceControl.tableValues.insertData(value);
 			shapeList.add(temp);
+			setNewAddedShapeSelected();
 			repaint();
 		}
 		else if(typeOfShape.equals("line")){
@@ -174,20 +183,33 @@ public class Canvas extends JPanel  {
 			Object[] value = {temp.getDShapeModel().getX(),temp.getDShapeModel().getY(),temp.getDShapeModel().getWidth(),temp.getDShapeModel().getHeight()};
 			InterfaceControl.tableValues.insertData(value);
 			shapeList.add(temp);
+			setNewAddedShapeSelected();
 			repaint();
 		}
 	}
 
+	public void setNewAddedShapeSelected()
+	{
+		if(indexOfSelected != -1)
+		{
+			//previously selected shape, set it to false(not selected)
+			shapeList.get(indexOfSelected).setIsSelected(false);
+		}
+		//a new index for currently new shape, which is also a selected shape
+		indexOfSelected = shapeList.size() - 1;
+		shapeList.get(indexOfSelected).setIsSelected(true);
+	}
+	
 	@Override
 	public String getName() {
 		return name;
 	}
 
-	public void setSelectedShape(int x, int y) {
-		int currIndex = shapeList.size() - 1;
-		foundSelected = false;
-		indexOfSelected = -1;
-		while (currIndex >= 0 && !foundSelected) {
+	public boolean setSelectedShape(int x, int y) {
+		//changed it to boolean to deal with clicked point or pressed point 
+		//that is not in any one of the shapes
+		int currIndex = shapeList.size() - 1;		
+		while (currIndex >= 0) {
 			// back to front, the first found(which is on top) is the selected shape
 			System.out.println("List size: " + shapeList.size());
 			DShape currShape = shapeList.get(currIndex);
@@ -205,24 +227,57 @@ public class Canvas extends JPanel  {
 					InterfaceControl.enableScriptChooserTextFields(true);
 					InterfaceControl.updateScriptChooserTextField(currentText, currentFont); // STATIC
 					//selectedShape.showKnobs();
-					foundSelected = true;
+					if(indexOfSelected != -1)
+					{
+						//previously, we had a selected shape.						
+						shapeList.get(indexOfSelected).setIsSelected(false);
+					}			
 					indexOfSelected = currIndex;
+					shapeList.get(indexOfSelected).setIsSelected(true);
+					repaint();
+					return true;
 				}
 				else{
 					InterfaceControl.enableScriptChooserTextFields(false);
 					selectedShape = currShape;
 					//selectedShape.showKnobs();
-					foundSelected = true;
+					if(indexOfSelected != -1)
+					{
+						//previously, we had a selected shape.
+						shapeList.get(indexOfSelected).setIsSelected(false);
+					}				
 					indexOfSelected = currIndex;
+					shapeList.get(indexOfSelected).setIsSelected(true);
+					repaint();		
+					return true;
 				}
 
-			}
-			else{
-				// hide all knobs
-			}
+			}			
 			currIndex--;
 		}
-		moveToFront(); // Move selected shape in front
+		//This time, the clicked point is not in any bounds of selected shape...
+		//so, set the selected shape to null.
+		if(indexOfSelected != -1)
+		{
+			//previously, we had a selected shape.
+			if(shapeList.get(indexOfSelected).isInKnobs(new Point(x, y)))
+			{
+				//the new clicked point is in knobs of previously selected shape,
+				//should not set previously selected shape to null. 
+				//should not change anything of previously selected shape
+				//didn't discuss this situation early, because click a knob should not select a shape
+				//return true because there is a selected shape, keep the previously selected shape
+				return true;
+			}
+			//not in any shapes or any knobs
+			shapeList.get(indexOfSelected).setIsSelected(false);
+		}		
+		indexOfSelected = -1;	
+		selectedShape = null;
+		repaint();		
+		return false;
+		//selected shape is not moved to front in teacher's jar file
+//		moveToFront(); // Move selected shape in front
 	}
 
 	public DShape getSelectedShape() {
@@ -230,7 +285,7 @@ public class Canvas extends JPanel  {
 	}
 
 	public void moveToFront() {
-		if (foundSelected) {
+		if (selectedShape != null) {
 			System.out.printf("Moving a shape at index %d in front", indexOfSelected);
 			shapeList.remove(indexOfSelected);
 			shapeList.add(getSelectedShape());
@@ -240,7 +295,7 @@ public class Canvas extends JPanel  {
 	}
 
 	public void moveToBack() {
-		if (foundSelected) {
+		if (selectedShape != null) {
 			System.out.printf("Moving a shape at index %d in the back", indexOfSelected);
 			shapeList.remove(indexOfSelected);
 			shapeList.add(0, getSelectedShape());

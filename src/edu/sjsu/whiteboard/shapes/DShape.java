@@ -21,6 +21,7 @@ public abstract class DShape implements ModelListener {
 	private int clickedKnobIndex;
 	private Knob anchorKnob;
 	private int anchorKnobIndex;
+	private boolean isSelected = false;
 	
 	public DShape()
 	{
@@ -102,6 +103,7 @@ public abstract class DShape implements ModelListener {
 	
 	public void drawKnobs(Graphics g)
 	{
+		//draw knobs of one shape
 		setKnobs();
 		//System.out.println("draw knobs now");
 		for(int i = 0; i < knobs.size(); i++)
@@ -183,6 +185,15 @@ public abstract class DShape implements ModelListener {
 		}
 	}
 	
+	public void setIsSelected(boolean isSelected)
+	{
+		this.isSelected = isSelected;
+	}
+	
+	public boolean getIsSelected()
+	{
+		return isSelected;
+	}
 //	public Knob getClickedKnob()
 //	{
 //		return clickedKnob;
