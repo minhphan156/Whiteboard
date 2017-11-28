@@ -90,9 +90,9 @@ public class DText extends DShape {
         int finalSize = (int)size; // Convert double to float
         Font finalFont = new Font(textModel.getFontNameModel(),Font.PLAIN,finalSize);
 
-
-        System.out.print("\nFont size computed: "+finalFont.getSize());
-        System.out.print("\nFont name of finalFont: "+finalFont.getName());
+        // Comments for debugging
+        //System.out.print("\nFont size computed: "+finalFont.getSize());
+        //System.out.print("\nFont name of finalFont: "+finalFont.getName());
 
         return finalFont;
     }

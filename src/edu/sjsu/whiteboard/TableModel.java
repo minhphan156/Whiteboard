@@ -14,7 +14,7 @@ public class TableModel extends AbstractTableModel {
 
     private String[] columnNames = { "X", "Y", "Width", "Height" };
     private Object[][] values = {};
-    private static Vector data = new Vector();
+    private Vector data = new Vector();
 
 
     public TableModel(){
@@ -58,7 +58,7 @@ public class TableModel extends AbstractTableModel {
 
     public void insertData(Object[] values){
         data.add(new Vector());
-        for(int i =0; i<values.length; i++){
+        for(int i = 0; i<values.length; i++){
             ((Vector) data.get(data.size()-1)).add(values[i]);
         }
         fireTableDataChanged();

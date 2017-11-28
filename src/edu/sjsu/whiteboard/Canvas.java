@@ -33,7 +33,6 @@ public class Canvas extends JPanel  {
 		this.setPreferredSize(size);
 		addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent event) {
-				
 				// if don't set isResizing to false, it will affect all other behaviors, like
 				// dragging and selecting a shape
 				
@@ -52,9 +51,6 @@ public class Canvas extends JPanel  {
 				//now press a shape can set it to a selected shape, no need to click then move
 				setSelectedShape(mousePt.x,mousePt.y);
 				if (selectedShape != null && selectedShape.isInKnobs(mousePt)) {
-					
-					// in knobs... so resize;
-					//check this: indexOfSelected != -1, 
 					//otherwise, will have a null pointer exception
 					isResizing = true;
 				}
@@ -116,7 +112,7 @@ public class Canvas extends JPanel  {
 					}
 					else
 					{
-						//after calculating infor about resizing, 
+						//after calculating infor about resizing,
 						//1stPoint.x 1stPoint.y 2ndPoint.x 2ndPoint.y in newShapeInfo[]
 						int[] newShapeInfo = selectedShape.resize(dx, dy);
 						((DLineModel)(selectedShape.getDShapeModel())).setP1(new Point(newShapeInfo[0],newShapeInfo[1]));
@@ -199,16 +195,16 @@ public class Canvas extends JPanel  {
 		indexOfSelected = shapeList.size() - 1;
 		shapeList.get(indexOfSelected).setIsSelected(true);
 	}
-	
+
 	@Override
 	public String getName() {
 		return name;
 	}
 
 	public boolean setSelectedShape(int x, int y) {
-		//changed it to boolean to deal with clicked point or pressed point 
+		//changed it to boolean to deal with clicked point or pressed point
 		//that is not in any one of the shapes
-		int currIndex = shapeList.size() - 1;		
+		int currIndex = shapeList.size() - 1;
 		while (currIndex >= 0) {
 			// back to front, the first found(which is on top) is the selected shape
 			System.out.println("List size: " + shapeList.size());
@@ -229,9 +225,9 @@ public class Canvas extends JPanel  {
 					//selectedShape.showKnobs();
 					if(indexOfSelected != -1)
 					{
-						//previously, we had a selected shape.						
+						//previously, we had a selected shape.
 						shapeList.get(indexOfSelected).setIsSelected(false);
-					}			
+					}
 					indexOfSelected = currIndex;
 					shapeList.get(indexOfSelected).setIsSelected(true);
 					repaint();
@@ -245,14 +241,14 @@ public class Canvas extends JPanel  {
 					{
 						//previously, we had a selected shape.
 						shapeList.get(indexOfSelected).setIsSelected(false);
-					}				
+					}
 					indexOfSelected = currIndex;
 					shapeList.get(indexOfSelected).setIsSelected(true);
-					repaint();		
+					repaint();
 					return true;
 				}
 
-			}			
+			}
 			currIndex--;
 		}
 		//This time, the clicked point is not in any bounds of selected shape...
@@ -263,7 +259,7 @@ public class Canvas extends JPanel  {
 			if(shapeList.get(indexOfSelected).isInKnobs(new Point(x, y)))
 			{
 				//the new clicked point is in knobs of previously selected shape,
-				//should not set previously selected shape to null. 
+				//should not set previously selected shape to null.
 				//should not change anything of previously selected shape
 				//didn't discuss this situation early, because click a knob should not select a shape
 				//return true because there is a selected shape, keep the previously selected shape
@@ -271,10 +267,10 @@ public class Canvas extends JPanel  {
 			}
 			//not in any shapes or any knobs
 			shapeList.get(indexOfSelected).setIsSelected(false);
-		}		
-		indexOfSelected = -1;	
+		}
+		indexOfSelected = -1;
 		selectedShape = null;
-		repaint();		
+		repaint();
 		return false;
 		//selected shape is not moved to front in teacher's jar file
 //		moveToFront(); // Move selected shape in front
