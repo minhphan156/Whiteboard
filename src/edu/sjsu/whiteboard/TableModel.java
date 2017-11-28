@@ -5,6 +5,8 @@ import javafx.scene.control.Tab;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Vector;
 
 /**
@@ -13,13 +15,14 @@ import java.util.Vector;
 public class TableModel extends AbstractTableModel {
 
     private String[] columnNames = { "X", "Y", "Width", "Height" };
-    private Object[][] values = {};
     private Vector data = new Vector();
-
 
     public TableModel(){
     }
 
+    public TableModel getTableModel(){
+        return this;
+    }
 
 
     @Override
@@ -45,11 +48,14 @@ public class TableModel extends AbstractTableModel {
     }
 
     public void moveToFront(int row){
-
+        Collections.swap(data,row,getRowCount()-1);
+        fireTableDataChanged();
     }
     public void moveToBack(int row){
-
+        Collections.swap(data,row,0);
+        fireTableDataChanged();
     }
+
 
     public void setValueAt(Object value, int row, int col){
         ((Vector) data.get(row)).setElementAt(value, col);
@@ -62,7 +68,6 @@ public class TableModel extends AbstractTableModel {
             ((Vector) data.get(data.size()-1)).add(values[i]);
         }
         fireTableDataChanged();
-        System.out.print("ACCESSED");
     }
 
     public void removeRow(int row){

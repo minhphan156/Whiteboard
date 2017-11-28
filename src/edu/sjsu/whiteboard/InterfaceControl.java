@@ -27,7 +27,11 @@ public class InterfaceControl extends JPanel {
     private static JComboBox scriptChooser; // STATIC Combo Box filled with String array of system fonts
     private static JTextField textField; // STATIC Text field to get user input for text
     private Canvas canvas; // pointer
-    public static TableModel tableValues = new TableModel();
+    private static TableModel tableValues = new TableModel();
+
+    public static TableModel getICtable(){
+        return tableValues;
+    }
 
 
     public InterfaceControl(Controller controller, Canvas canvas){

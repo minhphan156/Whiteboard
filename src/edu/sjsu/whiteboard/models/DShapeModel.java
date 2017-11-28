@@ -18,7 +18,6 @@ public abstract class DShapeModel {
 	private Rectangle2D bounds;
 	private Color color;
     private ArrayList<ModelListener> listOfListeners = new ArrayList<>();
-	private TableModel myTableModel = new TableModel();
 
     public DShapeModel()
 	{
