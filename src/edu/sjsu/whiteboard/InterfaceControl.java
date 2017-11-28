@@ -157,7 +157,6 @@ public class InterfaceControl extends JPanel {
 
 
         JTable table = new JTable(tableValues);
-
         verticalBoxMain.add(shapesHorizontalBox);
         verticalBoxMain.add(setColorHorizontalBox);
         verticalBoxMain.add(textHBox);

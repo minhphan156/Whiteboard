@@ -23,9 +23,11 @@ public class Canvas extends JPanel  {
 	private Dimension size = new Dimension(700, 600);
 	private DShape selectedShape;
 	private int indexOfSelected;
+	private int selectedShapeIndex;
 	private boolean foundSelected;
 	private Point mousePt;
 	private boolean isResizing;
+
 
 	public Canvas(Controller controller) {
 		this.controller = controller;
@@ -81,8 +83,8 @@ public class Canvas extends JPanel  {
 						selectedShape.getDShapeModel().setX(selectedShape.getDShapeModel().getX() + dx);
 						selectedShape.getDShapeModel().setY(selectedShape.getDShapeModel().getY() + dy);
 						mousePt = event.getPoint();
-						InterfaceControl.tableValues.setValueAt(selectedShape.getDShapeModel().getX() + dx,indexOfSelected,0);
-						InterfaceControl.tableValues.setValueAt(selectedShape.getDShapeModel().getY() + dy,indexOfSelected,1);
+						InterfaceControl.tableValues.setValueAt(selectedShape.getDShapeModel().getX() + dx,selectedShapeIndex,0); // Modify X value in the table
+						InterfaceControl.tableValues.setValueAt(selectedShape.getDShapeModel().getY() + dy,selectedShapeIndex,1); // Modify Y value in the table
 					}
 					else
 					{
@@ -105,8 +107,8 @@ public class Canvas extends JPanel  {
 						selectedShape.getDShapeModel().setBounds(newShapeInfo[0], newShapeInfo[1], newShapeInfo[2],
 								newShapeInfo[3]);
 						mousePt = event.getPoint(); //always need to update
-						InterfaceControl.tableValues.setValueAt(selectedShape.getDShapeModel().getWidth(),indexOfSelected,2); // Width
-						InterfaceControl.tableValues.setValueAt(newShapeInfo[3],indexOfSelected,3); // Height
+						InterfaceControl.tableValues.setValueAt(newShapeInfo[2],selectedShapeIndex,2); // Width
+						InterfaceControl.tableValues.setValueAt(newShapeInfo[3],selectedShapeIndex,3); // Height
 					}
 					else
 					{
@@ -206,6 +208,7 @@ public class Canvas extends JPanel  {
 					InterfaceControl.updateScriptChooserTextField(currentText, currentFont); // STATIC
 					//selectedShape.showKnobs();
 					foundSelected = true;
+					selectedShapeIndex = currIndex;
 					indexOfSelected = currIndex;
 				}
 				else{
@@ -213,6 +216,7 @@ public class Canvas extends JPanel  {
 					selectedShape = currShape;
 					//selectedShape.showKnobs();
 					foundSelected = true;
+					selectedShapeIndex = currIndex;
 					indexOfSelected = currIndex;
 				}
 
@@ -222,7 +226,6 @@ public class Canvas extends JPanel  {
 			}
 			currIndex--;
 		}
-		moveToFront(); // Move selected shape in front
 	}
 
 	public DShape getSelectedShape() {
@@ -234,7 +237,6 @@ public class Canvas extends JPanel  {
 			System.out.printf("Moving a shape at index %d in front", indexOfSelected);
 			shapeList.remove(indexOfSelected);
 			shapeList.add(getSelectedShape());
-			//indexOfSelected = shapeList.size() - 1;
 			repaint();
 		}
 	}
@@ -244,7 +246,6 @@ public class Canvas extends JPanel  {
 			System.out.printf("Moving a shape at index %d in the back", indexOfSelected);
 			shapeList.remove(indexOfSelected);
 			shapeList.add(0, getSelectedShape());
-			indexOfSelected = 0;
 			repaint();
 		}
 	}
