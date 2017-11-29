@@ -1,14 +1,17 @@
 package edu.sjsu.whiteboard.models;
 
-
-import edu.sjsu.whiteboard.InterfaceControl;
 import edu.sjsu.whiteboard.ModelListener;
-import edu.sjsu.whiteboard.TableModel;
-
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+/**
+ * @author Danil Kolesnikov danil.kolesnikov@sjsu.edu
+ * @author Minh Phan minh.phan@sjsu.edu
+ * @author Yulan Jin yulan.jin@sjsu.edu
+ * CS 151 Term Project - Whiteboard
+ */
 
 public abstract class DShapeModel {
 	private int x;
@@ -24,8 +27,6 @@ public abstract class DShapeModel {
 
 		x = 10;
 		y = 10;
-//		x = (int)(Math.random() * 400); // set initial size for the shape
-//		y = (int)(Math.random() * 400);// set initial size for the shape
 		width = 20;// set initial size for the shape
 		height = 20;// set initial size for the shape
 

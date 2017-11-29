@@ -4,8 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
+
+/**
+ * @author Danil Kolesnikov danil.kolesnikov@sjsu.edu
+ * @author Minh Phan minh.phan@sjsu.edu
+ * @author Yulan Jin yulan.jin@sjsu.edu
+ * CS 151 Term Project - Whiteboard
+ */
+
+// Knob shape
 
 public class Knob {
 	private Point centralPoint;
@@ -15,7 +22,6 @@ public class Knob {
 	private int sideLength;
 
 	public Knob() {
-
 	}
 
 	//each knob is based on the central point, which is the corner point of the bound of a shape

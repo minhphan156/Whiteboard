@@ -1,38 +1,41 @@
 package edu.sjsu.whiteboard;
 
 import edu.sjsu.whiteboard.models.*;
-import sun.font.FontAccess;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import static javax.swing.Action.MNEMONIC_KEY;
-import static javax.swing.Action.SMALL_ICON;
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
-
+/**
+ * @author Danil Kolesnikov danil.kolesnikov@sjsu.edu
+ * @author Minh Phan minh.phan@sjsu.edu
+ * @author Yulan Jin yulan.jin@sjsu.edu
+ * CS 151 Term Project - Whiteboard
+ */
 
 /**
- * Created by danil on 11/11/17.
+ * InterfaceControl class handles user's input and the UI elements on the left part of the JFrame
  */
+
 public class InterfaceControl extends JPanel {
 
     private String name = "interfacecontrol";
     private Controller controller;
     private Dimension size = new Dimension(400,400);
+    private Canvas canvas; // pointer
     private static JComboBox scriptChooser; // STATIC Combo Box filled with String array of system fonts
     private static JTextField textField; // STATIC Text field to get user input for text
-    private Canvas canvas; // pointer
     private static TableModel tableValues = new TableModel();
-
     public static TableModel getICtable(){
         return tableValues;
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
 
     public InterfaceControl(Controller controller, Canvas canvas){
         this.canvas = canvas;
@@ -60,12 +63,12 @@ public class InterfaceControl extends JPanel {
         setShapesColor.setFont(interfaceControlFont);
 
         JButton setColor = new JButton("Set Color"); // Creates set Color Buttonn
-        JButton colorButton = new JButton(""); // Create an empty button that serves as selected color display
-        Dimension colorButtonSize = new Dimension(1,1);
-        colorButton.setSize(colorButtonSize); // Size of the button
-        colorButton.setBackground(Color.GRAY); // Initially colorButton will display Gray color
-        colorButton.setOpaque(true);
-        colorButton.setBorderPainted(false);
+//        JButton colorButton = new JButton(""); // Create an empty button that serves as selected color display
+//        Dimension colorButtonSize = new Dimension(1,1);
+//        colorButton.setSize(colorButtonSize); // Size of the button
+//        colorButton.setBackground(Color.GRAY); // Initially colorButton will display Gray color
+//        colorButton.setOpaque(true);
+//        colorButton.setBorderPainted(false);
 
         ActionListener actionListener = new ActionListener() { // Listener for colorButton
             public void actionPerformed(ActionEvent actionEvent) {
@@ -76,15 +79,15 @@ public class InterfaceControl extends JPanel {
                     canvas.revalidate();
                     canvas.repaint();
                 }
-                colorButton.setBackground(color);
-                colorButton.setOpaque(true);
-                colorButton.setBorderPainted(false);
+//                colorButton.setBackground(color);
+//                colorButton.setOpaque(true);
+//                colorButton.setBorderPainted(false);
             }
         };
         setColor.addActionListener(actionListener);
         setColorHorizontalBox.add(setShapesColor);
         setColorHorizontalBox.add(setColor); // Add setColor button to horizontal box setColorHorizontalBox
-        setColorHorizontalBox.add(colorButton); // Add setColor button to horizontal box setColorHorizontalBox
+        //setColorHorizontalBox.add(colorButton); // Add setColor button to horizontal box setColorHorizontalBox
 
         Box textHBox = Box.createHorizontalBox(); // Horizontal box that contains Text Field and Font chooser
         textField = new JTextField("");
@@ -93,6 +96,7 @@ public class InterfaceControl extends JPanel {
         textField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
+                // Update the text of the chosen shape in real life
                 canvas.updateText(textField.getText());
                 canvas.revalidate();
                 canvas.repaint();
@@ -100,6 +104,7 @@ public class InterfaceControl extends JPanel {
 
             @Override
             public void removeUpdate(DocumentEvent e) {
+                // Update the text of the chosen shape in real life
                 canvas.updateText(textField.getText());
                 canvas.revalidate();
                 canvas.repaint();
@@ -112,7 +117,7 @@ public class InterfaceControl extends JPanel {
         });
 
         JLabel editText = new JLabel(" Edit text: ");
-        editText.setFont(interfaceControlFont);
+        editText.setFont(interfaceControlFont); //
         String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames(); // Gets all system fonts
         scriptChooser = new JComboBox(fonts);
         scriptChooser.addActionListener (new ActionListener () { // Listener for change in font selection
@@ -123,14 +128,14 @@ public class InterfaceControl extends JPanel {
                 canvas.repaint();
             }
         });
-        textHBox.add(editText);
+        textHBox.add(editText); // Add prompt text to the textHBox
         textHBox.add(textField); // Adds textField object to horizontal box textHBox
         textHBox.add(scriptChooser); // Adds Font chooser object to horizontal box textHBox
-        scriptChooser.setEnabled(false); // Initially we
+        scriptChooser.setEnabled(false); // Initially  disable set text controls
         textField.setEnabled(false);
 
-
-        Box toolsHBox = Box.createHorizontalBox(); // Horizontal box contains following buttons: Move to Front, Move to Back, Remove shape
+        // Horizontal box contains following buttons: Move to Front, Move to Back, Remove shape
+        Box toolsHBox = Box.createHorizontalBox();
         JButton moveToFront = new JButton("Move to Front");
         JButton moveToBack = new JButton("Move to Back");
         JButton removeShape = new JButton("Remove Shape");
@@ -159,8 +164,8 @@ public class InterfaceControl extends JPanel {
             }
         });
 
-
-        JTable table = new JTable(tableValues);
+        JTable table = new JTable(tableValues); // Initialize table mode
+        // Add all horizontal boxes in the main vertical box
         verticalBoxMain.add(shapesHorizontalBox);
         verticalBoxMain.add(setColorHorizontalBox);
         verticalBoxMain.add(textHBox);
@@ -168,9 +173,11 @@ public class InterfaceControl extends JPanel {
         verticalBoxMain.add(table.getTableHeader());
         verticalBoxMain.add(table);
 
-        for (Component comp : verticalBoxMain.getComponents()) { ((JComponent)comp).setAlignmentX(Box.LEFT_ALIGNMENT);
+        // Align all components of the main box to the left
+        for (Component comp : verticalBoxMain.getComponents()) {
+            ((JComponent)comp).setAlignmentX(Box.LEFT_ALIGNMENT);
         }
-        this.add(verticalBoxMain);
+        this.add(verticalBoxMain); // add the vertical box to self
 
         //listener for Rect JButton
         rect.addActionListener(new ActionListener(){
@@ -195,6 +202,7 @@ public class InterfaceControl extends JPanel {
                 draw("text");
             }
         });
+        // Listener for Line button
         line.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -204,6 +212,7 @@ public class InterfaceControl extends JPanel {
 
     }
 
+    // Draw function that calls controller -> MVC patters
     public void draw(String type){
         if(type.equals("oval")){
             DShapeModel temp = new DOvalModel();
@@ -215,34 +224,29 @@ public class InterfaceControl extends JPanel {
         }
         else if(type.equals("text")){
             DShapeModel temp = new DTextModel();
-            controller.getdShapeModels().add(temp);
+            controller.getdShapeModels().add(temp); // Creates new DTextModel in the ArrayList of DShapeModel in Controller class
         }
         else if(type.equals("line")){
             DShapeModel temp = new DLineModel();
-            controller.getdShapeModels().add(temp);
+            controller.getdShapeModels().add(temp); // Creates new DLineModel in the ArrayList of DShapeModel in Controller class
         }
 
         int indexOfNewShape = controller.getdShapeModels().size()- 1; //index of new DShapeModel in arraylist of DShapeModel in Controller
-
         Canvas canvasReference = (Canvas)controller.getWhiteboard().getComponentAt("canvas");
-        (canvasReference).addShape(controller.getdShapeModels().get(indexOfNewShape), type);
+        (canvasReference).addShape(controller.getdShapeModels().get(indexOfNewShape), type); // add the shape
         (canvasReference).repaint();
     }
 
-    @Override
-    public String getName() {
-        return name;
-    }
-
+    // Static method to enable/disable text controls. Called from canvas class
     public static void enableScriptChooserTextFields(Boolean bool){
         scriptChooser.setEnabled(bool);
         textField.setEnabled(bool);
     }
 
+    // Static method that updates the content of JTextField and Font chooser from canvas class
     public static void updateScriptChooserTextField(String str, String font) {
-        textField.setText(str);
-        System.out.print("Font name in the function: "+font);
-        scriptChooser.getModel().setSelectedItem(font);
+        textField.setText(str); // set the text
+        scriptChooser.getModel().setSelectedItem(font); // Scriptchooser
     }
 
 }

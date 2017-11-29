@@ -5,11 +5,15 @@ package edu.sjsu.whiteboard.shapes;
 import edu.sjsu.whiteboard.*;
 import edu.sjsu.whiteboard.Canvas;
 import edu.sjsu.whiteboard.models.DShapeModel;
-
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Iterator;
+
+/**
+ * @author Danil Kolesnikov danil.kolesnikov@sjsu.edu
+ * @author Minh Phan minh.phan@sjsu.edu
+ * @author Yulan Jin yulan.jin@sjsu.edu
+ * CS 151 Term Project - Whiteboard
+ */
 
 public abstract class DShape implements ModelListener {
 	private DShapeModel pointerToDShapeModel;// hold the reference to DRectModel to get data for painting

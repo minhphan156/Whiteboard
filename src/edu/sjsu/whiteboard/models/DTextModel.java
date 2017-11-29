@@ -1,16 +1,17 @@
 package edu.sjsu.whiteboard.models;
 
 import edu.sjsu.whiteboard.ModelListener;
-import edu.sjsu.whiteboard.shapes.DText;
-
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
- * Created by danil on 11/11/17.
+ * @author Danil Kolesnikov danil.kolesnikov@sjsu.edu
+ * @author Minh Phan minh.phan@sjsu.edu
+ * @author Yulan Jin yulan.jin@sjsu.edu
+ * CS 151 Term Project - Whiteboard
  */
+
 public class DTextModel extends DShapeModel {
     private int x;
     private int y;
@@ -21,10 +22,10 @@ public class DTextModel extends DShapeModel {
 
     private String text = "Hello"; // Initially
     private String fontNameModel = "Dialog"; // Initially
-    private Font font = new Font(fontNameModel,Font.PLAIN,1);
+    private Font font = new Font(fontNameModel,Font.PLAIN,10);
 
     public DTextModel(){
-        setBounds(10,10,60,20);
+        setBounds(10,10,50,20);
     }
 
 

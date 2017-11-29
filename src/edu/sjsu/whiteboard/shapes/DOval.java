@@ -6,8 +6,12 @@ import edu.sjsu.whiteboard.models.DShapeModel;
 import java.awt.*;
 
 /**
- * Created by danil on 11/11/17.
+ * @author Danil Kolesnikov danil.kolesnikov@sjsu.edu
+ * @author Minh Phan minh.phan@sjsu.edu
+ * @author Yulan Jin yulan.jin@sjsu.edu
+ * CS 151 Term Project - Whiteboard
  */
+
 public class DOval extends DShape {
    // private DShapeModel pointerToDShapeModel; // hold the reference to DRectModel to get data for painting
     public DOval(){

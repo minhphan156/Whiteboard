@@ -1,17 +1,20 @@
 package edu.sjsu.whiteboard;
 
-import edu.sjsu.whiteboard.models.DShapeModel;
-import javafx.scene.control.Tab;
-
 import javax.swing.table.AbstractTableModel;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Vector;
 
 /**
- * Created by danil on 11/27/17.
+ * @author Danil Kolesnikov danil.kolesnikov@sjsu.edu
+ * @author Minh Phan minh.phan@sjsu.edu
+ * @author Yulan Jin yulan.jin@sjsu.edu
+ * CS 151 Term Project - Whiteboard
  */
+
+/**
+ * TableModel class contains all the necessary methods for whiteboard table. Uses Vector class for data storage
+ */
+
 public class TableModel extends AbstractTableModel {
 
     private String[] columnNames = { "X", "Y", "Width", "Height" };
@@ -72,6 +75,11 @@ public class TableModel extends AbstractTableModel {
 
     public void removeRow(int row){
         data.removeElementAt(row);
+        fireTableDataChanged();
+    }
+
+    public void clear(){
+        data.clear();
         fireTableDataChanged();
     }
 
