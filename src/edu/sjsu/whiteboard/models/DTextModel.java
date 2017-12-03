@@ -54,4 +54,15 @@ public class DTextModel extends DShapeModel {
         this.font = font;
     }
 
+    @Override
+    public void mimic (DShapeModel other) {
+        this.setBounds(other.getX(),other.getY(),other.getWidth(),other.getHeight());
+        this.setText(((DTextModel)other).getText());
+        this.setFontNameModel(((DTextModel)other).getFontNameModel());
+        this.setFont(((DTextModel)other).getFont());
+        this.setColor(((DTextModel)other).getColor());
+        this.setHeight(((DTextModel)other).getHeight());
+        this.setWidth(((DTextModel)other).getWidth());
+
+    }
 }

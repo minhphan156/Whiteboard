@@ -77,5 +77,11 @@ public class DLineModel extends DShapeModel {
         }
         super.setBounds(minX, minY, Math.abs(this.p1.x - this.p2.x), Math.abs(this.p1.y - this.p2.y));
     }
+    @Override
+    public void mimic (DShapeModel other) {
+        this.setP1(((DLineModel)other).getP1());
+        this.setP2(((DLineModel)other).getP2());
+        this.setColor(((DLineModel)other).getColor());
 
-}
+    }
+    }

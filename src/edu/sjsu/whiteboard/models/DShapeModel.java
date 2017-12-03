@@ -14,6 +14,8 @@ import java.util.Iterator;
  */
 
 public abstract class DShapeModel {
+	private static int countOfObject = 0;
+	private int id;
 	private int x;
 	private int y;
 	private int width;
@@ -23,8 +25,11 @@ public abstract class DShapeModel {
     private ArrayList<ModelListener> listOfListeners = new ArrayList<>();
 
     public DShapeModel()
-	{
 
+	{
+		System.out.println("we creating objects !!!!!!!!!!!!");
+		countOfObject++;
+		id = 0;
 		x = 10;
 		y = 10;
 		width = 20;// set initial size for the shape
@@ -33,7 +38,19 @@ public abstract class DShapeModel {
 		bounds = new Rectangle2D.Double(x, y, width, height);
         color = Color.GRAY;
     }
-	
+
+	public static int getCountOfObject() {
+		return countOfObject;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getId() {
+		return id;
+	}
+
 	public void setBounds(int x, int y, int width, int height)
 	{
 		this.x = x;
@@ -113,7 +130,7 @@ public abstract class DShapeModel {
 	}
 
 	public String toString(){
-		return  x + "x--" + y + "y--" + width + "width--" + height + "height";
+		return  x + "x--" + y + "y--" + width + "width--" + height + "height--"+ id + "id--";
 	}
 
     public boolean containsInBound(int x, int y)
@@ -128,5 +145,23 @@ public abstract class DShapeModel {
             return false;
         }
     }
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+
+	public void mimic (DShapeModel other){
+		this.setBounds(other.getX(),other.getY(),other.getWidth(),other.getHeight());
+		this.setX(other.getX());
+		this.setY(other.getY());
+		this.setHeight(other.getHeight());
+		this.setWidth(other.getWidth());
+		this.setColor(other.getColor());
+	}
 
 }
