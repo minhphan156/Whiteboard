@@ -27,7 +27,7 @@ public abstract class DShapeModel {
     public DShapeModel()
 
 	{
-		System.out.println("we creating objects !!!!!!!!!!!!");
+		//System.out.println("we creating objects !!!!!!!!!!!!");
 		countOfObject++;
 		id = 0;
 		x = 10;

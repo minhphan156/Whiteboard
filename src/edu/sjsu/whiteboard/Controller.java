@@ -23,7 +23,7 @@ import java.util.Iterator;
 
 public class Controller {
     private Whiteboard whiteboard;
-   // private Whiteboard whiteboard2; // For networking
+    // private Whiteboard whiteboard2; // For networking
     private ClientHandler clientHandler;
     private ServerAccepter serverAccepter;
     private java.util.List<ObjectOutputStream> outputs =
@@ -43,9 +43,9 @@ public class Controller {
 
         Controller controllerClient = new Controller();
 
-        controllerServer.doServer();
+        // controllerServer.doServer();
 
-        controllerClient.doClient();
+        // controllerClient.doClient();
     }
 
     public void deleteModel(int index){
@@ -114,7 +114,7 @@ public class Controller {
                 while (true) {
                     // Get the xml string, decode to a Message object.
                     // Blocks in readObject(), waiting for server to send something.
-                   // String verb = (String) in.readObject(); // **************************receive from Server
+                    // String verb = (String) in.readObject(); // **************************receive from Server
                     String xmlString = (String) in.readObject();
 
                     //this part debug from xmlString to message object
@@ -122,12 +122,12 @@ public class Controller {
 
                     String command = (String) decoder.readObject();
                     DShapeModel tempDShapeModel = (DShapeModel) decoder.readObject();
-                    Integer indexOfSelected = (Integer) decoder.readObject();
+                    //Integer indexOfSelected = (Integer) decoder.readObject();
 
                     System.out.println("client read: " + command); //client read xml string on console
                     System.out.println("client read: " + tempDShapeModel); //client read xml string on console
-                    System.out.println("client read: " + indexOfSelected); //client read xml string on console
-
+//                    System.out.println("client read: " + indexOfSelected); //client read xml string on console
+                    whiteboard.getCanvas().setSelectedShape2(tempDShapeModel);
 
                     if(command.equals("add")) {
                         if (tempDShapeModel instanceof DRectModel) {
@@ -144,14 +144,14 @@ public class Controller {
                     }
 
                     else if (command.equals("remove")){
-                        Iterator<DShapeModel> itr = dShapeModels.iterator();
-
-                        while (itr.hasNext()){
-                            DShapeModel tempDSModel = itr.next();
-                            if( tempDSModel.getId() == tempDShapeModel.getId()){
-                                whiteboard.getCanvas().setSelectedShape2(tempDSModel);
-                            }
-                        }
+//                        Iterator<DShapeModel> itr = dShapeModels.iterator();
+//
+//                        while (itr.hasNext()){
+//                            DShapeModel tempDSModel = itr.next();
+//                            if( tempDSModel.getId() == tempDShapeModel.getId()){
+//                                whiteboard.getCanvas().setSelectedShape2(tempDSModel);
+//                            }
+//                        }
                         whiteboard.getCanvas().deleteShape();
                     }
                     else if (command.equals("front")){
@@ -162,33 +162,38 @@ public class Controller {
                     else if (command.equals("back")){
 
                         //whiteboard.getCanvas().setSelectedShape(tempDShapeModel.getX(),tempDShapeModel.getY());
-                        Iterator<DShapeModel> itr = dShapeModels.iterator();
-
-                        while (itr.hasNext()){
-                            DShapeModel tempDSModel = itr.next();
-                            if( tempDSModel.getId() == tempDShapeModel.getId()){
-                                whiteboard.getCanvas().setSelectedShape2(tempDSModel);
-                            }
-                        }
+//                        Iterator<DShapeModel> itr = dShapeModels.iterator();
+//
+//                        while (itr.hasNext()){
+//                            DShapeModel tempDSModel = itr.next();
+//                            if( tempDSModel.getId() == tempDShapeModel.getId()){
+//                                whiteboard.getCanvas().setSelectedShape2(tempDSModel);
+//                            }
+//                        }
 
                         whiteboard.getCanvas().moveToBack();
 
                     }
                     else if (command.equals("change")){
-                       // whiteboard.getCanvas().setSelectedShape(tempDShapeModel.getX(),tempDShapeModel.getY());
+                        whiteboard.getCanvas().getSelectedShape().getDShapeModel().mimic(tempDShapeModel);
+                        // whiteboard.getCanvas().setSelectedShape(tempDShapeModel.getX(),tempDShapeModel.getY());
 
-                       // tempDShapeModel.getId();
+                        // tempDShapeModel.getId();
+//
+//                      DShapeModel tempDSModel = itr.next();
+//                     if( tempDSModel.getId() == tempDShapeModel.getId()){
+//                         tempDSModel.mimic(tempDShapeModel);
+//                     }
+//                        Iterator<DShapeModel> itr = dShapeModels.iterator();
+//
+//                        while (itr.hasNext()){
+//                            DShapeModel tempDSModel = itr.next();
+//                           if( tempDSModel.getId() == tempDShapeModel.getId()){
+//                               tempDSModel.mimic(tempDShapeModel);
+//                           }
+//                        }
 
-                        Iterator<DShapeModel> itr = dShapeModels.iterator();
-
-                        while (itr.hasNext()){
-                            DShapeModel tempDSModel = itr.next();
-                           if( tempDSModel.getId() == tempDShapeModel.getId()){
-                               tempDSModel.mimic(tempDShapeModel);
-                           }
-                        }
-
-                       // System.out.println("tempDshapeModel data: "+tempDShapeModel);
+                        // System.out.println("tempDshapeModel data: "+tempDShapeModel);
 
                         //whiteboard.getCanvas().setIndexOfSelected(indexOfSelected);
 
@@ -203,7 +208,7 @@ public class Controller {
                         // current.mimic(passed)
                         //tempDShape.getDShapeModel().mimic(tempDShapeModel);
 
-                      //  System.out.println("new tempDShape data: "+tempDShapeModel);
+                        //  System.out.println("new tempDShape data: "+tempDShapeModel);
 
 
 
@@ -212,7 +217,7 @@ public class Controller {
 
                     // Message message = (Message) decoder.readObject();
 
-                   // invokeToGUI(message);
+                    // invokeToGUI(message);
                 }
             }
             catch (Exception ex) { // IOException and ClassNotFoundException
@@ -227,44 +232,44 @@ public class Controller {
     // Starts the sever accepter to catch incoming client connections.
     // Wired to Server button.
     public void doServer() {
-     //   status.setText("Start server");
+        //   status.setText("Start server");
         //TODO fix to take below instead after done
 
-        //String result = JOptionPane.showInputDialog("Enter ip and port number you want to use (default is 39587):", "39587");
+        String result = JOptionPane.showInputDialog("Enter ip and port number you want to use (default is 39587):", "39587");
         //TODO fix to take below instead after done
 
-        //if (result!=null) {
+        if (result!=null) {
             System.out.println("server: start");
             //TODO fix to take below instead after done
-            //serverAccepter = new ServerAccepter(Integer.parseInt(result.trim()));
-            serverAccepter = new ServerAccepter(39587);
+            serverAccepter = new ServerAccepter(Integer.parseInt(result.trim()));
+            //serverAccepter = new ServerAccepter(39587);
             serverAccepter.start();
-        //TODO fix to take below instead after done
+            //TODO fix to take below instead after done
 
-        // }
+        }
     }
 
     // Runs a client handler to connect to a server.
     // Wired to Client button.
     public void doClient() {
-       // status.setText("Start client");
+        // status.setText("Start client");
         //TODO fix to take below instead after done
 
-        // String result = JOptionPane.showInputDialog("Enter ip and port number you want to use (default is 39587):", "127.0.0.1:39587");
+        String result = JOptionPane.showInputDialog("Enter ip and port number you want to use (default is 39587):", "127.0.0.1:39587");
         //TODO fix to take below instead after done
 
-       // if (result!=null) {
-        //TODO fix to take below instead after done
+        if (result!=null) {
+            //TODO fix to take below instead after done
 
-        // String[] parts = result.split(":");
+            String[] parts = result.split(":");
             System.out.println("client: start");
             //TODO fix to take below instead after done
-            // clientHandler = new ClientHandler(parts[0].trim(), Integer.parseInt(parts[1].trim()));
-            clientHandler = new ClientHandler("127.0.0.1",39587);
+            clientHandler = new ClientHandler(parts[0].trim(), Integer.parseInt(parts[1].trim()));
+            // clientHandler = new ClientHandler("127.0.0.1",39587);
             clientHandler.start();
-        //TODO fix to take below instead after done
+            //TODO fix to take below instead after done
 
-  //  }
+        }
     }
 
 
@@ -287,7 +292,7 @@ public class Controller {
     // Sends a message to all of the outgoing streams.
     // Writing rarely blocks, so doing this on the swing thread is ok,
     // although could fork off a worker to do it.
-    public synchronized void sendRemote(String command,DShapeModel dShapeModel, Integer indexOfSelected) {
+    public synchronized void sendRemote(String command,DShapeModel dShapeModel) {
 
         System.out.println("\nserver send: remote data !!! ");
 
@@ -296,7 +301,6 @@ public class Controller {
         XMLEncoder encoder = new XMLEncoder(memStream);
         encoder.writeObject(command);
         encoder.writeObject(dShapeModel);
-        encoder.writeObject(indexOfSelected);
 
         encoder.close();
         String xmlString = memStream.toString();

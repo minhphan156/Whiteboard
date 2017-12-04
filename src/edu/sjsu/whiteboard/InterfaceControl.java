@@ -23,7 +23,7 @@ public class InterfaceControl extends JPanel {
 
     private String name = "interfacecontrol";
     private Controller controller;
-    private Dimension size = new Dimension(550,400);
+    private Dimension size = new Dimension(520,400);
     private Canvas canvas; // pointer
     private static JComboBox scriptChooser; // STATIC Combo Box filled with String array of system fonts
     private static JTextField textField; // STATIC Text field to get user input for text
@@ -157,7 +157,7 @@ public class InterfaceControl extends JPanel {
                 Color color = JColorChooser.showDialog(null, "JColorChooser", initialBackground);
                 if(color != null){
                     canvas.getSelectedShape().getDShapeModel().setColor(color); // Set selectedColor object to selected color that the user chose
-                    controller.sendRemote("change",canvas.getSelectedShape().getDShapeModel(),(Integer)canvas.getIndexOfSelected()); //let client know to create shape
+                    controller.sendRemote("change",canvas.getSelectedShape().getDShapeModel()); //let client know to create shape
 
                     canvas.revalidate();
                     canvas.repaint();
@@ -207,7 +207,7 @@ public class InterfaceControl extends JPanel {
         rect.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                    draw("rect");
+                draw("rect");
             }
         }) ;
 
@@ -265,7 +265,7 @@ public class InterfaceControl extends JPanel {
         startServer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               // System.out.println("start server here");
+                // System.out.println("start server here");
                 whatModeIsOn.setText("Server mode, port 39587");
 
                 controller.doServer();
@@ -285,7 +285,7 @@ public class InterfaceControl extends JPanel {
                 oval.setEnabled(false);
                 line.setEnabled(false);
                 text.setEnabled(false);
-                editText.setEnabled(false);
+                textField.setEnabled(false);
                 scriptChooser.setEnabled(false);
                 setColor.setEnabled(false);
                 sendToFront.setEnabled(false);
@@ -313,7 +313,7 @@ public class InterfaceControl extends JPanel {
 
             temp.setId(DShapeModel.getCountOfObject());
 
-            controller.sendRemote("add",temp,(Integer)canvas.getIndexOfSelected()); //let client know to create shape
+            controller.sendRemote("add",temp); //let client know to create shape
             controller.getdShapeModels().add(temp); // Creates new DOvalModel in the ArrayList of DShapeModel in Controller class
         }
         else if(type.equals("rect")){
@@ -322,7 +322,7 @@ public class InterfaceControl extends JPanel {
             temp.setId(DShapeModel.getCountOfObject());
 
 
-            controller.sendRemote("add",temp,(Integer)canvas.getIndexOfSelected());//let client know to create shape
+            controller.sendRemote("add",temp);//let client know to create shape
             controller.getdShapeModels().add(temp); // Creates new DOvalModel in the ArrayList of DShapeModel in Controller class
         }
         else if(type.equals("text")){
@@ -330,7 +330,7 @@ public class InterfaceControl extends JPanel {
 
             temp.setId(DShapeModel.getCountOfObject());
 
-            controller.sendRemote("add",temp,(Integer)canvas.getIndexOfSelected());//let client know to create shape
+            controller.sendRemote("add",temp);//let client know to create shape
             controller.getdShapeModels().add(temp); // Creates new DTextModel in the ArrayList of DShapeModel in Controller class
         }
         else if(type.equals("line")){
@@ -339,7 +339,7 @@ public class InterfaceControl extends JPanel {
             temp.setId(DShapeModel.getCountOfObject());
 
 
-            controller.sendRemote("add",temp,(Integer)canvas.getIndexOfSelected());//let client know to create shape
+            controller.sendRemote("add",temp);//let client know to create shape
             controller.getdShapeModels().add(temp); // Creates new DLineModel in the ArrayList of DShapeModel in Controller class
         }
 
