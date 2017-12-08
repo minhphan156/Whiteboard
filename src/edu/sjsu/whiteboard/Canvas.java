@@ -36,7 +36,7 @@ public class Canvas extends JPanel  {
 	private ArrayList<DShape> shapeList; // shapeList stores shapes currently displayed on the canvas
 	private Dimension size = new Dimension(400, 400); // Dimensions of the canva plane
 	private DShape selectedShape; // This shape contains currently selected shape
-	private int indexOfSelected = -1; // -1 indicates no shapes is selected
+	public static int indexOfSelected = -1; // -1 indicates no shapes is selected
 	private Point mousePt; // where the mouse points
 	private boolean isResizing; // if don't set isResizing to false, it will affect all other behaviors, like dragging and selecting a shape
 	private TableModel icTableModel = InterfaceControl.getICtable(); // reference to the table in Interface Control class
@@ -119,6 +119,13 @@ public class Canvas extends JPanel  {
 						selectedShape.getDShapeModel().setX(selectedShape.getDShapeModel().getX() + dx);
 						selectedShape.getDShapeModel().setY(selectedShape.getDShapeModel().getY() + dy);
 						mousePt = event.getPoint();
+<<<<<<< HEAD
+=======
+
+						icTableModel.setValueAt(selectedShape.getDShapeModel().getX() + dx,indexOfSelected,0); // Set X value of a Non Line shape
+						icTableModel.setValueAt(selectedShape.getDShapeModel().getY() + dy,indexOfSelected,1); // Set Y value of a Non Line shape
+
+>>>>>>> origin/master
 						controller.sendRemote("change",getSelectedShape().getDShapeModel());
 
 					}
@@ -133,8 +140,37 @@ public class Canvas extends JPanel  {
 						((DLineModel)(selectedShape.getDShapeModel())).setP1(point1);
 						((DLineModel)(selectedShape.getDShapeModel())).setP2(point2);
 						mousePt = event.getPoint();
+<<<<<<< HEAD
 						controller.sendRemote("change",getSelectedShape().getDShapeModel());
 
+=======
+
+<<<<<<< Updated upstream
+						controller.sendRemote("change",getSelectedShape().getDShapeModel());
+
+						icTableModel.setValueAt("Start X: "+((DLineModel)(selectedShape.getDShapeModel())).getP1().x,indexOfSelected,0); // X value(Point 1) of the  line
+						icTableModel.setValueAt("Start Y: "+((DLineModel)(selectedShape.getDShapeModel())).getP1().y,indexOfSelected,1); // Y value(Point 1) of the line
+						icTableModel.setValueAt("End X: "+((DLineModel)(selectedShape.getDShapeModel())).getP2().x,indexOfSelected,2); // X value(Point 2) of the line
+						icTableModel.setValueAt("End Y: "+((DLineModel)(selectedShape.getDShapeModel())).getP2().y,indexOfSelected,3); // Y value(Point 2) of the line
+=======
+<<<<<<< HEAD
+						icTableModel.setValueAt("Start X "+((DLineModel)(selectedShape.getDShapeModel())).getP1().x,indexOfSelected,0); // X value(Point 1) of the  line
+						icTableModel.setValueAt("Start Y: "+((DLineModel)(selectedShape.getDShapeModel())).getP1().y,indexOfSelected,1); // Y value(Point 1) of the line
+						icTableModel.setValueAt("End X: "+((DLineModel)(selectedShape.getDShapeModel())).getP2().x,indexOfSelected,2); // X value(Point 2) of the line
+						icTableModel.setValueAt("End Y: "+((DLineModel)(selectedShape.getDShapeModel())).getP2().y,indexOfSelected,3); // Y value(Point 2) of the line
+
+						controller.sendRemote("change",getSelectedShape().getDShapeModel());
+
+=======
+						controller.sendRemote("change",getSelectedShape().getDShapeModel());
+
+						icTableModel.setValueAt("Start X: "+((DLineModel)(selectedShape.getDShapeModel())).getP1().x,indexOfSelected,0); // X value(Point 1) of the  line
+						icTableModel.setValueAt("Start Y: "+((DLineModel)(selectedShape.getDShapeModel())).getP1().y,indexOfSelected,1); // Y value(Point 1) of the line
+						icTableModel.setValueAt("End X: "+((DLineModel)(selectedShape.getDShapeModel())).getP2().x,indexOfSelected,2); // X value(Point 2) of the line
+						icTableModel.setValueAt("End Y: "+((DLineModel)(selectedShape.getDShapeModel())).getP2().y,indexOfSelected,3); // Y value(Point 2) of the line
+>>>>>>> origin/master
+>>>>>>> Stashed changes
+>>>>>>> origin/master
 					}
 				}
 				// Resizing
@@ -146,7 +182,24 @@ public class Canvas extends JPanel  {
 						int[] newShapeInfo = selectedShape.resize(dx, dy);
 						selectedShape.getDShapeModel().setBounds(newShapeInfo[0], newShapeInfo[1], newShapeInfo[2], newShapeInfo[3]);
 						mousePt = event.getPoint(); //always need to update
+<<<<<<< HEAD
 						controller.sendRemote("change",getSelectedShape().getDShapeModel());
+=======
+
+<<<<<<< HEAD
+=======
+						controller.sendRemote("change",getSelectedShape().getDShapeModel());
+
+<<<<<<< Updated upstream
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
+						icTableModel.setValueAt(selectedShape.getDShapeModel().getWidth(),indexOfSelected,2); // Width
+						icTableModel.setValueAt(newShapeInfo[3],indexOfSelected,3); // Height
+
+						controller.sendRemote("change",getSelectedShape().getDShapeModel());
+
+>>>>>>> origin/master
 					}
 
 					// Resizing a DLine shape
@@ -158,8 +211,27 @@ public class Canvas extends JPanel  {
 						((DLineModel)(selectedShape.getDShapeModel())).setP1(new Point(newShapeInfo[0],newShapeInfo[1]));
 						((DLineModel)(selectedShape.getDShapeModel())).setP2(new Point(newShapeInfo[2],newShapeInfo[3]));
 						mousePt = event.getPoint(); //always need to update
+<<<<<<< HEAD
 						controller.sendRemote("change",getSelectedShape().getDShapeModel());
 
+=======
+
+<<<<<<< HEAD
+=======
+						controller.sendRemote("change",getSelectedShape().getDShapeModel());
+
+<<<<<<< Updated upstream
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
+						icTableModel.setValueAt("Start X "+((DLineModel)(selectedShape.getDShapeModel())).getP1().x,indexOfSelected,0); // X value(Point 1) of the  line
+						icTableModel.setValueAt("Start Y: "+((DLineModel)(selectedShape.getDShapeModel())).getP1().y,indexOfSelected,1); // Y value(Point 1) of the line
+						icTableModel.setValueAt("End X: "+((DLineModel)(selectedShape.getDShapeModel())).getP2().x,indexOfSelected,2); // X value(Point 2) of the line
+						icTableModel.setValueAt("End Y: "+((DLineModel)(selectedShape.getDShapeModel())).getP2().y,indexOfSelected,3); // Y value(Point 2) of the line
+
+						controller.sendRemote("change",getSelectedShape().getDShapeModel());
+
+>>>>>>> origin/master
 					}
 				}
 			}
@@ -250,9 +322,21 @@ public class Canvas extends JPanel  {
 					DText textTemp = (DText)temp;
 					String currentText = textTemp.getText();
 					String currentFont = textTemp.getFontName();
-					// STATIC !
-					InterfaceControl.enableScriptChooserTextFields(true); // Enable controls in the UI
-					InterfaceControl.updateScriptChooserTextField(currentText, currentFont); // Update live change in text and font chooser
+
+					// This is what makes a networking bug
+					// We need to know if this is a client or server
+					if(controller.getClientHandler() == null){
+						System.out.println("i am server");
+
+						InterfaceControl.enableScriptChooserTextFields(true); // Enable controls in the UI
+						InterfaceControl.updateScriptChooserTextField(currentText, currentFont); // Update live change in text and font chooser
+					}
+					if(controller.getServerAccepter() == null){
+						System.out.println("i am client");
+
+						InterfaceControl.enableScriptChooserTextFields(false); // Disable controls in the UI
+					}
+
 
 					// add comments
 					if(indexOfSelected != -1)
@@ -341,6 +425,13 @@ public class Canvas extends JPanel  {
 			Collections.swap(shapeList,indexOfSelected,0);
 			indexOfSelected = 0;
 			selectedShape = shapeList.get(indexOfSelected);
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 			repaint();
 		}
 	}
@@ -376,7 +467,14 @@ public class Canvas extends JPanel  {
 			DShape temp = selectedShape;
 			DText textTemp = (DText)temp;
 			textTemp.setFontName(fontName);
+<<<<<<< HEAD
 			controller.sendRemote("change",getSelectedShape().getDShapeModel());
+=======
+<<<<<<< Updated upstream
+=======
+			controller.sendRemote("change",getSelectedShape().getDShapeModel());
+>>>>>>> Stashed changes
+>>>>>>> origin/master
 			repaint();
 		}
 	}
