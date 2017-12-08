@@ -38,9 +38,9 @@ public abstract class DShapeModel {
 		y = 10;
 		width = 20;// set initial size for the shape
 		height = 20;// set initial size for the shape
-
 		bounds = new Rectangle2D.Double(x, y, width, height);
         color = Color.GRAY;
+		icTableModel.fireTableDataChanged();
     }
 
 	public static int getCountOfObject() {
@@ -154,6 +154,7 @@ public abstract class DShapeModel {
 
 	public void setHeight(int height) {
 		this.height = height;
+
 	}
 
 	public void setWidth(int width) {
@@ -168,6 +169,7 @@ public abstract class DShapeModel {
 		this.setHeight(other.getHeight());
 		this.setWidth(other.getWidth());
 		this.setColor(other.getColor());
+
 	}
 
 }

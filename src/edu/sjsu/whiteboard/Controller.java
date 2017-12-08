@@ -123,8 +123,8 @@ public class Controller {
                     if(command.equals("add")) {
                         if (tempDShapeModel instanceof DRectModel) {
                             whiteboard.getCanvas().addShape(tempDShapeModel, "rect");
-                            Object[] value = {66,66,66,66};
-                            InterfaceControl.getICtable().insertData(value);
+//                            Object[] value = {66,66,66,66};
+//                            InterfaceControl.getICtable().insertData(value);
 
                         } else if (tempDShapeModel instanceof DOvalModel) {
                             whiteboard.getCanvas().addShape(tempDShapeModel, "oval");

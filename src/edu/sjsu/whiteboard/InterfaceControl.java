@@ -30,7 +30,7 @@ public class InterfaceControl extends JPanel {
     private Canvas canvas; // pointer
     private static JComboBox scriptChooser; // STATIC Combo Box filled with String array of system fonts
     private static JTextField textField; // STATIC Text field to get user input for text
-    private static TableModel tableValues = new TableModel();
+    private static TableModel tableValues;
 
     public static TableModel getICtable(){
         return tableValues;
@@ -44,6 +44,8 @@ public class InterfaceControl extends JPanel {
     public InterfaceControl(Controller controller, Canvas canvas){
         this.canvas = canvas;
         this.controller = controller;
+
+        tableValues = new TableModel(canvas.getShapeList());
         this.setPreferredSize(size);
 
         //******************************************
@@ -345,7 +347,7 @@ public class InterfaceControl extends JPanel {
             DShapeModel temp = new DOvalModel();
             temp.setId(DShapeModel.getCountOfObject());
             Object[] value = {temp.getX(),temp.getY(),temp.getWidth(),temp.getHeight()};
-            tableValues.insertData(value);
+            //tableValues.insertData(value);
             controller.getdShapeModels().add(temp); // Creates new DOvalModel in the ArrayList of DShapeModel in Controller class
             controller.sendRemote("add",temp); //let client know to create shape
             controller.sendRemote("tableUpdate",temp);//let client know to create shape
@@ -354,15 +356,16 @@ public class InterfaceControl extends JPanel {
             DShapeModel temp = new DRectModel();
             temp.setId(DShapeModel.getCountOfObject());
             Object[] value = {temp.getX(),temp.getY(),temp.getWidth(),temp.getHeight()};
-            tableValues.insertData(value);
+            //tableValues.insertData(value);
             controller.getdShapeModels().add(temp); // Creates new DOvalModel in the ArrayList of DShapeModel in Controller class
+            //tableValues.fireTableDataChanged();
             controller.sendRemote("add",temp);//let client know to create shape
         }
         else if(type.equals("text")){
             DShapeModel temp = new DTextModel();
             temp.setId(DShapeModel.getCountOfObject());
             Object[] value = {temp.getX(),temp.getY(),temp.getWidth(),temp.getHeight()};
-            tableValues.insertData(value);
+            //tableValues.insertData(value);
             controller.getdShapeModels().add(temp); // Creates new DTextModel in the ArrayList of DShapeModel in Controller class
             controller.sendRemote("add",temp);//let client know to create shape
         }
@@ -371,7 +374,7 @@ public class InterfaceControl extends JPanel {
             DLineModel tempLine = (DLineModel)temp;
             temp.setId(DShapeModel.getCountOfObject());
             Object[] value = {"Start X: "+tempLine.getP1().x,"Start Y: "+tempLine.getP1().y,"End X: "+tempLine.getP1().x,"End Y: "+tempLine.getP1().y};
-            tableValues.insertData(value);
+            //tableValues.insertData(value);
             controller.getdShapeModels().add(temp); // Creates new DLineModel in the ArrayList of DShapeModel in Controller class
             controller.sendRemote("add",temp);//let client know to create shape
         }

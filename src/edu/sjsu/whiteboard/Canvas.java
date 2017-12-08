@@ -122,10 +122,11 @@ public class Canvas extends JPanel  {
 						selectedShape.getDShapeModel().setY(selectedShape.getDShapeModel().getY() + dy);
 						mousePt = event.getPoint();
 
+						icTableModel.fireTableDataChanged();
 						controller.sendRemote("change",getSelectedShape().getDShapeModel());
 
-						icTableModel.setValueAt(selectedShape.getDShapeModel().getX() + dx,indexOfSelected,0); // Set X value of a Non Line shape
-						icTableModel.setValueAt(selectedShape.getDShapeModel().getY() + dy,indexOfSelected,1); // Set Y value of a Non Line shape
+//						icTableModel.setValueAt(selectedShape.getDShapeModel().getX() + dx,indexOfSelected,0); // Set X value of a Non Line shape
+//						icTableModel.setValueAt(selectedShape.getDShapeModel().getY() + dy,indexOfSelected,1); // Set Y value of a Non Line shape
 					}
 
 					// Moving DLine Shape
@@ -139,12 +140,13 @@ public class Canvas extends JPanel  {
 						((DLineModel)(selectedShape.getDShapeModel())).setP2(point2);
 						mousePt = event.getPoint();
 
+						icTableModel.fireTableDataChanged();
 						controller.sendRemote("change",getSelectedShape().getDShapeModel());
 
-						icTableModel.setValueAt("Start X: "+((DLineModel)(selectedShape.getDShapeModel())).getP1().x,indexOfSelected,0); // X value(Point 1) of the  line
-						icTableModel.setValueAt("Start Y: "+((DLineModel)(selectedShape.getDShapeModel())).getP1().y,indexOfSelected,1); // Y value(Point 1) of the line
-						icTableModel.setValueAt("End X: "+((DLineModel)(selectedShape.getDShapeModel())).getP2().x,indexOfSelected,2); // X value(Point 2) of the line
-						icTableModel.setValueAt("End Y: "+((DLineModel)(selectedShape.getDShapeModel())).getP2().y,indexOfSelected,3); // Y value(Point 2) of the line
+//						icTableModel.setValueAt("Start X: "+((DLineModel)(selectedShape.getDShapeModel())).getP1().x,indexOfSelected,0); // X value(Point 1) of the  line
+//						icTableModel.setValueAt("Start Y: "+((DLineModel)(selectedShape.getDShapeModel())).getP1().y,indexOfSelected,1); // Y value(Point 1) of the line
+//						icTableModel.setValueAt("End X: "+((DLineModel)(selectedShape.getDShapeModel())).getP2().x,indexOfSelected,2); // X value(Point 2) of the line
+//						icTableModel.setValueAt("End Y: "+((DLineModel)(selectedShape.getDShapeModel())).getP2().y,indexOfSelected,3); // Y value(Point 2) of the line
 					}
 				}
 				// Resizing
@@ -157,10 +159,11 @@ public class Canvas extends JPanel  {
 						selectedShape.getDShapeModel().setBounds(newShapeInfo[0], newShapeInfo[1], newShapeInfo[2], newShapeInfo[3]);
 						mousePt = event.getPoint(); //always need to update
 
+						icTableModel.fireTableDataChanged();
 						controller.sendRemote("change",getSelectedShape().getDShapeModel());
-
-						icTableModel.setValueAt(selectedShape.getDShapeModel().getWidth(),indexOfSelected,2); // Width
-						icTableModel.setValueAt(newShapeInfo[3],indexOfSelected,3); // Height
+//
+//						icTableModel.setValueAt(selectedShape.getDShapeModel().getWidth(),indexOfSelected,2); // Width
+//						icTableModel.setValueAt(newShapeInfo[3],indexOfSelected,3); // Height
 					}
 
 					// Resizing a DLine shape
@@ -173,12 +176,14 @@ public class Canvas extends JPanel  {
 						((DLineModel)(selectedShape.getDShapeModel())).setP2(new Point(newShapeInfo[2],newShapeInfo[3]));
 						mousePt = event.getPoint(); //always need to update
 
+						icTableModel.fireTableDataChanged();
 						controller.sendRemote("change",getSelectedShape().getDShapeModel());
 
-						icTableModel.setValueAt("Start X "+((DLineModel)(selectedShape.getDShapeModel())).getP1().x,indexOfSelected,0); // X value(Point 1) of the  line
-						icTableModel.setValueAt("Start Y: "+((DLineModel)(selectedShape.getDShapeModel())).getP1().y,indexOfSelected,1); // Y value(Point 1) of the line
-						icTableModel.setValueAt("End X: "+((DLineModel)(selectedShape.getDShapeModel())).getP2().x,indexOfSelected,2); // X value(Point 2) of the line
-						icTableModel.setValueAt("End Y: "+((DLineModel)(selectedShape.getDShapeModel())).getP2().y,indexOfSelected,3); // Y value(Point 2) of the line
+//
+//						icTableModel.setValueAt("Start X "+((DLineModel)(selectedShape.getDShapeModel())).getP1().x,indexOfSelected,0); // X value(Point 1) of the  line
+//						icTableModel.setValueAt("Start Y: "+((DLineModel)(selectedShape.getDShapeModel())).getP1().y,indexOfSelected,1); // Y value(Point 1) of the line
+//						icTableModel.setValueAt("End X: "+((DLineModel)(selectedShape.getDShapeModel())).getP2().x,indexOfSelected,2); // X value(Point 2) of the line
+//						icTableModel.setValueAt("End Y: "+((DLineModel)(selectedShape.getDShapeModel())).getP2().y,indexOfSelected,3); // Y value(Point 2) of the line
 					}
 				}
 			}
@@ -205,6 +210,7 @@ public class Canvas extends JPanel  {
 			dShapeModel.setListOfListeners(temp); // put DRect reference in listOfListener in DShapeModel
 			temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DRect object
 			shapeList.add(temp);
+			icTableModel.fireTableDataChanged();
 			setNewAddedShapeSelected();
 			repaint();
 		}
@@ -214,6 +220,7 @@ public class Canvas extends JPanel  {
 			dShapeModel.setListOfListeners(temp); // put DOval reference in listOfListener in DShapeModel
 			temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DOval object
 			shapeList.add(temp);
+			icTableModel.fireTableDataChanged();
 			setNewAddedShapeSelected();
 			repaint();
 		}
@@ -398,7 +405,7 @@ public class Canvas extends JPanel  {
 			selectedShape = null;
 			repaint();
 			// Order matters
-			icTableModel.removeRow(indexOfSelected); // remove from the table
+			//icTableModel.removeRow(indexOfSelected); // remove from the table
 			indexOfSelected = -1; // selected shape is deleted,no selected shape now.
 		}
 	}
@@ -428,7 +435,7 @@ public class Canvas extends JPanel  {
 	public void clearCanvas(){
 		controller.getdShapeModels().clear(); // Clear list in the Controller class
 		shapeList.clear(); // Clear the ArrayList in canvas class
-		icTableModel.clear(); // Clear the table
+		//icTableModel.clear(); // Clear the table
 		controller.sendRemote("change",getSelectedShape().getDShapeModel());
 		InterfaceControl.enableScriptChooserTextFields(false); // Disable text controls
 		InterfaceControl.updateScriptChooserTextField("", "Dialog");
