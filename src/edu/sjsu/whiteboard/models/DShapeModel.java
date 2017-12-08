@@ -1,12 +1,5 @@
 package edu.sjsu.whiteboard.models;
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-import edu.sjsu.whiteboard.Canvas;
-=======
->>>>>>> origin/master
->>>>>>> Stashed changes
 import edu.sjsu.whiteboard.InterfaceControl;
 import edu.sjsu.whiteboard.ModelListener;
 import edu.sjsu.whiteboard.TableModel;
@@ -32,14 +25,8 @@ public abstract class DShapeModel {
 	private int height;
 	private Rectangle2D bounds;
 	private Color color;
-
     private ArrayList<ModelListener> listOfListeners = new ArrayList<>();
 	private TableModel icTableModel = InterfaceControl.getICtable(); // reference to the table in Interface Control class
-<<<<<<< Updated upstream
-=======
-
-    private TableModel icTableModel = InterfaceControl.getICtable();
->>>>>>> Stashed changes
 
     public DShapeModel()
 
@@ -76,15 +63,6 @@ public abstract class DShapeModel {
 		this.height = height;
 		bounds = new Rectangle2D.Double(x,y,width,height);
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-		//icTableModel.setValueAt(width, Canvas.indexOfSelected,2); // Width
-		//icTableModel.setValueAt(height,Canvas.indexOfSelected,3); // Height
-
-=======
->>>>>>> origin/master
->>>>>>> Stashed changes
 		Iterator<ModelListener> itr = listOfListeners.iterator();
         while (itr.hasNext()){
             itr.next().modelChanged(this);

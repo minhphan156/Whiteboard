@@ -24,17 +24,8 @@ import java.util.Iterator;
 
 public class Controller {
     private Whiteboard whiteboard;
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-    // private Whiteboard whiteboard2; // For networking
-    private ClientHandler clientHandler = null;
-    private ServerAccepter serverAccepter = null;
-=======
->>>>>>> Stashed changes
     private ClientHandler clientHandler;
     private ServerAccepter serverAccepter;
->>>>>>> origin/master
     private java.util.List<ObjectOutputStream> outputs =
             new ArrayList<ObjectOutputStream>();
 
@@ -47,28 +38,7 @@ public class Controller {
 
     public static void main(String[] args) {
         Controller controllerServer = new Controller();
-<<<<<<< Updated upstream
         //Controller controllerClient = new Controller();
-=======
-<<<<<<< HEAD
-
-       // Controller controllerClient = new Controller();
-
-        // controllerServer.doServer();
-
-        // controllerClient.doClient();
-=======
-        //Controller controllerClient = new Controller();
->>>>>>> origin/master
-    }
-
-    public ClientHandler getClientHandler() {
-        return clientHandler;
-    }
-
-    public ServerAccepter getServerAccepter() {
-        return serverAccepter;
->>>>>>> Stashed changes
     }
 
     public void deleteModel(int index){
@@ -178,60 +148,14 @@ public class Controller {
                     else if (command.equals("change")){
                         if(whiteboard.getCanvas().getSelectedShape().getDShapeModel() instanceof DTextModel){
                             System.out.println("Making a change to DTextModel from Controller.java");
-<<<<<<< Updated upstream
                             String hi = ((DTextModel)tempDShapeModel).getText();
                             System.out.println(hi);
-=======
->>>>>>> Stashed changes
                             whiteboard.getCanvas().getSelectedShape().getDShapeModel().mimic(((DTextModel)tempDShapeModel));
                         }
                         else{
                             System.out.println("Making a change to a NON DTextModel from Controller.java");
                             whiteboard.getCanvas().getSelectedShape().getDShapeModel().mimic(tempDShapeModel);
                         }
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
-                        // whiteboard.getCanvas().setSelectedShape(tempDShapeModel.getX(),tempDShapeModel.getY());
-
-                        // tempDShapeModel.getId();
-//
-//                      DShapeModel tempDSModel = itr.next();
-//                     if( tempDSModel.getId() == tempDShapeModel.getId()){
-//                         tempDSModel.mimic(tempDShapeModel);
-//                     }
-//                        Iterator<DShapeModel> itr = dShapeModels.iterator();
-//
-//                        while (itr.hasNext()){
-//                            DShapeModel tempDSModel = itr.next();
-//                           if( tempDSModel.getId() == tempDShapeModel.getId()){
-//                               tempDSModel.mimic(tempDShapeModel);
-//                           }
-//                        }
-
-                        // System.out.println("tempDshapeModel data: "+tempDShapeModel);
-
-                        //whiteboard.getCanvas().setIndexOfSelected(indexOfSelected);
-
-
-                        //DShape tempDShape = whiteboard.getCanvas().getShapeList().get(whiteboard.getCanvas().getIndexOfSelected());
-
-
-                        //whiteboard.getCanvas().setSelectedShape(tempDShape.getDShapeModel().getX(),tempDShape.getDShapeModel().getY());
-
-                        //System.out.println("old tempDShape data: "+tempDShape.getDShapeModel());
-
-                        // current.mimic(passed)
-                        //tempDShape.getDShapeModel().mimic(tempDShapeModel);
-
-                        //  System.out.println("new tempDShape data: "+tempDShapeModel);
-
-
-
->>>>>>> origin/master
                     }
                 }
             }
