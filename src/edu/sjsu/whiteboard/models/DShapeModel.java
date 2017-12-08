@@ -1,6 +1,9 @@
 package edu.sjsu.whiteboard.models;
 
+import edu.sjsu.whiteboard.InterfaceControl;
 import edu.sjsu.whiteboard.ModelListener;
+import edu.sjsu.whiteboard.TableModel;
+
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ public abstract class DShapeModel {
 	private Rectangle2D bounds;
 	private Color color;
     private ArrayList<ModelListener> listOfListeners = new ArrayList<>();
+	private TableModel icTableModel = InterfaceControl.getICtable(); // reference to the table in Interface Control class
 
     public DShapeModel()
 
@@ -58,7 +62,7 @@ public abstract class DShapeModel {
 		this.width = width;
 		this.height = height;
 		bounds = new Rectangle2D.Double(x,y,width,height);
-		
+
 		Iterator<ModelListener> itr = listOfListeners.iterator();
         while (itr.hasNext()){
             itr.next().modelChanged(this);
@@ -86,6 +90,7 @@ public abstract class DShapeModel {
 	{
 		setBounds(x,y, width,height);
 		this.x = x;
+		//icTableModel.setValueAt(x,id,0); // Set X value of a Non Line shape
 		Iterator<ModelListener> itr = listOfListeners.iterator();
         while (itr.hasNext()){
             itr.next().modelChanged(this);
@@ -100,6 +105,7 @@ public abstract class DShapeModel {
 	{
 		setBounds(x,y, width,height);
 		this.y = y;
+		//icTableModel.setValueAt(y,id,1); // Set Y value of a Non Line shape
 		Iterator<ModelListener> itr = listOfListeners.iterator();
         while (itr.hasNext()){
             itr.next().modelChanged(this);

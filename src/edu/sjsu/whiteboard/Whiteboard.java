@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 /**
  * @author Danil Kolesnikov danil.kolesnikov@sjsu.edu
@@ -22,6 +23,8 @@ public class Whiteboard extends JFrame {
 
     private Controller controller;
     private Canvas canvas;
+    private JMenuItem startServ;
+    private JMenuItem startClient;
 
     public Whiteboard(Controller controller){
         super("Whiteboard");
@@ -78,9 +81,9 @@ public class Whiteboard extends JFrame {
         editMenu.addSeparator();
         editMenu.add(removeShape);
 
-        JMenuItem startServ = new JMenuItem(new MenuItemAction("Start Server", null,
+        startServ = new JMenuItem(new MenuItemAction("Start Server", null,
                 KeyEvent.VK_N));
-        JMenuItem startClient = new JMenuItem(new MenuItemAction("Start Client", null,
+        startClient = new JMenuItem(new MenuItemAction("Start Client", null,
                 KeyEvent.VK_N));
 
         // Add sub menus to networking menu
@@ -116,10 +119,41 @@ public class Whiteboard extends JFrame {
 
         JMenuItem openMi = new JMenuItem(new MenuItemAction("Open", iconOpen,
                 KeyEvent.VK_O));
+        openMi.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                String result = JOptionPane.showInputDialog("Open File With The Name: ", null);
+                if (result != null) {
+                    File f = new File(result);
+                    controller.open(f);
+                }
+                else{
+                    JOptionPane.showMessageDialog(openMi,"Enter a file name!");
+                }
+            }
+        });
+
         JMenuItem saveMi = new JMenuItem(new MenuItemAction("Save", iconSave,
                 KeyEvent.VK_S));
+        saveMi.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                String result = JOptionPane.showInputDialog("Save File With The Name", "CanvasXML");
+                String finalResult = result+".xml";
+                File f = new File(finalResult);
+                controller.save(f);
+
+            }
+        });
+
         JMenuItem savePNG = new JMenuItem(new MenuItemAction("Save PNG", iconSavePNG,
                 KeyEvent.VK_S));
+        savePNG.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                String userInput = JOptionPane.showInputDialog("File Name", "Canvas");
+                String finalName = userInput+".png";
+                File f = new File(finalName);
+                canvas.saveImage(f);
+            }
+        });
 
         // Exit button
         JMenuItem exitMi = new JMenuItem("Exit", iconExit);
@@ -183,6 +217,11 @@ public class Whiteboard extends JFrame {
             }
         }
         return (JPanel)comp;
+    }
+
+    public void disableNetworking(){
+        startServ.setEnabled(false);
+        startClient.setEnabled(false);
     }
 
     public Canvas getCanvas() {

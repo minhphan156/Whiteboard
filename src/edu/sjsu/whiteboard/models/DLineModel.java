@@ -82,6 +82,5 @@ public class DLineModel extends DShapeModel {
         this.setP1(((DLineModel)other).getP1());
         this.setP2(((DLineModel)other).getP2());
         this.setColor(((DLineModel)other).getColor());
-
     }
     }

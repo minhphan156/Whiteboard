@@ -63,6 +63,5 @@ public class DTextModel extends DShapeModel {
         this.setColor(((DTextModel)other).getColor());
         this.setHeight(((DTextModel)other).getHeight());
         this.setWidth(((DTextModel)other).getWidth());
-
     }
 }

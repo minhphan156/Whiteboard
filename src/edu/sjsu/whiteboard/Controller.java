@@ -4,6 +4,7 @@ package edu.sjsu.whiteboard;
 import edu.sjsu.whiteboard.models.*;
 import edu.sjsu.whiteboard.shapes.DRect;
 import edu.sjsu.whiteboard.shapes.DShape;
+import edu.sjsu.whiteboard.shapes.DText;
 
 import javax.swing.*;
 import java.beans.XMLDecoder;
@@ -23,7 +24,6 @@ import java.util.Iterator;
 
 public class Controller {
     private Whiteboard whiteboard;
-    // private Whiteboard whiteboard2; // For networking
     private ClientHandler clientHandler;
     private ServerAccepter serverAccepter;
     private java.util.List<ObjectOutputStream> outputs =
@@ -32,20 +32,13 @@ public class Controller {
     private ArrayList<DShapeModel> dShapeModels;
 
     Controller(){
-        whiteboard = new Whiteboard(this); // For networking mode we need 2 JFrames
-        //whiteboard2 = new Whiteboard(this);
+        whiteboard = new Whiteboard(this);
         dShapeModels = new ArrayList<DShapeModel>();
     }
 
     public static void main(String[] args) {
-        //Minh
         Controller controllerServer = new Controller();
-
-        Controller controllerClient = new Controller();
-
-        // controllerServer.doServer();
-
-        // controllerClient.doClient();
+        //Controller controllerClient = new Controller();
     }
 
     public void deleteModel(int index){
@@ -106,8 +99,6 @@ public class Controller {
                 ObjectInputStream in = new ObjectInputStream(toServer.getInputStream());
                 System.out.println("client: connected!");
 
-
-
                 // we could do this if we wanted to write to server in addition
                 // to reading
                 // out = new ObjectOutputStream(toServer.getOutputStream());
@@ -146,7 +137,7 @@ public class Controller {
                     else if (command.equals("remove")){
 //                        Iterator<DShapeModel> itr = dShapeModels.iterator();
 //
-//                        while (itr.hasNext()){
+//                        while (itr.hasNext()){111dsadxzCccxzczx
 //                            DShapeModel tempDSModel = itr.next();
 //                            if( tempDSModel.getId() == tempDShapeModel.getId()){
 //                                whiteboard.getCanvas().setSelectedShape2(tempDSModel);
@@ -155,8 +146,6 @@ public class Controller {
                         whiteboard.getCanvas().deleteShape();
                     }
                     else if (command.equals("front")){
-
-
                         whiteboard.getCanvas().moveToFront();
                     }
                     else if (command.equals("back")){
@@ -175,7 +164,14 @@ public class Controller {
 
                     }
                     else if (command.equals("change")){
-                        whiteboard.getCanvas().getSelectedShape().getDShapeModel().mimic(tempDShapeModel);
+                        if(whiteboard.getCanvas().getSelectedShape().getDShapeModel() instanceof DTextModel){
+                            System.out.println("Making a change to DTextModel from Controller.java");
+                            whiteboard.getCanvas().getSelectedShape().getDShapeModel().mimic(((DTextModel)tempDShapeModel));
+                        }
+                        else{
+                            System.out.println("Making a change to a NON DTextModel from Controller.java");
+                            whiteboard.getCanvas().getSelectedShape().getDShapeModel().mimic(tempDShapeModel);
+                        }
                         // whiteboard.getCanvas().setSelectedShape(tempDShapeModel.getX(),tempDShapeModel.getY());
 
                         // tempDShapeModel.getId();
@@ -320,6 +316,55 @@ public class Controller {
                 // drop that socket from list if have probs with it
             }
         }
+    }
+
+    public void save(File file) {
+        try {
+            ArrayList<DShape> shapeList = whiteboard.getCanvas().getShapeList();
+            XMLEncoder xmlOut = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)));
+            DShapeModel[] dModelArrayWritten = new DShapeModel[shapeList.size()];
+            for (int i = 0; i < shapeList.size(); i++) {
+                System.out.println(shapeList.get(i).getDShapeModel());
+                dModelArrayWritten[i] = shapeList.get(i).getDShapeModel();
+                // xmlOut.writeObject(dModelArrayWritten[i]);
+            }
+            xmlOut.writeObject(dModelArrayWritten);
+            xmlOut.writeObject("saved dModelArray into xml");
+            xmlOut.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void open(File file) {
+        Canvas canvas = whiteboard.getCanvas();
+        //canvas.clearCanvas();
+        DShapeModel[] dModelArrayRead;
+        try {
+            XMLDecoder xmlIn = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)));
+            dModelArrayRead = (DShapeModel[]) xmlIn.readObject();
+            String test = (String) xmlIn.readObject();
+            xmlIn.close();
+            System.out.println(dModelArrayRead.length);
+            for (int i = 0; i < dModelArrayRead.length; i++) {
+                if (dModelArrayRead[i] instanceof DRectModel) {
+                    canvas.addShape(dModelArrayRead[i], "rect");
+
+                } else if (dModelArrayRead[i] instanceof DOvalModel) {
+                    canvas.addShape(dModelArrayRead[i], "oval");
+                } else if (dModelArrayRead[i] instanceof DLineModel) {
+                    canvas.addShape(dModelArrayRead[i], "line");
+                } else if (dModelArrayRead[i] instanceof DTextModel) {
+                    canvas.addShape(dModelArrayRead[i], "text");
+                }
+                dShapeModels.add(dModelArrayRead[i]);
+            }
+            System.out.println(test);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

@@ -1,5 +1,7 @@
 package edu.sjsu.whiteboard;
 
+import com.sun.tools.internal.ws.processor.model.Model;
+
 import javax.swing.table.AbstractTableModel;
 import java.util.Collections;
 import java.util.Vector;
@@ -19,6 +21,8 @@ public class TableModel extends AbstractTableModel {
 
     private String[] columnNames = { "X", "Y", "Width", "Height" };
     private Vector data = new Vector();
+
+
 
     public TableModel(){
     }
@@ -40,7 +44,14 @@ public class TableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int col) {
-        return ((Vector) data.get(row)).get(col);
+        try{
+            return ((Vector) data.get(row)).get(col);
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("Array Index Out Of Bound in getValueAt from TableModel.java");
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public String getColumnName(int col){
@@ -50,11 +61,12 @@ public class TableModel extends AbstractTableModel {
         return getValueAt(0,c).getClass();
     }
 
-    public void moveToFront(int row){
+    void moveToFront(int row){
         Collections.swap(data,row,getRowCount()-1);
         fireTableDataChanged();
     }
-    public void moveToBack(int row){
+
+    void moveToBack(int row){
         Collections.swap(data,row,0);
         fireTableDataChanged();
     }
@@ -65,7 +77,7 @@ public class TableModel extends AbstractTableModel {
         fireTableCellUpdated(row,col);
     }
 
-    public void insertData(Object[] values){
+    void insertData(Object[] values){
         data.add(new Vector());
         for(int i = 0; i<values.length; i++){
             ((Vector) data.get(data.size()-1)).add(values[i]);
@@ -73,12 +85,12 @@ public class TableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-    public void removeRow(int row){
-        data.removeElementAt(row);
+    void removeRow(int row){
+        data.removeElementAt(0);
         fireTableDataChanged();
     }
 
-    public void clear(){
+    void clear(){
         data.clear();
         fireTableDataChanged();
     }

@@ -8,9 +8,14 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+
+import static javax.imageio.ImageIO.write;
 
 
 /**
@@ -83,17 +88,11 @@ public class Canvas extends JPanel  {
 				mousePt = event.getPoint();
 
 				setSelectedShape(mousePt.x,mousePt.y);
-
 				//	controller.sendRemote("change",getSelectedShape().getDShapeModel(),(Integer)indexOfSelected);
-
-
-
 				if (selectedShape != null && selectedShape.isInKnobs(mousePt)) {
 					isResizing = true; // otherwise, will have a null pointer exception
 				}
 			}
-
-
 
 			public void mouseEntered(MouseEvent arg0) {
 			}
@@ -112,7 +111,7 @@ public class Canvas extends JPanel  {
 				int dx = event.getX() - mousePt.x;
 				int dy = event.getY() - mousePt.y;
 
-				//make sure that selectedShape != null to avoid errors
+				// make sure that selectedShape != null to avoid errors
 				// not resizing -> so moving the shape
 				if (selectedShape != null && !isResizing) {
 
@@ -141,11 +140,10 @@ public class Canvas extends JPanel  {
 
 						controller.sendRemote("change",getSelectedShape().getDShapeModel());
 
-						icTableModel.setValueAt("Start X "+((DLineModel)(selectedShape.getDShapeModel())).getP1().x,indexOfSelected,0); // X value(Point 1) of the  line
+						icTableModel.setValueAt("Start X: "+((DLineModel)(selectedShape.getDShapeModel())).getP1().x,indexOfSelected,0); // X value(Point 1) of the  line
 						icTableModel.setValueAt("Start Y: "+((DLineModel)(selectedShape.getDShapeModel())).getP1().y,indexOfSelected,1); // Y value(Point 1) of the line
 						icTableModel.setValueAt("End X: "+((DLineModel)(selectedShape.getDShapeModel())).getP2().x,indexOfSelected,2); // X value(Point 2) of the line
 						icTableModel.setValueAt("End Y: "+((DLineModel)(selectedShape.getDShapeModel())).getP2().y,indexOfSelected,3); // Y value(Point 2) of the line
-
 					}
 				}
 				// Resizing
@@ -159,7 +157,6 @@ public class Canvas extends JPanel  {
 						mousePt = event.getPoint(); //always need to update
 
 						controller.sendRemote("change",getSelectedShape().getDShapeModel());
-
 
 						icTableModel.setValueAt(selectedShape.getDShapeModel().getWidth(),indexOfSelected,2); // Width
 						icTableModel.setValueAt(newShapeInfo[3],indexOfSelected,3); // Height
@@ -176,7 +173,6 @@ public class Canvas extends JPanel  {
 						mousePt = event.getPoint(); //always need to update
 
 						controller.sendRemote("change",getSelectedShape().getDShapeModel());
-
 
 						icTableModel.setValueAt("Start X "+((DLineModel)(selectedShape.getDShapeModel())).getP1().x,indexOfSelected,0); // X value(Point 1) of the  line
 						icTableModel.setValueAt("Start Y: "+((DLineModel)(selectedShape.getDShapeModel())).getP1().y,indexOfSelected,1); // Y value(Point 1) of the line
@@ -207,8 +203,6 @@ public class Canvas extends JPanel  {
 			temp.setCanvasReferencel(this); // put canvas reference inside DRect object
 			dShapeModel.setListOfListeners(temp); // put DRect reference in listOfListener in DShapeModel
 			temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DRect object
-			Object[] value = {temp.getDShapeModel().getX(),temp.getDShapeModel().getY(),temp.getDShapeModel().getWidth(),temp.getDShapeModel().getHeight()};
-			icTableModel.insertData(value);
 			shapeList.add(temp);
 			setNewAddedShapeSelected();
 			repaint();
@@ -218,8 +212,6 @@ public class Canvas extends JPanel  {
 			temp.setCanvasReferencel(this); // put canvas reference inside DOval object
 			dShapeModel.setListOfListeners(temp); // put DOval reference in listOfListener in DShapeModel
 			temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DOval object
-			Object[] value = {temp.getDShapeModel().getX(),temp.getDShapeModel().getY(),temp.getDShapeModel().getWidth(),temp.getDShapeModel().getHeight()};
-			icTableModel.insertData(value);
 			shapeList.add(temp);
 			setNewAddedShapeSelected();
 			repaint();
@@ -229,8 +221,6 @@ public class Canvas extends JPanel  {
 			temp.setCanvasReferencel(this); // put canvas reference inside DOval object
 			dShapeModel.setListOfListeners(temp); // put DOval reference in listOfListener in DShapeModel
 			temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DOval object
-			Object[] value = {temp.getDShapeModel().getX(),temp.getDShapeModel().getY(),temp.getDShapeModel().getWidth(),temp.getDShapeModel().getHeight()};
-			icTableModel.insertData(value);
 			shapeList.add(temp);
 			setNewAddedShapeSelected();
 			repaint();
@@ -240,8 +230,6 @@ public class Canvas extends JPanel  {
 			temp.setCanvasReferencel(this); // put canvas reference inside DOval object
 			dShapeModel.setListOfListeners(temp); // put DOval reference in listOfListener in DShapeModel
 			temp.setPointerToDShapeModel(dShapeModel);// put dShapeModel reference inside DOval object
-			Object[] value = {"Start X: "+temp.getDShapeModel().getX(),"Start Y: "+temp.getDShapeModel().getY(),"End X: "+temp.getDShapeModel().getWidth(),"End Y: "+temp.getDShapeModel().getHeight()};
-			icTableModel.insertData(value);
 			shapeList.add(temp);
 			setNewAddedShapeSelected();
 			repaint();
@@ -259,7 +247,6 @@ public class Canvas extends JPanel  {
 		//a new index for currently new shape, which is also a selected shape
 		indexOfSelected = shapeList.size() - 1;
 		shapeList.get(indexOfSelected).setIsSelected(true);
-
 		selectedShape = shapeList.get(indexOfSelected);
 
 		//controller.sendRemote("change",getSelectedShape().getDShapeModel(),(Integer)indexOfSelected);
@@ -362,12 +349,10 @@ public class Canvas extends JPanel  {
 		return false;
 	}
 	public void setSelectedShape2(DShapeModel dShapeModel){
-
-
 		for(int i = 0; i < shapeList.size(); i++){
 			DShape tempDShap = shapeList.get(i);
 			DShapeModel tempDSM = tempDShap.getDShapeModel();
-			if( tempDSM.getId() == dShapeModel.getId()){
+			if(tempDSM.getId() == dShapeModel.getId()){
 				selectedShape = tempDShap;
 				indexOfSelected = i;
 			}
@@ -377,18 +362,12 @@ public class Canvas extends JPanel  {
 	// moveToFront() moves the selected shape in front and modifies the table
 	public void moveToFront() {
 		if (selectedShape != null) {
-
-
 			System.out.printf("Moving a shape at index %d in front", indexOfSelected);
 			controller.sendRemote("front",getSelectedShape().getDShapeModel());
-
 			Collections.swap(shapeList,indexOfSelected,shapeList.size()-1);
 			icTableModel.moveToFront(indexOfSelected);
 			indexOfSelected = shapeList.size() - 1;
 			selectedShape = shapeList.get(indexOfSelected);
-
-
-
 			repaint();
 		}
 	}
@@ -403,9 +382,6 @@ public class Canvas extends JPanel  {
 			icTableModel.moveToBack(indexOfSelected);
 			indexOfSelected = 0;
 			selectedShape = shapeList.get(indexOfSelected);
-
-
-
 			repaint();
 		}
 	}
@@ -415,14 +391,14 @@ public class Canvas extends JPanel  {
 		if(selectedShape != null)
 		{
 			controller.sendRemote("remove",getSelectedShape().getDShapeModel());
-
 			controller.getdShapeModels().remove(selectedShape.getDShapeModel());
 			shapeList.remove(indexOfSelected); // remove from the list
-			icTableModel.removeRow(indexOfSelected); // remove from the table
 			System.out.printf("\nDelete a shape at index: %d. Array size: %d", indexOfSelected, shapeList.size());
-			indexOfSelected = -1; // selected shape is deleted,no selected shape now.
 			selectedShape = null;
 			repaint();
+			// Order matters
+			icTableModel.removeRow(indexOfSelected); // remove from the table
+			indexOfSelected = -1; // selected shape is deleted,no selected shape now.
 		}
 	}
 
@@ -432,10 +408,7 @@ public class Canvas extends JPanel  {
 			DShape temp = selectedShape;
 			DText textTemp = (DText)temp; // Cast
 			textTemp.setText(str);
-
 			controller.sendRemote("change",getSelectedShape().getDShapeModel());
-
-
 			repaint();
 		}
 	}
@@ -446,10 +419,7 @@ public class Canvas extends JPanel  {
 			DShape temp = selectedShape;
 			DText textTemp = (DText)temp;
 			textTemp.setFontName(fontName);
-
 			controller.sendRemote("change",getSelectedShape().getDShapeModel());
-
-
 			repaint();
 		}
 	}
@@ -459,8 +429,26 @@ public class Canvas extends JPanel  {
 		controller.getdShapeModels().clear(); // Clear list in the Controller class
 		shapeList.clear(); // Clear the ArrayList in canvas class
 		icTableModel.clear(); // Clear the table
+		controller.sendRemote("change",getSelectedShape().getDShapeModel());
 		InterfaceControl.enableScriptChooserTextFields(false); // Disable text controls
 		InterfaceControl.updateScriptChooserTextField("", "Dialog");
 		repaint();
+	}
+
+	public void saveImage(File file1) {
+		// Create an image bitmap, same size as ourselves
+		BufferedImage image = (BufferedImage) createImage(getWidth(), getHeight());
+		// Get Graphics pointing to the bitmap, and call paintAll()
+		// This is the RARE case where calling paint() is appropriate
+		// (normally the system calls paint()/paintComponent())
+		Graphics g = image.getGraphics();
+		paintAll(g);
+		g.dispose(); // Good but not required--
+		// dispose() Graphics you create yourself when done with them.
+		try {
+			write(image, "PNG", file1);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 	}
 }

@@ -16,10 +16,7 @@ import edu.sjsu.whiteboard.models.DShapeModel;
  the model that changed. There is not detail about
  what the exact change
 was. */
+
 public interface ModelListener {
     public void modelChanged(DShapeModel model);
-
-
-
-
 }

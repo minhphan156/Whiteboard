@@ -1,9 +1,12 @@
 package edu.sjsu.whiteboard;
 
 import edu.sjsu.whiteboard.models.*;
+import edu.sjsu.whiteboard.shapes.DLine;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -42,7 +45,6 @@ public class InterfaceControl extends JPanel {
         this.canvas = canvas;
         this.controller = controller;
         this.setPreferredSize(size);
-
 
         //******************************************
         //*** Create Boxes for all Buttons ************
@@ -102,9 +104,43 @@ public class InterfaceControl extends JPanel {
         Box saveContentHorizontalBox = Box.createHorizontalBox(); // Creates horizontal box that stores Rect, Oval, Line, Text buttons
         JLabel saveContentText = new JLabel(" Edit/Save Content: ");
         saveContentText.setFont(interfaceControlFont);
+
         JButton save = new JButton("Save"); // Create Start Server button
+        save.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                String result = JOptionPane.showInputDialog("Save File With The Name", "CanvasXML");
+                String finalResult = result+".xml";
+                File f = new File(finalResult);
+                controller.save(f);
+
+            }
+        });
+
         JButton load = new JButton("Load"); // Create Start Client button
+        load.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                String result = JOptionPane.showInputDialog("Open File With The Name: ", null);
+                String finalResult = result+".xml";
+                if (result != null) {
+                    File f = new File(finalResult);
+                    controller.open(f);
+                }
+                else{
+                    JOptionPane.showMessageDialog(load,"Enter a file name!");
+                }
+            }
+        });
+
         JButton saveAsPNG = new JButton("Save as PNG"); // Create Start Client button
+        saveAsPNG.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                String userInput = JOptionPane.showInputDialog("File Name", "Canvas");
+                String finalName = userInput+".png";
+                File f = new File(finalName);
+                canvas.saveImage(f);
+            }
+        });
+        // Add to Save/Open control box
         saveContentHorizontalBox.add(saveContentText);
         saveContentHorizontalBox.add(save);
         saveContentHorizontalBox.add(load);
@@ -114,8 +150,9 @@ public class InterfaceControl extends JPanel {
         Box netWorkingHorizontalBox = Box.createHorizontalBox(); // Creates horizontal box that stores Rect, Oval, Line, Text buttons
         JLabel netWorkingText = new JLabel(" Networking: ");
         JLabel whatModeIsOn = new JLabel("");
-        netWorkingText.setFont(interfaceControlFont);
-        whatModeIsOn.setFont(interfaceControlFont);
+        // There is no need to update text and font from server
+        //netWorkingText.setFont(interfaceControlFont);
+        //whatModeIsOn.setFont(interfaceControlFont);
         JButton startServer = new JButton("Start Server"); // Create Start Server button
         JButton startClient = new JButton("Start Client"); // Create Start Client button
         netWorkingHorizontalBox.add(netWorkingText);
@@ -125,6 +162,8 @@ public class InterfaceControl extends JPanel {
 
         // Table Box
         JTable table = new JTable(tableValues); // Initialize table mode
+        JScrollPane pane = new JScrollPane(table); // Make table scrollable
+        add(pane, BorderLayout.CENTER);
 
         // Add all horizontal boxes in the main vertical box
         Box verticalBoxMain = Box.createVerticalBox(); // Create main box that contains all horizontal boxes
@@ -158,7 +197,6 @@ public class InterfaceControl extends JPanel {
                 if(color != null){
                     canvas.getSelectedShape().getDShapeModel().setColor(color); // Set selectedColor object to selected color that the user chose
                     controller.sendRemote("change",canvas.getSelectedShape().getDShapeModel()); //let client know to create shape
-
                     canvas.revalidate();
                     canvas.repaint();
                 }
@@ -259,17 +297,17 @@ public class InterfaceControl extends JPanel {
             }
         });
 
-        //TODO: add SAVE,LOAD,SAVE AS PNG button listeners
-
         //listener for Start Server Button
         startServer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // System.out.println("start server here");
                 whatModeIsOn.setText("Server mode, port 39587");
-
                 controller.doServer();
-
+                // Disable buttons after entering server mode
+                startClient.setEnabled(false);
+                startServer.setEnabled(false);
+                controller.getWhiteboard().disableNetworking();
             }
         });
 
@@ -278,8 +316,6 @@ public class InterfaceControl extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 whatModeIsOn.setText("Client mode, port 39587");
-
-
                 // disable all buttons in Client Mode
                 rect.setEnabled(false);
                 oval.setEnabled(false);
@@ -297,7 +333,7 @@ public class InterfaceControl extends JPanel {
                 startServer.setEnabled(false);
                 startClient.setEnabled(false);
                 table.setEnabled(false);
-
+                controller.getWhiteboard().disableNetworking();
                 //set up client
                 controller.doClient();
             }
@@ -310,37 +346,36 @@ public class InterfaceControl extends JPanel {
     public void draw(String type){
         if(type.equals("oval")){
             DShapeModel temp = new DOvalModel();
-
             temp.setId(DShapeModel.getCountOfObject());
-
-            controller.sendRemote("add",temp); //let client know to create shape
+            Object[] value = {temp.getX(),temp.getY(),temp.getWidth(),temp.getHeight()};
+            tableValues.insertData(value);
             controller.getdShapeModels().add(temp); // Creates new DOvalModel in the ArrayList of DShapeModel in Controller class
+            controller.sendRemote("add",temp); //let client know to create shape
         }
         else if(type.equals("rect")){
             DShapeModel temp = new DRectModel();
-
             temp.setId(DShapeModel.getCountOfObject());
-
-
-            controller.sendRemote("add",temp);//let client know to create shape
+            Object[] value = {temp.getX(),temp.getY(),temp.getWidth(),temp.getHeight()};
+            tableValues.insertData(value);
             controller.getdShapeModels().add(temp); // Creates new DOvalModel in the ArrayList of DShapeModel in Controller class
+            controller.sendRemote("add",temp);//let client know to create shape
         }
         else if(type.equals("text")){
             DShapeModel temp = new DTextModel();
-
             temp.setId(DShapeModel.getCountOfObject());
-
-            controller.sendRemote("add",temp);//let client know to create shape
+            Object[] value = {temp.getX(),temp.getY(),temp.getWidth(),temp.getHeight()};
+            tableValues.insertData(value);
             controller.getdShapeModels().add(temp); // Creates new DTextModel in the ArrayList of DShapeModel in Controller class
+            controller.sendRemote("add",temp);//let client know to create shape
         }
         else if(type.equals("line")){
             DShapeModel temp = new DLineModel();
-
+            DLineModel tempLine = (DLineModel)temp;
             temp.setId(DShapeModel.getCountOfObject());
-
-
-            controller.sendRemote("add",temp);//let client know to create shape
+            Object[] value = {"Start X: "+tempLine.getP1().x,"Start Y: "+tempLine.getP1().y,"End X: "+tempLine.getP1().x,"End Y: "+tempLine.getP1().y};
+            tableValues.insertData(value);
             controller.getdShapeModels().add(temp); // Creates new DLineModel in the ArrayList of DShapeModel in Controller class
+            controller.sendRemote("add",temp);//let client know to create shape
         }
 
         int indexOfNewShape = controller.getdShapeModels().size()- 1; //index of new DShapeModel in arraylist of DShapeModel in Controller
@@ -352,6 +387,7 @@ public class InterfaceControl extends JPanel {
 
     // Static method to enable/disable text controls. Called from canvas class
     public static void enableScriptChooserTextFields(Boolean bool){
+        //if(this.controller.getClass().getSimpleName().equals())
         scriptChooser.setEnabled(bool);
         textField.setEnabled(bool);
     }
