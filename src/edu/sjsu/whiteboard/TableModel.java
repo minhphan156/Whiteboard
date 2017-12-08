@@ -1,7 +1,9 @@
 package edu.sjsu.whiteboard;
 
 import com.sun.tools.internal.ws.processor.model.Model;
+import edu.sjsu.whiteboard.models.DLineModel;
 import edu.sjsu.whiteboard.models.DShapeModel;
+import edu.sjsu.whiteboard.models.DTextModel;
 import edu.sjsu.whiteboard.shapes.DShape;
 
 import javax.swing.table.AbstractTableModel;
@@ -23,7 +25,6 @@ import java.util.Vector;
 public class TableModel extends AbstractTableModel {
 
     private String[] columnNames = { "X", "Y", "Width", "Height" };
-    //private Vector data = new Vector();
     private ArrayList<DShape> shapeList;
 
     public TableModel( ArrayList<DShape> shapeList){
@@ -33,7 +34,6 @@ public class TableModel extends AbstractTableModel {
     public TableModel getTableModel(){
         return this;
     }
-
 
     public ArrayList<DShape> getShapeList() {
         return shapeList;
@@ -51,33 +51,49 @@ public class TableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int col) {
-//        try{
-//            return ((Vector) data.get(row)).get(col);
-//        }
-//        catch (ArrayIndexOutOfBoundsException e){
-//            System.out.println("Array Index Out Of Bound in getValueAt from TableModel.java");
-//            e.printStackTrace();
-//        }
-//        return null;
 
         // Return X coord
         if(col == 0){
-            return shapeList.get(row).getDShapeModel().getX();
+            if(shapeList.get(row).getDShapeModel() instanceof DLineModel){
+                return "Start X: "+((DLineModel)shapeList.get(row).getDShapeModel()).getP1().x;
+
+            }
+            else{
+                return shapeList.get(row).getDShapeModel().getX();
+            }
         }
 
         // Return Y coord
         else if(col == 1){
-            return shapeList.get(row).getDShapeModel().getY();
+            if(shapeList.get(row).getDShapeModel() instanceof DLineModel){
+                return "Start Y: "+((DLineModel)shapeList.get(row).getDShapeModel()).getP1().y;
+
+            }
+            else{
+                return shapeList.get(row).getDShapeModel().getY();
+            }
         }
 
         // Return Width
         else if(col == 2){
-            return shapeList.get(row).getDShapeModel().getWidth();
+            if(shapeList.get(row).getDShapeModel() instanceof DLineModel){
+                return "End X: "+((DLineModel)shapeList.get(row).getDShapeModel()).getP2().x;
+
+            }
+            else{
+                return shapeList.get(row).getDShapeModel().getWidth();
+            }
         }
 
         // Return Height
         else if(col == 3){
-            return shapeList.get(row).getDShapeModel().getHeight();
+            if(shapeList.get(row).getDShapeModel() instanceof DLineModel){
+                return "End Y: "+((DLineModel)shapeList.get(row).getDShapeModel()).getP2().y;
+
+            }
+            else{
+                return shapeList.get(row).getDShapeModel().getHeight();
+            }
         }
 
         return shapeList.get(row).getDShapeModel().getHeight();
@@ -90,41 +106,6 @@ public class TableModel extends AbstractTableModel {
         return getValueAt(0,c).getClass();
     }
 
-    void moveToFront(int row){
-        //Collections.swap(shapeList,row,getRowCount()-1);
-        fireTableDataChanged();
-    }
-
-    void moveToBack(int row){
-        //Collections.swap(data,row,0);
-        fireTableDataChanged();
-    }
-
-
-//    public void setValueAt(Object value, int row, int col){
-//        //((Vector) data.get(row)).setElementAt(value, col);
-//        fireTableCellUpdated(row,col);
-//    }
-//
-//    void insertData(Object[] values){
-//        data.add(new Vector());
-//        for(int i = 0; i<values.length; i++){
-//            ((Vector) data.get(data.size()-1)).add(values[i]);
-//        }
-//        fireTableDataChanged();
-//    }
-//
-//
-//
-//    void removeRow(int row){
-//        data.removeElementAt(row);
-//        fireTableDataChanged();
-//    }
-//
-//    void clear(){
-//        data.clear();
-//        fireTableDataChanged();
-//    }
 
 
 }

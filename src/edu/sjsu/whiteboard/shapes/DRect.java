@@ -24,9 +24,11 @@ public class DRect extends DShape {
 
 	@Override
 	public void modelChanged(DShapeModel pointerToDShapeModel) {
-		getCanvasReferencel().repaint();
+		if(getCanvasReferencel() != null)
+		{
+			getCanvasReferencel().repaint();
+		}
 	}
-
 	// called to draw Rectangle
 	public void draw(Graphics g)
 	{

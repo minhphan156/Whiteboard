@@ -346,35 +346,24 @@ public class InterfaceControl extends JPanel {
         if(type.equals("oval")){
             DShapeModel temp = new DOvalModel();
             temp.setId(DShapeModel.getCountOfObject());
-            Object[] value = {temp.getX(),temp.getY(),temp.getWidth(),temp.getHeight()};
-            //tableValues.insertData(value);
             controller.getdShapeModels().add(temp); // Creates new DOvalModel in the ArrayList of DShapeModel in Controller class
             controller.sendRemote("add",temp); //let client know to create shape
-            controller.sendRemote("tableUpdate",temp);//let client know to create shape
         }
         else if(type.equals("rect")){
             DShapeModel temp = new DRectModel();
             temp.setId(DShapeModel.getCountOfObject());
-            Object[] value = {temp.getX(),temp.getY(),temp.getWidth(),temp.getHeight()};
-            //tableValues.insertData(value);
             controller.getdShapeModels().add(temp); // Creates new DOvalModel in the ArrayList of DShapeModel in Controller class
-            //tableValues.fireTableDataChanged();
             controller.sendRemote("add",temp);//let client know to create shape
         }
         else if(type.equals("text")){
             DShapeModel temp = new DTextModel();
             temp.setId(DShapeModel.getCountOfObject());
-            Object[] value = {temp.getX(),temp.getY(),temp.getWidth(),temp.getHeight()};
-            //tableValues.insertData(value);
             controller.getdShapeModels().add(temp); // Creates new DTextModel in the ArrayList of DShapeModel in Controller class
             controller.sendRemote("add",temp);//let client know to create shape
         }
         else if(type.equals("line")){
             DShapeModel temp = new DLineModel();
-            DLineModel tempLine = (DLineModel)temp;
             temp.setId(DShapeModel.getCountOfObject());
-            Object[] value = {"Start X: "+tempLine.getP1().x,"Start Y: "+tempLine.getP1().y,"End X: "+tempLine.getP1().x,"End Y: "+tempLine.getP1().y};
-            //tableValues.insertData(value);
             controller.getdShapeModels().add(temp); // Creates new DLineModel in the ArrayList of DShapeModel in Controller class
             controller.sendRemote("add",temp);//let client know to create shape
         }

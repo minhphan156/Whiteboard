@@ -90,7 +90,7 @@ public abstract class DShapeModel {
 	{
 		setBounds(x,y, width,height);
 		this.x = x;
-		//icTableModel.setValueAt(x,id,0); // Set X value of a Non Line shape
+		icTableModel.fireTableDataChanged();
 		Iterator<ModelListener> itr = listOfListeners.iterator();
         while (itr.hasNext()){
             itr.next().modelChanged(this);
@@ -105,7 +105,8 @@ public abstract class DShapeModel {
 	{
 		setBounds(x,y, width,height);
 		this.y = y;
-		//icTableModel.setValueAt(y,id,1); // Set Y value of a Non Line shape
+		icTableModel.fireTableDataChanged();
+
 		Iterator<ModelListener> itr = listOfListeners.iterator();
         while (itr.hasNext()){
             itr.next().modelChanged(this);
@@ -154,11 +155,12 @@ public abstract class DShapeModel {
 
 	public void setHeight(int height) {
 		this.height = height;
-
+		icTableModel.fireTableDataChanged();
 	}
 
 	public void setWidth(int width) {
 		this.width = width;
+		icTableModel.fireTableDataChanged();
 	}
 
 

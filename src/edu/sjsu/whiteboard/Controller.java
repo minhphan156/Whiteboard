@@ -113,19 +113,14 @@ public class Controller {
 
                     String command = (String) decoder.readObject();
                     DShapeModel tempDShapeModel = (DShapeModel) decoder.readObject();
-                    //Integer indexOfSelected = (Integer) decoder.readObject();
 
                     System.out.println("client read: " + command); //client read xml string on console
                     System.out.println("client read: " + tempDShapeModel); //client read xml string on console
-//                    System.out.println("client read: " + indexOfSelected); //client read xml string on console
                     whiteboard.getCanvas().setSelectedShape2(tempDShapeModel);
 
                     if(command.equals("add")) {
                         if (tempDShapeModel instanceof DRectModel) {
                             whiteboard.getCanvas().addShape(tempDShapeModel, "rect");
-//                            Object[] value = {66,66,66,66};
-//                            InterfaceControl.getICtable().insertData(value);
-
                         } else if (tempDShapeModel instanceof DOvalModel) {
                             whiteboard.getCanvas().addShape(tempDShapeModel, "oval");
                         } else if (tempDShapeModel instanceof DLineModel) {
@@ -134,40 +129,22 @@ public class Controller {
                             whiteboard.getCanvas().addShape(tempDShapeModel, "text");
                         }
                         dShapeModels.add(tempDShapeModel);
+                        InterfaceControl.getICtable().fireTableDataChanged();
                     }
 
                     else if (command.equals("remove")){
-//                        Iterator<DShapeModel> itr = dShapeModels.iterator();
-//
-//                        while (itr.hasNext()){111dsadxzCccxzczx
-//                            DShapeModel tempDSModel = itr.next();
-//                            if( tempDSModel.getId() == tempDShapeModel.getId()){
-//                                whiteboard.getCanvas().setSelectedShape2(tempDSModel);
-//                            }
-//                        }
                         whiteboard.getCanvas().deleteShape();
+                        InterfaceControl.getICtable().fireTableDataChanged();
                     }
                     else if (command.equals("front")){
                         whiteboard.getCanvas().moveToFront();
-                    }
-                    else if (command.equals("back")){
-
-                        //whiteboard.getCanvas().setSelectedShape(tempDShapeModel.getX(),tempDShapeModel.getY());
-//                        Iterator<DShapeModel> itr = dShapeModels.iterator();
-//
-//                        while (itr.hasNext()){
-//                            DShapeModel tempDSModel = itr.next();
-//                            if( tempDSModel.getId() == tempDShapeModel.getId()){
-//                                whiteboard.getCanvas().setSelectedShape2(tempDSModel);
-//                            }
-//                        }
-
-                        whiteboard.getCanvas().moveToBack();
-                    }
-
-                    else if (command.equals("tableUpdate")){
                         InterfaceControl.getICtable().fireTableDataChanged();
                     }
+                    else if (command.equals("back")){
+                        whiteboard.getCanvas().moveToBack();
+                        InterfaceControl.getICtable().fireTableDataChanged();
+                    }
+
                     else if (command.equals("change")){
                         if(whiteboard.getCanvas().getSelectedShape().getDShapeModel() instanceof DTextModel){
                             System.out.println("Making a change to DTextModel from Controller.java");
@@ -179,52 +156,12 @@ public class Controller {
                             System.out.println("Making a change to a NON DTextModel from Controller.java");
                             whiteboard.getCanvas().getSelectedShape().getDShapeModel().mimic(tempDShapeModel);
                         }
-
-                        // whiteboard.getCanvas().setSelectedShape(tempDShapeModel.getX(),tempDShapeModel.getY());
-
-                        // tempDShapeModel.getId();
-//
-//                      DShapeModel tempDSModel = itr.next();
-//                     if( tempDSModel.getId() == tempDShapeModel.getId()){
-//                         tempDSModel.mimic(tempDShapeModel);
-//                     }
-//                        Iterator<DShapeModel> itr = dShapeModels.iterator();
-//
-//                        while (itr.hasNext()){
-//                            DShapeModel tempDSModel = itr.next();
-//                           if( tempDSModel.getId() == tempDShapeModel.getId()){
-//                               tempDSModel.mimic(tempDShapeModel);
-//                           }
-//                        }
-
-                        // System.out.println("tempDshapeModel data: "+tempDShapeModel);
-
-                        //whiteboard.getCanvas().setIndexOfSelected(indexOfSelected);
-
-
-                        //DShape tempDShape = whiteboard.getCanvas().getShapeList().get(whiteboard.getCanvas().getIndexOfSelected());
-
-
-                        //whiteboard.getCanvas().setSelectedShape(tempDShape.getDShapeModel().getX(),tempDShape.getDShapeModel().getY());
-
-                        //System.out.println("old tempDShape data: "+tempDShape.getDShapeModel());
-
-                        // current.mimic(passed)
-                        //tempDShape.getDShapeModel().mimic(tempDShapeModel);
-
-                        //  System.out.println("new tempDShape data: "+tempDShapeModel);
-
-
-
                     }
-
-
-                    // Message message = (Message) decoder.readObject();
-
-                    // invokeToGUI(message);
                 }
             }
-            catch (Exception ex) { // IOException and ClassNotFoundException
+
+            // IOException and ClassNotFoundException
+            catch (Exception ex) {
                 ex.printStackTrace();
             }
             // Could null out client ptr.
@@ -236,19 +173,13 @@ public class Controller {
     // Starts the sever accepter to catch incoming client connections.
     // Wired to Server button.
     public void doServer() {
-        //   status.setText("Start server");
-        //TODO fix to take below instead after done
-
         String result = JOptionPane.showInputDialog("Enter ip and port number you want to use (default is 39587):", "39587");
-        //TODO fix to take below instead after done
 
         if (result!=null) {
             System.out.println("server: start");
             //TODO fix to take below instead after done
             serverAccepter = new ServerAccepter(Integer.parseInt(result.trim()));
-            //serverAccepter = new ServerAccepter(39587);
             serverAccepter.start();
-            //TODO fix to take below instead after done
 
         }
     }
@@ -256,39 +187,18 @@ public class Controller {
     // Runs a client handler to connect to a server.
     // Wired to Client button.
     public void doClient() {
-        // status.setText("Start client");
-        //TODO fix to take below instead after done
 
         String result = JOptionPane.showInputDialog("Enter ip and port number you want to use (default is 39587):", "127.0.0.1:39587");
-        //TODO fix to take below instead after done
 
         if (result!=null) {
-            //TODO fix to take below instead after done
-
             String[] parts = result.split(":");
             System.out.println("client: start");
-            //TODO fix to take below instead after done
             clientHandler = new ClientHandler(parts[0].trim(), Integer.parseInt(parts[1].trim()));
-            // clientHandler = new ClientHandler("127.0.0.1",39587);
             clientHandler.start();
-            //TODO fix to take below instead after done
-
         }
     }
 
 
-
-    // Given a message, puts that message in the local GUI.
-    // Can be called by any thread.
-//    public void invokeToGUI(Message message) {
-//        final Message temp = message;
-//        SwingUtilities.invokeLater( new Runnable() {
-//            public void run() {
-//                status.setText("Client receive");
-//                sendLocal(temp);
-//            }
-//        });
-//    }
 
 
 
@@ -356,6 +266,7 @@ public class Controller {
             xmlIn.close();
             System.out.println(dModelArrayRead.length);
             for (int i = 0; i < dModelArrayRead.length; i++) {
+                dShapeModels.add(dModelArrayRead[i]);
                 if (dModelArrayRead[i] instanceof DRectModel) {
                     canvas.addShape(dModelArrayRead[i], "rect");
 
@@ -366,7 +277,6 @@ public class Controller {
                 } else if (dModelArrayRead[i] instanceof DTextModel) {
                     canvas.addShape(dModelArrayRead[i], "text");
                 }
-                dShapeModels.add(dModelArrayRead[i]);
             }
             System.out.println(test);
         } catch (IOException e) {

@@ -45,9 +45,13 @@ public class DText extends DShape {
             super.setPointerToDShapeModel((DTextModel)pointerToDShapeModel); // call to set dShapeModel in parent class
         }
     }
+
     @Override
     public void modelChanged(DShapeModel pointerToDShapeModel) {
-        getCanvasReferencel().repaint();
+        if(getCanvasReferencel() != null)
+        {
+            getCanvasReferencel().repaint();
+        }
     }
 
     // called to draw Rectangle

@@ -32,8 +32,12 @@ public class DLine extends DShape{
 
     @Override
     public void modelChanged(DShapeModel pointerToDShapeModel) {
-        getCanvasReferencel().repaint();
+        if(getCanvasReferencel() != null)
+        {
+            getCanvasReferencel().repaint();
+        }
     }
+
 
     @Override
     public void setKnobs(){

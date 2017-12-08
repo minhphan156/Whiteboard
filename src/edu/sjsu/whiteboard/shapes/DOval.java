@@ -25,12 +25,13 @@ public class DOval extends DShape {
         return super.getDShapeModel();
     }
 
-
     @Override
     public void modelChanged(DShapeModel pointerToDShapeModel) {
-		getCanvasReferencel().repaint();
+        if(getCanvasReferencel() != null)
+        {
+            getCanvasReferencel().repaint();
+        }
     }
-
 
     // called to draw an Oval
     public void draw(Graphics g)

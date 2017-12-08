@@ -10,13 +10,13 @@
 ## Known Bugs
 * Text disabling/enabling during - SOLVED
 * Double rows insertion in the table - SOLVED
-* In networking mode: If delete all shapes, can't add again
+* In networking mode: If delete all shapes, can't add again - SOLVED
 * Networking: Change in text isn't reflected - SOLVED
-* Table: If there are only 2 shapes on the canvas and you press delete: all rows will be deleted. Has to do with vector
-* Table: Deleting the shape at index 0 causes weird exception
-* Networking: moving to front/back doesn't seem to reflect in the table 
-* Networking is not working consistently
-* Table: networking is actually not working. If run to separate Whiteboards, table changes won't be reflected 
+* Table: If there are only 2 shapes on the canvas and you press delete: all rows will be deleted. Has to do with vector - SOLVED
+* Table: Deleting the shape at index 0 causes weird exception - SOLVED
+* Networking: moving to front/back doesn't seem to reflect in the table - SOLVED
+* Networking is not working consistently - SOLVED
+* Table: networking is actually not working. If run to separate Whiteboards, table changes won't be reflected - SOLVED
 
 ## Usage
 
