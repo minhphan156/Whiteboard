@@ -71,13 +71,22 @@ public class TableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-
+    // Update value at row and column
     public void setValueAt(Object value, int row, int col){
         ((Vector) data.get(row)).setElementAt(value, col);
         fireTableCellUpdated(row,col);
     }
 
+<<<<<<< Updated upstream
     void insertData(Object[] values){
+=======
+<<<<<<< HEAD
+    // Insert data for the first time
+    public void insertData(Object[] values){
+=======
+    void insertData(Object[] values){
+>>>>>>> origin/master
+>>>>>>> Stashed changes
         data.add(new Vector());
         for(int i = 0; i<values.length; i++){
             ((Vector) data.get(data.size()-1)).add(values[i]);
