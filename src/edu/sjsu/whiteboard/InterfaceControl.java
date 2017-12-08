@@ -150,9 +150,6 @@ public class InterfaceControl extends JPanel {
         Box netWorkingHorizontalBox = Box.createHorizontalBox(); // Creates horizontal box that stores Rect, Oval, Line, Text buttons
         JLabel netWorkingText = new JLabel(" Networking: ");
         JLabel whatModeIsOn = new JLabel("");
-        // There is no need to update text and font from server
-        //netWorkingText.setFont(interfaceControlFont);
-        //whatModeIsOn.setFont(interfaceControlFont);
         JButton startServer = new JButton("Start Server"); // Create Start Server button
         JButton startClient = new JButton("Start Client"); // Create Start Client button
         netWorkingHorizontalBox.add(netWorkingText);
@@ -351,6 +348,7 @@ public class InterfaceControl extends JPanel {
             tableValues.insertData(value);
             controller.getdShapeModels().add(temp); // Creates new DOvalModel in the ArrayList of DShapeModel in Controller class
             controller.sendRemote("add",temp); //let client know to create shape
+            controller.sendRemote("tableUpdate",temp);//let client know to create shape
         }
         else if(type.equals("rect")){
             DShapeModel temp = new DRectModel();

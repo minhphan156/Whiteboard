@@ -4,6 +4,7 @@ import edu.sjsu.whiteboard.ModelListener;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * @author Danil Kolesnikov danil.kolesnikov@sjsu.edu
@@ -19,7 +20,6 @@ public class DTextModel extends DShapeModel {
     private int height;
     private Rectangle2D bounds;
     private ArrayList<ModelListener> listOfListeners = new ArrayList<>();
-
     private String text = "Hello"; // Initially
     private String fontNameModel = "Dialog"; // Initially
     private Font font = new Font(fontNameModel,Font.PLAIN,10);
@@ -35,6 +35,10 @@ public class DTextModel extends DShapeModel {
 
     public void setFontNameModel(String fontName) {
         this.fontNameModel = fontName;
+        Iterator<ModelListener> itr = listOfListeners.iterator();
+        while (itr.hasNext()){
+            itr.next().modelChanged(this);
+        }
     }
 
 
@@ -44,6 +48,10 @@ public class DTextModel extends DShapeModel {
 
     public void setText(String text) {
         this.text = text;
+        Iterator<ModelListener> itr = listOfListeners.iterator();
+        while (itr.hasNext()){
+            itr.next().modelChanged(this);
+        }
     }
 
     public Font getFont() {
@@ -52,6 +60,10 @@ public class DTextModel extends DShapeModel {
 
     public void setFont(Font font) {
         this.font = font;
+        Iterator<ModelListener> itr = listOfListeners.iterator();
+        while (itr.hasNext()){
+            itr.next().modelChanged(this);
+        }
     }
 
     @Override

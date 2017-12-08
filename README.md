@@ -11,7 +11,7 @@
 * Text disabling/enabling during - SOLVED
 * Double rows insertion in the table - SOLVED
 * In networking mode: If delete all shapes, can't add again
-* Networking: Change in text isn't reflected
+* Networking: Change in text isn't reflected - SOLVED
 * Table: If there are only 2 shapes on the canvas and you press delete: all rows will be deleted. Has to do with vector
 * Table: Deleting the shape at index 0 causes weird exception
 * Networking: moving to front/back doesn't seem to reflect in the table 

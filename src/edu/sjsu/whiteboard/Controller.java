@@ -123,6 +123,8 @@ public class Controller {
                     if(command.equals("add")) {
                         if (tempDShapeModel instanceof DRectModel) {
                             whiteboard.getCanvas().addShape(tempDShapeModel, "rect");
+                            Object[] value = {66,66,66,66};
+                            InterfaceControl.getICtable().insertData(value);
 
                         } else if (tempDShapeModel instanceof DOvalModel) {
                             whiteboard.getCanvas().addShape(tempDShapeModel, "oval");
@@ -161,17 +163,23 @@ public class Controller {
 //                        }
 
                         whiteboard.getCanvas().moveToBack();
+                    }
 
+                    else if (command.equals("tableUpdate")){
+                        InterfaceControl.getICtable().fireTableDataChanged();
                     }
                     else if (command.equals("change")){
                         if(whiteboard.getCanvas().getSelectedShape().getDShapeModel() instanceof DTextModel){
                             System.out.println("Making a change to DTextModel from Controller.java");
+                            String hi = ((DTextModel)tempDShapeModel).getText();
+                            System.out.println(hi);
                             whiteboard.getCanvas().getSelectedShape().getDShapeModel().mimic(((DTextModel)tempDShapeModel));
                         }
                         else{
                             System.out.println("Making a change to a NON DTextModel from Controller.java");
                             whiteboard.getCanvas().getSelectedShape().getDShapeModel().mimic(tempDShapeModel);
                         }
+
                         // whiteboard.getCanvas().setSelectedShape(tempDShapeModel.getX(),tempDShapeModel.getY());
 
                         // tempDShapeModel.getId();
@@ -290,7 +298,7 @@ public class Controller {
     // although could fork off a worker to do it.
     public synchronized void sendRemote(String command,DShapeModel dShapeModel) {
 
-        System.out.println("\nserver send: remote data !!! ");
+       // System.out.println("\nserver send: remote data !!! ");
 
         // Convert the message object into an xml string.
         OutputStream memStream = new ByteArrayOutputStream();

@@ -2,6 +2,7 @@ package edu.sjsu.whiteboard;
 
 import edu.sjsu.whiteboard.models.DShapeModel;
 import edu.sjsu.whiteboard.models.DLineModel;
+import edu.sjsu.whiteboard.models.DTextModel;
 import edu.sjsu.whiteboard.shapes.*;
 import javax.swing.*;
 import java.awt.*;
@@ -419,7 +420,6 @@ public class Canvas extends JPanel  {
 			DShape temp = selectedShape;
 			DText textTemp = (DText)temp;
 			textTemp.setFontName(fontName);
-			controller.sendRemote("change",getSelectedShape().getDShapeModel());
 			repaint();
 		}
 	}
