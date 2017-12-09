@@ -38,7 +38,6 @@ public class Controller {
 
     public static void main(String[] args) {
         Controller controllerServer = new Controller();
-        //Controller controllerClient = new Controller();
     }
 
     public void deleteModel(int index){
@@ -71,8 +70,16 @@ public class Controller {
                     addOutput(new ObjectOutputStream(toClient.getOutputStream()));
                     sendRemoteBeggining("add",dShapeModels);
                 }
-            } catch (IOException ex) {
+            }
+
+            catch (java.net.BindException ex) {
+                System.out.println("Closing application because of server collision!");
+                System.exit(0);
                 ex.printStackTrace();
+            }
+
+            catch (IOException e){
+                e.printStackTrace();
             }
         }
     }

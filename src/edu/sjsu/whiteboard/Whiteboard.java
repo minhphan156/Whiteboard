@@ -28,7 +28,7 @@ public class Whiteboard extends JFrame {
 
     public Whiteboard(Controller controller){
         super("Whiteboard");
-         canvas =  new Canvas(controller);
+        canvas =  new Canvas(controller);
         JMenuBar menubar = new JMenuBar(); // Initialize the menubar
 
         // Icons
