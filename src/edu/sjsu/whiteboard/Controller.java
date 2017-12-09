@@ -283,7 +283,7 @@ public class Controller {
 
     public void open(File file) {
         Canvas canvas = whiteboard.getCanvas();
-        //canvas.clearCanvas();
+        canvas.clearCanvas();
         DShapeModel[] dModelArrayRead;
         try {
             XMLDecoder xmlIn = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)));

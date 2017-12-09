@@ -1,9 +1,10 @@
 package edu.sjsu.whiteboard;
 
-import edu.sjsu.whiteboard.models.DShapeModel;
 import edu.sjsu.whiteboard.models.DLineModel;
+import edu.sjsu.whiteboard.models.DShapeModel;
 import edu.sjsu.whiteboard.models.TableModel;
 import edu.sjsu.whiteboard.shapes.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -13,7 +14,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 
 import static javax.imageio.ImageIO.write;
@@ -386,19 +386,26 @@ public class Canvas extends JPanel  {
 	public void clearCanvas(){
 		controller.getdShapeModels().clear(); // Clear list in the Controller class
 		shapeList.clear(); // Clear the ArrayList in canvas class
-		controller.sendRemote("change",getSelectedShape().getDShapeModel());
 		InterfaceControl.enableScriptChooserTextFields(false); // Disable text controls
 		InterfaceControl.updateScriptChooserTextField("", "Dialog");
+		indexOfSelected = -1;
+		selectedShape = null;
 		repaint();
 	}
 
 	public void saveImage(File file1) {
 
 		int temp = indexOfSelected;
-		selectedShape.setIsSelected(false);
-		indexOfSelected  = -1;
-		repaint();
-		selectedShape = null;
+		if(temp != -1)
+		{
+			selectedShape.setIsSelected(false);
+			indexOfSelected  = -1;
+			repaint();
+			selectedShape = null;
+		}
+
+
+
 
 		// Create an image bitmap, same size as ourselves
 		BufferedImage image = (BufferedImage) createImage(getWidth(), getHeight());
