@@ -122,8 +122,9 @@ public class Whiteboard extends JFrame {
         openMi.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 String result = JOptionPane.showInputDialog("Open File With The Name: ", null);
+                String finalResult = result+".xml";
                 if (result != null) {
-                    File f = new File(result);
+                    File f = new File(finalResult);
                     controller.open(f);
                 }
                 else{
@@ -183,7 +184,7 @@ public class Whiteboard extends JFrame {
         this.controller = controller;
         this.setLayout(new BorderLayout());
         this.add(canvas, BorderLayout.CENTER);
-        this.add(new InterfaceControl(controller,canvas), BorderLayout.WEST);
+        super.getContentPane().add(new InterfaceControl(controller,canvas), BorderLayout.WEST);
         this.add(menubar,BorderLayout.NORTH);
         this.pack();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -1,7 +1,6 @@
 package edu.sjsu.whiteboard;
 
 import edu.sjsu.whiteboard.models.*;
-import edu.sjsu.whiteboard.shapes.DLine;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -26,7 +25,7 @@ public class InterfaceControl extends JPanel {
 
     private String name = "interfacecontrol";
     private Controller controller;
-    private Dimension size = new Dimension(520,400);
+    private Dimension interfaceControlSize = new Dimension(520,400);
     private Canvas canvas; // pointer
     private static JComboBox scriptChooser; // STATIC Combo Box filled with String array of system fonts
     private static JTextField textField; // STATIC Text field to get user input for text
@@ -44,9 +43,8 @@ public class InterfaceControl extends JPanel {
     public InterfaceControl(Controller controller, Canvas canvas){
         this.canvas = canvas;
         this.controller = controller;
-
         tableValues = new TableModel(canvas.getShapeList());
-        this.setPreferredSize(size);
+        this.setPreferredSize(interfaceControlSize);
 
         //******************************************
         //*** Create Boxes for all Buttons ************
@@ -62,16 +60,15 @@ public class InterfaceControl extends JPanel {
         JButton line = new JButton("Line"); // Create Line button
         JButton text = new JButton("Text"); // Create Text button
         shapesHorizontalBox.add(addShapesText);
-        shapesHorizontalBox.add(rect); // Add Rect button to shapesHorizaontalBox
-        shapesHorizontalBox.add(oval); // Add Oval button to shapesHorizaontalBox
-        shapesHorizontalBox.add(line); // Add Line button to shapesHorizaontalBox
-        shapesHorizontalBox.add(text); // Add Text button to shapesHorizaontalBox
+        shapesHorizontalBox.add(rect); // Add Rect button to shapesHorizontalBox
+        shapesHorizontalBox.add(oval); // Add Oval button to shapesHorizontalBox
+        shapesHorizontalBox.add(line); // Add Line button to shapesHorizontalBox
+        shapesHorizontalBox.add(text); // Add Text button to shapesHorizontalBox
 
         // Text Box
         Box textHorizontalBox = Box.createHorizontalBox(); // Horizontal box that contains Text Field and Font chooser
         textField = new JTextField("");
-        Dimension size = new Dimension(1,1);
-        textField.setPreferredSize(size);// this prevents resize issue
+        Dimension size = new Dimension(520,20);
         JLabel editText = new JLabel(" Edit text: ");
         editText.setFont(interfaceControlFont); //
         String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames(); // Gets all system fonts
@@ -81,6 +78,9 @@ public class InterfaceControl extends JPanel {
         textHorizontalBox.add(scriptChooser); // Adds Font chooser object to horizontal box textHorizontalBox
         scriptChooser.setEnabled(false); // Initially  disable set text controls
         textField.setEnabled(false);
+        textHorizontalBox.setMinimumSize(size);// this prevents resize issue
+        textHorizontalBox.setMaximumSize(size);// this prevents resize issue
+
 
         // Set Color Box
         Box setColorHorizontalBox = Box.createHorizontalBox(); // Horizontal box that store Set Color button and button that displays selected color
@@ -161,8 +161,7 @@ public class InterfaceControl extends JPanel {
 
         // Table Box
         JTable table = new JTable(tableValues); // Initialize table mode
-        JScrollPane pane = new JScrollPane(table); // Make table scrollable
-        add(pane, BorderLayout.CENTER);
+
 
         // Add all horizontal boxes in the main vertical box
         Box verticalBoxMain = Box.createVerticalBox(); // Create main box that contains all horizontal boxes
@@ -175,11 +174,18 @@ public class InterfaceControl extends JPanel {
         verticalBoxMain.add(netWorkingHorizontalBox);
         verticalBoxMain.add(table.getTableHeader());
         verticalBoxMain.add(table);
+        verticalBoxMain.add(new JScrollPane(table) {
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(320, interfaceControlSize.height);
+            }
+        });
 
         // Align all components of the main box to the left
         for (Component comp : verticalBoxMain.getComponents()) {
             ((JComponent)comp).setAlignmentX(Box.LEFT_ALIGNMENT);
         }
+        setLayout(new BorderLayout());
         this.add(verticalBoxMain); // add the vertical box to self
 
 

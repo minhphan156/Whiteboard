@@ -1,15 +1,9 @@
-package edu.sjsu.whiteboard;
+package edu.sjsu.whiteboard.models;
 
-import com.sun.tools.internal.ws.processor.model.Model;
-import edu.sjsu.whiteboard.models.DLineModel;
-import edu.sjsu.whiteboard.models.DShapeModel;
-import edu.sjsu.whiteboard.models.DTextModel;
 import edu.sjsu.whiteboard.shapes.DShape;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Vector;
 
 /**
  * @author Danil Kolesnikov danil.kolesnikov@sjsu.edu

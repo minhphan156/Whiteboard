@@ -2,7 +2,6 @@ package edu.sjsu.whiteboard.models;
 
 import edu.sjsu.whiteboard.InterfaceControl;
 import edu.sjsu.whiteboard.ModelListener;
-import edu.sjsu.whiteboard.TableModel;
 
 import java.awt.*;
 import java.awt.geom.*;

@@ -2,6 +2,7 @@ package edu.sjsu.whiteboard;
 
 import edu.sjsu.whiteboard.models.DShapeModel;
 import edu.sjsu.whiteboard.models.DLineModel;
+import edu.sjsu.whiteboard.models.TableModel;
 import edu.sjsu.whiteboard.shapes.*;
 import javax.swing.*;
 import java.awt.*;
@@ -326,9 +327,9 @@ public class Canvas extends JPanel  {
 		if (selectedShape != null) {
 			System.out.printf("Moving a shape at index %d in front", indexOfSelected);
 			controller.sendRemote("front",getSelectedShape().getDShapeModel());
-			Collections.swap(shapeList,indexOfSelected,shapeList.size()-1);
+			selectedShape = shapeList.remove(indexOfSelected);
+			shapeList.add(selectedShape);
 			indexOfSelected = shapeList.size() - 1;
-			selectedShape = shapeList.get(indexOfSelected);
 			repaint();
 		}
 	}
@@ -336,11 +337,11 @@ public class Canvas extends JPanel  {
 	// moveToBack() moves the selected shape in the back and modifies the table
 	public void moveToBack() {
 		if (selectedShape != null) {
-			System.out.printf("Moving a shape at i=ndex %d in the back", indexOfSelected);
+			System.out.printf("Moving a shape at index %d in the back", indexOfSelected);
 			controller.sendRemote("back",getSelectedShape().getDShapeModel());
-			Collections.swap(shapeList,indexOfSelected,0);
+			selectedShape = shapeList.remove(indexOfSelected);
+			shapeList.add(0,selectedShape);
 			indexOfSelected = 0;
-			selectedShape = shapeList.get(indexOfSelected);
 			repaint();
 		}
 	}

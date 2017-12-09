@@ -69,6 +69,7 @@ public class Controller {
                     // the list of outputs
                     // (our server only uses the output stream of the connection)
                     addOutput(new ObjectOutputStream(toClient.getOutputStream()));
+                    sendRemoteBeggining("add",dShapeModels);
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -198,10 +199,6 @@ public class Controller {
         }
     }
 
-
-
-
-
     //NOTE: only client do input but server do input and output
     // Sends a message to all of the outgoing streams.
     // Writing rarely blocks, so doing this on the swing thread is ok,
@@ -236,6 +233,40 @@ public class Controller {
         }
     }
 
+    public void sendRemoteBeggining(String command,ArrayList<DShapeModel> dShapeModels ){
+
+        Iterator<DShapeModel> itr = dShapeModels.iterator();
+        while(itr.hasNext()) {
+
+            System.out.println("\nserver send: remote data !!! ");
+
+            // Convert the message object into an xml string.
+            OutputStream memStream = new ByteArrayOutputStream();
+            XMLEncoder encoder = new XMLEncoder(memStream);
+            encoder.writeObject(command);
+            encoder.writeObject(itr.next());
+
+            encoder.close();
+            String xmlString = memStream.toString();
+            // Now write that xml string to all the clients.
+            //System.out.println(xmlString);
+            Iterator<ObjectOutputStream> it = outputs.iterator();
+            while (it.hasNext()) {
+                ObjectOutputStream out = it.next();
+                try {
+                    out.writeObject(xmlString); //********* send to client under xml
+                    out.flush();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    it.remove();
+                    // Cute use of iterator and exceptions --
+                    // drop that socket from list if have probs with it
+                }
+            }
+        }
+    }
+
+
     public void save(File file) {
         try {
             ArrayList<DShape> shapeList = whiteboard.getCanvas().getShapeList();
@@ -266,7 +297,6 @@ public class Controller {
             xmlIn.close();
             System.out.println(dModelArrayRead.length);
             for (int i = 0; i < dModelArrayRead.length; i++) {
-                dShapeModels.add(dModelArrayRead[i]);
                 if (dModelArrayRead[i] instanceof DRectModel) {
                     canvas.addShape(dModelArrayRead[i], "rect");
 
@@ -277,6 +307,7 @@ public class Controller {
                 } else if (dModelArrayRead[i] instanceof DTextModel) {
                     canvas.addShape(dModelArrayRead[i], "text");
                 }
+                dShapeModels.add(dModelArrayRead[i]);
             }
             System.out.println(test);
         } catch (IOException e) {
