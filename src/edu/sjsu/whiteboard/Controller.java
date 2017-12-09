@@ -2,9 +2,7 @@ package edu.sjsu.whiteboard;
 
 
 import edu.sjsu.whiteboard.models.*;
-import edu.sjsu.whiteboard.shapes.DRect;
 import edu.sjsu.whiteboard.shapes.DShape;
-import edu.sjsu.whiteboard.shapes.DText;
 
 import javax.swing.*;
 import java.beans.XMLDecoder;
@@ -28,10 +26,9 @@ public class Controller {
     private ServerAccepter serverAccepter;
     private java.util.List<ObjectOutputStream> outputs =
             new ArrayList<ObjectOutputStream>();
-
     private ArrayList<DShapeModel> dShapeModels;
 
-    Controller(){
+    public Controller(){
         whiteboard = new Whiteboard(this);
         dShapeModels = new ArrayList<DShapeModel>();
     }
@@ -46,7 +43,7 @@ public class Controller {
     public Whiteboard getWhiteboard() {
         return whiteboard;
     }
-    public ArrayList<DShapeModel> getdShapeModels() {
+    ArrayList<DShapeModel> getdShapeModels() {
         return dShapeModels;
     }
 
@@ -85,7 +82,7 @@ public class Controller {
     }
     // Adds an object stream to the list of outputs
     // (this and sendToOutputs() are synchronzied to avoid conflicts)
-    public synchronized void addOutput(ObjectOutputStream out) {
+    private synchronized void addOutput(ObjectOutputStream out) {
         outputs.add(out);
     }
 
@@ -180,24 +177,19 @@ public class Controller {
 
     // Starts the sever accepter to catch incoming client connections.
     // Wired to Server button.
-    public void doServer() {
+    void doServer() {
         String result = JOptionPane.showInputDialog("Enter ip and port number you want to use (default is 39587):", "39587");
-
         if (result!=null) {
             System.out.println("server: start");
-            //TODO fix to take below instead after done
             serverAccepter = new ServerAccepter(Integer.parseInt(result.trim()));
             serverAccepter.start();
-
         }
     }
 
     // Runs a client handler to connect to a server.
     // Wired to Client button.
-    public void doClient() {
-
+    void doClient() {
         String result = JOptionPane.showInputDialog("Enter ip and port number you want to use (default is 39587):", "127.0.0.1:39587");
-
         if (result!=null) {
             String[] parts = result.split(":");
             System.out.println("client: start");
@@ -210,10 +202,7 @@ public class Controller {
     // Sends a message to all of the outgoing streams.
     // Writing rarely blocks, so doing this on the swing thread is ok,
     // although could fork off a worker to do it.
-    public synchronized void sendRemote(String command,DShapeModel dShapeModel) {
-
-       // System.out.println("\nserver send: remote data !!! ");
-
+    synchronized void sendRemote(String command, DShapeModel dShapeModel) {
         // Convert the message object into an xml string.
         OutputStream memStream = new ByteArrayOutputStream();
         XMLEncoder encoder = new XMLEncoder(memStream);
@@ -240,7 +229,7 @@ public class Controller {
         }
     }
 
-    public void sendRemoteBeggining(String command,ArrayList<DShapeModel> dShapeModels ){
+    private void sendRemoteBeggining(String command, ArrayList<DShapeModel> dShapeModels){
 
         Iterator<DShapeModel> itr = dShapeModels.iterator();
         while(itr.hasNext()) {
@@ -273,8 +262,7 @@ public class Controller {
         }
     }
 
-
-    public void save(File file) {
+    void save(File file) {
         try {
             ArrayList<DShape> shapeList = whiteboard.getCanvas().getShapeList();
             XMLEncoder xmlOut = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)));

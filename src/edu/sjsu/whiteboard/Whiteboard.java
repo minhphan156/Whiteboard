@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Danil Kolesnikov danil.kolesnikov@sjsu.edu
@@ -25,6 +26,13 @@ public class Whiteboard extends JFrame {
     private Canvas canvas;
     private JMenuItem startServ;
     private JMenuItem startClient;
+    private JMenuItem reset;
+    private JMenuItem openXML;
+    private JMenuItem savePNG;
+    private JMenuItem saveXML;
+    private JMenu fileMenu;
+    private JMenu editMenu;
+    private JMenu networkingMenu;
 
     public Whiteboard(Controller controller){
         super("Whiteboard");
@@ -40,11 +48,11 @@ public class Whiteboard extends JFrame {
         ImageIcon iconAuthors = new ImageIcon("res/info.png");
         ImageIcon iconAuthorsDialog = new ImageIcon("res/infoDialog.png");
 
-        JMenu fileMenu = new JMenu("File");
+        fileMenu = new JMenu("File");
         fileMenu.setMnemonic(KeyEvent.VK_F);
-        JMenu editMenu = new JMenu("Edit");
+        editMenu = new JMenu("Edit");
         fileMenu.setMnemonic(KeyEvent.VK_F);
-        JMenu networkingMenu = new JMenu("Networking");
+        networkingMenu = new JMenu("Networking");
         fileMenu.setMnemonic(KeyEvent.VK_F);
 
         JMenuItem moveToFront = new JMenuItem(new MenuItemAction("Move to Front", null,
@@ -106,53 +114,62 @@ public class Whiteboard extends JFrame {
         });
 
 
-        JMenuItem newMi = new JMenuItem(new MenuItemAction("Reset", iconNew,
+        reset = new JMenuItem(new MenuItemAction("Reset", iconNew,
                 KeyEvent.VK_N));
 
         // Reset the canvas
-        newMi.addActionListener(new ActionListener() {
+        reset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 canvas.clearCanvas();
             }
         });
 
-        JMenuItem openMi = new JMenuItem(new MenuItemAction("Open", iconOpen,
+        openXML = new JMenuItem(new MenuItemAction("Open", iconOpen,
                 KeyEvent.VK_O));
-        openMi.addActionListener(new ActionListener() {
+        openXML.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                String result = JOptionPane.showInputDialog("Open File With The Name: ", null);
-                String finalResult = result+".xml";
-                if (result != null) {
-                    File f = new File(finalResult);
-                    controller.open(f);
-                }
-                else{
-                    JOptionPane.showMessageDialog(openMi,"Enter a file name!");
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(getCurrentPath());
+                fileChooser.setDialogTitle("Open XML file");
+                int returnVal =  fileChooser.showDialog(openXML,"Open");
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    controller.open(selectedFile);
                 }
             }
         });
 
-        JMenuItem saveMi = new JMenuItem(new MenuItemAction("Save", iconSave,
+        saveXML = new JMenuItem(new MenuItemAction("Save", iconSave,
                 KeyEvent.VK_S));
-        saveMi.addActionListener(new ActionListener() {
+        saveXML.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                String result = JOptionPane.showInputDialog("Save File With The Name", "CanvasXML");
-                String finalResult = result+".xml";
-                File f = new File(finalResult);
-                controller.save(f);
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(getCurrentPath());
+                fileChooser.setDialogTitle("Save as XML file");
+                int returnVal =  fileChooser.showDialog(saveXML,"Save");
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    File finalFile = new File(selectedFile.toString() + ".xml");
+                    controller.save(finalFile);
+                }
 
             }
         });
 
-        JMenuItem savePNG = new JMenuItem(new MenuItemAction("Save PNG", iconSavePNG,
+        savePNG = new JMenuItem(new MenuItemAction("Save PNG", iconSavePNG,
                 KeyEvent.VK_S));
         savePNG.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                String userInput = JOptionPane.showInputDialog("File Name", "Canvas");
-                String finalName = userInput+".png";
-                File f = new File(finalName);
-                canvas.saveImage(f);
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("Save as PNG file");
+                fileChooser.setCurrentDirectory(getCurrentPath());
+                int returnVal =  fileChooser.showDialog(savePNG,"Save");
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    File finalFile = new File(selectedFile.toString() + ".png");
+                    canvas.saveImage(finalFile);
+                }
             }
         });
 
@@ -168,9 +185,9 @@ public class Whiteboard extends JFrame {
         });
 
         // Add sub menus in the File menu
-        fileMenu.add(newMi);
-        fileMenu.add(openMi);
-        fileMenu.add(saveMi);
+        fileMenu.add(reset);
+        fileMenu.add(openXML);
+        fileMenu.add(saveXML);
         fileMenu.add(savePNG);
         fileMenu.addSeparator();
         fileMenu.add(exitMi);
@@ -220,9 +237,30 @@ public class Whiteboard extends JFrame {
         return (JPanel)comp;
     }
 
-    public void disableNetworking(){
-        startServ.setEnabled(false);
-        startClient.setEnabled(false);
+    private File getCurrentPath(){
+        File f = null;
+        try {
+            f = new File(new File(".").getCanonicalPath());
+        }
+        catch(IOException e){
+            System.out.println("IOException in currentPath() in InterfaceControl.java");
+        }
+        return f;
+    }
+
+    public void disableNetworkingClient(){
+        reset.setEnabled(false);
+        openXML.setEnabled(false);
+        saveXML.setEnabled(false);
+        savePNG.setEnabled(false);
+        editMenu.setEnabled(false);
+        networkingMenu.setEnabled(false);
+    }
+
+    public void disableNetworkingServer(){
+        reset.setEnabled(false);
+        openXML.setEnabled(false);
+        networkingMenu.setEnabled(false);
     }
 
     public Canvas getCanvas() {

@@ -2,13 +2,15 @@ package edu.sjsu.whiteboard;
 
 import edu.sjsu.whiteboard.models.*;
 
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import java.io.IOException;
+
 
 /**
  * @author Danil Kolesnikov danil.kolesnikov@sjsu.edu
@@ -108,40 +110,9 @@ public class InterfaceControl extends JPanel {
         saveContentText.setFont(interfaceControlFont);
 
         JButton save = new JButton("Save"); // Create Start Server button
-        save.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ae) {
-                String result = JOptionPane.showInputDialog("Save File With The Name", "CanvasXML");
-                String finalResult = result+".xml";
-                File f = new File(finalResult);
-                controller.save(f);
-
-            }
-        });
-
         JButton load = new JButton("Load"); // Create Start Client button
-        load.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ae) {
-                String result = JOptionPane.showInputDialog("Open File With The Name: ", null);
-                String finalResult = result+".xml";
-                if (result != null) {
-                    File f = new File(finalResult);
-                    controller.open(f);
-                }
-                else{
-                    JOptionPane.showMessageDialog(load,"Enter a file name!");
-                }
-            }
-        });
-
         JButton saveAsPNG = new JButton("Save as PNG"); // Create Start Client button
-        saveAsPNG.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ae) {
-                String userInput = JOptionPane.showInputDialog("File Name", "Canvas");
-                String finalName = userInput+".png";
-                File f = new File(finalName);
-                canvas.saveImage(f);
-            }
-        });
+
         // Add to Save/Open control box
         saveContentHorizontalBox.add(saveContentText);
         saveContentHorizontalBox.add(save);
@@ -192,6 +163,48 @@ public class InterfaceControl extends JPanel {
         //******************************************
         //*** Listeners for all Buttons ************
         //******************************************
+
+
+        load.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(getCurrentPath());
+                fileChooser.setDialogTitle("Open XML file");
+                int returnVal =  fileChooser.showDialog(load,"Open");
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    controller.open(selectedFile);
+                }
+            }
+        });
+
+        save.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(getCurrentPath());
+                fileChooser.setDialogTitle("Save as XML file");
+                int returnVal =  fileChooser.showDialog(save,"Save");
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    File finalFile = new File(selectedFile.toString() + ".xml");
+                    controller.save(finalFile);
+                }
+            }
+        });
+
+        saveAsPNG.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("Save as PNG file");
+                fileChooser.setCurrentDirectory(getCurrentPath());
+                int returnVal =  fileChooser.showDialog(saveAsPNG,"Save");
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    File finalFile = new File(selectedFile.toString() + ".png");
+                    canvas.saveImage(finalFile);
+                }
+            }
+        });
 
         //listener for set color
         setColor.addActionListener(new ActionListener() {
@@ -312,7 +325,8 @@ public class InterfaceControl extends JPanel {
                 // Disable buttons after entering server mode
                 startClient.setEnabled(false);
                 startServer.setEnabled(false);
-                controller.getWhiteboard().disableNetworking();
+                controller.getWhiteboard().disableNetworkingServer();
+
             }
         });
 
@@ -338,7 +352,8 @@ public class InterfaceControl extends JPanel {
                 startServer.setEnabled(false);
                 startClient.setEnabled(false);
                 table.setEnabled(false);
-                controller.getWhiteboard().disableNetworking();
+                controller.getWhiteboard().disableNetworkingClient();
+
                 //set up client
                 controller.doClient();
             }
@@ -380,6 +395,16 @@ public class InterfaceControl extends JPanel {
         (canvasReference).repaint();
     }
 
+    private File getCurrentPath(){
+        File f = null;
+        try {
+             f = new File(new File(".").getCanonicalPath());
+        }
+        catch(IOException e){
+            System.out.println("IOException in currentPath() in InterfaceControl.java");
+        }
+        return f;
+    }
 
     // Static method to enable/disable text controls. Called from canvas class
     public static void enableScriptChooserTextFields(Boolean bool){
