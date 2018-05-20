@@ -1,6 +1,8 @@
 # Whiteboard
 > Primitive but functional drawing application with networking capabilities
 
+<a href="https://imgflip.com/gif/2amvyv"><img src="https://i.imgflip.com/2amvyv.gif" title="made at imgflip.com"/></a>
+
 ![](header.png)
 
 # Description
